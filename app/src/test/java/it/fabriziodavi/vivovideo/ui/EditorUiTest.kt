@@ -140,7 +140,7 @@ class EditorUiTest {
         val vm = vm(); show(vm)
         compose.onAllNodesWithContentDescription("Transición")[0].performClick()
         assertEquals("a", vm.selectedClipId)
-        compose.onNodeWithText("Verso la clip 2").assertIsDisplayed()
+        compose.onNodeWithText("Hacia el clip 2").assertIsDisplayed()
         compose.onNodeWithText("Cruzada").performClick()
         assertEquals(TransitionType.CROSSFADE, vm.project!!.clips[0].transitionOut?.type)
     }

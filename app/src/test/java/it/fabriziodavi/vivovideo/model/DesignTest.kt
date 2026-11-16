@@ -59,7 +59,7 @@ class DesignTest {
         val m = DesignMeta(listOf(at(2026, 8, 3, 18, 42), 0L, at(2026, 8, 14, 9, 5)), listOf("Santorini", "", "Naxos"), 3)
         assertEquals("2026", DesignTexts.fill("{ANNO}", m))
         assertEquals("Agosto 2026", DesignTexts.fill("{Mese} {ANNO}", m))
-        assertEquals("Lunedì 3 agosto", DesignTexts.fill("{giorno}", m))
+        assertEquals("Lunes 3 agosto", DesignTexts.fill("{giorno}", m))
         assertEquals("3 · VIII · 2026", DesignTexts.fill("{data_romana}", m))
         assertEquals("03 → 14.08.2026", DesignTexts.fill("{dal_al}", m))
         assertEquals("12", DesignTexts.fill("{giorni}", m))

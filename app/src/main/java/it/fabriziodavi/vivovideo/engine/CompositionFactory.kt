@@ -108,10 +108,10 @@ object ExportEstimate {
     fun bytes(outW: Int, outH: Int, outFps: Float, codec: OutputCodec, durationUs: Long, maxBitrate: Int? = null, hdr: Boolean = false): Long =
         ((bitrate(outW, outH, outFps, codec, maxBitrate, hdr = hdr).toLong() + AUDIO_BPS) * durationUs / 8_000_000L)
 
-    /** "circa 85 MB" / "circa 1,2 GB". */
+    /** "aprox. 85 MB" / "aprox. 1,2 GB". */
     fun label(bytes: Long): String {
         val mb = bytes / 1_000_000.0
-        return if (mb >= 1000) "circa " + String.format(java.util.Locale.ITALY, "%.1f GB", mb / 1000) else "aprox. ${maxOf(1, mb.toInt())} MB"
+        return if (mb >= 1000) "aprox. " + String.format(java.util.Locale.ITALY, "%.1f GB", mb / 1000) else "aprox. ${maxOf(1, mb.toInt())} MB"
     }
 }
 

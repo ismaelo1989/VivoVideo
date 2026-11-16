@@ -517,22 +517,22 @@ object ColorNames {
         }
         if (h < 0) h += 360
         if (s < 0.06f) return when {
-            l > 0.9f -> "Bianco"; l > 0.72f -> "Nebbia"; l > 0.5f -> "Grigio"; l > 0.25f -> "Ardesia"; else -> "Carbone"
+            l > 0.9f -> "Blanco"; l > 0.72f -> "Niebla"; l > 0.5f -> "Gris"; l > 0.25f -> "Pizarra"; else -> "Carbón"
         }
         val dark = l < 0.3f; val light = l > 0.72f
         // Toni caldi spenti (beige, tortora): i colori più comuni nelle foto.
-        if (s < 0.3f && h in 15f..60f) return if (dark) "Caffè" else if (light) "Latte" else "Nocciola"
-        if (s < 0.25f && h in 60f..200f) return if (dark) "Bosco" else if (light) "Nebbia" else "Salvia"
+        if (s < 0.3f && h in 15f..60f) return if (dark) "Café" else if (light) "Leche" else "Avellana"
+        if (s < 0.25f && h in 60f..200f) return if (dark) "Bosque" else if (light) "Niebla" else "Salvia"
         return when {
-            h < 15 || h >= 345 -> if (dark) "Bordeaux" else if (light) "Rosa" else "Rosso"
-            h < 40 -> if (dark) "Caffè" else if (light) "Pesca" else if (s < 0.45f) "Nocciola" else "Arancio"
-            h < 55 -> if (dark) "Bronzo" else if (light) "Sabbia" else if (s < 0.4f) "Latte" else "Ocra"
-            h < 70 -> if (dark) "Oliva" else if (light) "Crema" else "Senape"
-            h < 160 -> if (dark) "Bosco" else if (light) "Menta" else if (s < 0.3f) "Salvia" else "Verde"
-            h < 200 -> if (dark) "Petrolio" else if (light) "Acqua" else "Turchese"
-            h < 250 -> if (dark) "Notte" else if (light) "Cielo" else "Blu"
-            h < 290 -> if (dark) "Prugna" else if (light) "Lavanda" else "Viola"
-            else -> if (dark) "Prugna" else if (light) "Cipria" else "Magenta"
+            h < 15 || h >= 345 -> if (dark) "Bordeaux" else if (light) "Rosa" else "Rojo"
+            h < 40 -> if (dark) "Café" else if (light) "Durazno" else if (s < 0.45f) "Avellana" else "Naranja"
+            h < 55 -> if (dark) "Bronce" else if (light) "Arena" else if (s < 0.4f) "Leche" else "Ocre"
+            h < 70 -> if (dark) "Oliva" else if (light) "Crema" else "Mostaza"
+            h < 160 -> if (dark) "Bosque" else if (light) "Menta" else if (s < 0.3f) "Salvia" else "Verde"
+            h < 200 -> if (dark) "Petróleo" else if (light) "Agua" else "Turquesa"
+            h < 250 -> if (dark) "Noche" else if (light) "Cielo" else "Azul"
+            h < 290 -> if (dark) "Ciruela" else if (light) "Lavanda" else "Violeta"
+            else -> if (dark) "Ciruela" else if (light) "Rosa empolvado" else "Magenta"
         }
     }
 

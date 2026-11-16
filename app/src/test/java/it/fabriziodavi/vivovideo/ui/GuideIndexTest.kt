@@ -10,7 +10,7 @@ class GuideIndexTest {
 
     @Test fun everyTopicHasAGroupAndText() {
         val (title, _, sections) = GuideIndex.parse(md)
-        assertEquals("Guida di VivoVideo", title)
+        assertEquals("Guía de VivoVideo", title)
         assertTrue(sections.size >= 25)
         assertTrue(sections.first().title.startsWith("Novedades"))
         // Ogni argomento sta in un gruppo vero (se se ne aggiunge uno nuovo, va messo nei gruppi).
@@ -28,7 +28,7 @@ class GuideIndexTest {
         assertTrue(sections[plates.first().index].title.startsWith("Privacy")) // titolo giusto per primo
         assertTrue(plates.first().snippet.isNotBlank() && !plates.first().snippet.contains("**"))
         // Senza accento si trova lo stesso.
-        assertTrue(GuideIndex.search(sections, "velocita").any { sections[it.index].title.startsWith("Velocidad") })
+        assertTrue(GuideIndex.search(sections, "velocidad").any { sections[it.index].title.startsWith("Velocidad") })
         // Più parole: devono esserci tutte.
         assertTrue(GuideIndex.search(sections, "zoom tutorial").all { h -> GuideIndex.fold(sections[h.index].lines.joinToString(" ")).let { "zoom" in it } })
         assertTrue(GuideIndex.search(sections, "x").isEmpty())

@@ -98,7 +98,7 @@ private fun ChannelCard(vm: EditorViewModel, b: Bus, m: BusMix, audible: Boolean
     Card {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(b.label, style = MaterialTheme.typography.titleSmall, color = if (audible) VV.Text else VV.Faint, modifier = Modifier.weight(1f))
-            SmallToggle("M", "Muto: ${b.label}", m.mute, VV.Danger) { vm.setBus(b, m.copy(mute = it)) }
+            SmallToggle("M", "Silenciar: ${b.label}", m.mute, VV.Danger) { vm.setBus(b, m.copy(mute = it)) }
             SmallToggle("S", "Solo: ${b.label}", m.solo, VV.Tally) { vm.setBus(b, m.copy(solo = it)) }
         }
         LevelMeter(b, vm.isPlaying, Modifier.fillMaxWidth().height(8.dp))

@@ -109,7 +109,7 @@ class LibraryTest {
     }
 
     @Test fun clearErrorMessages() {
-        assertTrue(friendlyError(java.net.SocketTimeoutException("timeout"), LibrarySource.OPENVERSE).startsWith("Openverse non risponde"))
+        assertTrue(friendlyError(java.net.SocketTimeoutException("timeout"), LibrarySource.OPENVERSE).startsWith("Openverse no responde"))
         assertEquals("Sin conexión a internet.", friendlyError(java.net.UnknownHostException("x"), LibrarySource.JAMENDO))
         assertEquals("Codice errato", friendlyError(IllegalStateException("Codice errato"), LibrarySource.JAMENDO))
     }

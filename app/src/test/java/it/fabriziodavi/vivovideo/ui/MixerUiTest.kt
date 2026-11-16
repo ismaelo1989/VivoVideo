@@ -40,9 +40,9 @@ class MixerUiTest {
         compose.setContent { VivoTheme { MixerScreen(vm) } }
         compose.onNodeWithText("Audio de los clips").assertIsDisplayed()
         compose.onNodeWithText("Música").assertIsDisplayed()
-        compose.onNodeWithContentDescription("Muto: Musica").performClick()
+        compose.onNodeWithContentDescription("Silenciar: Música").performClick()
         assertTrue(vm.project!!.mix.bus(Bus.MUSIC).mute)
-        compose.onNodeWithContentDescription("Solo: Audio delle clip").performClick()
+        compose.onNodeWithContentDescription("Solo: Audio de los clips").performClick()
         assertTrue(vm.project!!.mix.bus(Bus.CLIPS).solo)
         compose.onNodeWithText("Salida").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Reiniciar el mezclador").performScrollTo().performClick()

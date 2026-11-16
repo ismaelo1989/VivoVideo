@@ -83,13 +83,13 @@ class ProxiesTest {
         // 4K30 H.265 un minuto: 45 Mbps → circa 338 MB.
         val b = ExportEstimate.bytes(3840, 2160, 30f, OutputCodec.H265, 60_000_000)
         assertTrue(b in 445_000_000L..460_000_000L)
-        assertEquals("circa 451 MB", ExportEstimate.label(b))
+        assertEquals("aprox. 451 MB", ExportEstimate.label(b))
         // 1080p come le riprese del telefono; in HDR a 10 bit un quarto in più.
         assertEquals(15_000_000, ExportEstimate.bitrate(1080, 1920, 30f, OutputCodec.H265))
         assertEquals(18_750_000, ExportEstimate.bitrate(1080, 1920, 30f, OutputCodec.H265, hdr = true))
         // Mai meno dell'originale (un 1080p Dolby Vision del telefono a circa 17 Mbps): almeno il 10% in più.
         assertEquals(22_000_000, ExportEstimate.bitrate(1080, 1920, 30f, OutputCodec.H265, hdr = true, source = 20_000_000))
-        assertEquals("circa 1,2 GB", ExportEstimate.label(1_200_000_000))
+        assertEquals("aprox. 1,2 GB", ExportEstimate.label(1_200_000_000))
     }
 }
 

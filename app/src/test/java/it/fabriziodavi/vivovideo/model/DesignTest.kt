@@ -73,7 +73,7 @@ class DesignTest {
         val none = DesignMeta(now = at(2026, 1, 10))
         assertEquals("Perù → Bali, 12 giorni", DesignTexts.fill("{luogo|Perù} → {luogo2|Bali}, {giorni|12} giorni", none))
         assertEquals("invierno", DesignTexts.fill("{stagione}", none))
-        assertEquals("Gennaio 2026", DesignTexts.fill("{Mese} {ANNO}", none))
+        assertEquals("Enero 2026", DesignTexts.fill("{Mese} {ANNO}", none))
         // Le scritte cambiate da te vincono; i mesi delle foto nell'album dell'anno.
         val d = Designs.byId("x-year")!!
         val spec = CollageSpec(d.id, CollageAspect.PAPER, listOf(CollageItem("a", takenMs = at(2026, 3, 5)), CollageItem("b")), texts = mapOf("title" to "Il nostro anno"))

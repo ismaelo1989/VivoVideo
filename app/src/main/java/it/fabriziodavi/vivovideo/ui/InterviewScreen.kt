@@ -77,18 +77,18 @@ fun InterviewScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro", enabled = busy == null) { vm.closeInterview() }
-            Text("Intervista doppia", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás", enabled = busy == null) { vm.closeInterview() }
+            Text("Entrevista doble", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Hint("Due persone, le stesse domande, due video. L'app li ascolta, trova le domande e ritaglia la risposta di ciascuno, poi monta tutto domanda per domanda. Il risultato si apre nell'editor, da ritoccare come gli altri progetti.")
-            PanelLabel("I due video")
+            Hint("Dos personas, las mismas preguntas, dos videos. La app los escucha, encuentra las preguntas y recorta la respuesta de cada uno, y luego monta todo pregunta por pregunta. El resultado se abre en el editor, para retocarlo como los demás proyectos.")
+            PanelLabel("Los dos videos")
             VideoRow("A", vm.interviewA, busy == null) { pick(true) }
             VideoRow("B", vm.interviewB, busy == null) { pick(false) }
-            PanelLabel("Nomi e didascalie (in basso, come in TV)")
+            PanelLabel("Nombres y pies de foto (abajo, como en la TV)")
             listOf(Triple("A", nameA, capA), Triple("B", nameB, capB)).forEach { (who, n, c) ->
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     OutlinedTextField(
@@ -97,7 +97,7 @@ fun InterviewScreen(vm: EditorViewModel) {
                     )
                     OutlinedTextField(
                         value = c, onValueChange = { v -> if (who == "A") capA = v else capB = v }, singleLine = true, colors = colors,
-                        modifier = Modifier.weight(1.3f), placeholder = { Text("Didascalia (es. 46 anni, Brescia)", color = VV.Faint) },
+                        modifier = Modifier.weight(1.3f), placeholder = { Text("Pie de foto (ej. 46 años, Guadalajara)", color = VV.Faint) },
                     )
                 }
             }
@@ -113,17 +113,17 @@ fun InterviewScreen(vm: EditorViewModel) {
                     Text(f.hint, style = MaterialTheme.typography.bodySmall)
                 }
             }
-            ToggleRow("Cartello con la domanda prima delle risposte", cards, busy == null) { cards = it }
-            PanelLabel("Domande")
-            ToggleRow("Trovale da sola (le frasi dette uguali ai due, o con il punto di domanda)", auto, busy == null) { auto = it; vm.resetInterviewAnalysis() }
+            ToggleRow("Cartel con la pregunta antes de las respuestas", cards, busy == null) { cards = it }
+            PanelLabel("Preguntas")
+            ToggleRow("Encontrarlas sola (las frases dichas iguales en los dos, o con signo de interrogación)", auto, busy == null) { auto = it; vm.resetInterviewAnalysis() }
             if (!auto) {
-                if (qas != null && qas.isEmpty()) Hint("Non ho trovato domande nei video. Scrivile qui, una per riga, come le ha dette chi intervista (bastano le parole principali), poi tocca «Analizza i due video»: non riascolta, è subito pronto.")
+                if (qas != null && qas.isEmpty()) Hint("No encontré preguntas en los videos. Escríbelas aquí, una por línea, como las dijo quien entrevista (bastan las palabras principales), y luego toca «Analizar los dos videos»: no vuelve a escuchar, queda listo al instante.")
                 OutlinedTextField(
                     value = typed, onValueChange = { typed = it }, colors = colors, minLines = 3,
-                    modifier = Modifier.fillMaxWidth(), placeholder = { Text("Una domanda per riga, come la dice chi intervista", color = VV.Faint) },
+                    modifier = Modifier.fillMaxWidth(), placeholder = { Text("Una pregunta por línea, como la dice quien entrevista", color = VV.Faint) },
                 )
             }
-            Hint("Le domande devono sentirsi nei video (chi intervista le fa a voce). Il riconoscimento vocale è sul telefono; internet serve solo per scaricare il modello la prima volta.")
+            Hint("Las preguntas deben oírse en los videos (quien entrevista las hace de viva voz). El reconocimiento de voz es en el teléfono; internet solo hace falta para descargar el modelo la primera vez.")
             Whisper.Model.entries.filter { it != Whisper.Model.TINY }.forEach { m ->
                 val on = m == model
                 val ready = Whisper.isDownloaded(ctx, m)
@@ -132,13 +132,13 @@ fun InterviewScreen(vm: EditorViewModel) {
                         .border(if (on) 2.dp else 0.dp, if (on) VV.Tally else Color.Transparent, RoundedCornerShape(12.dp))
                         .clickable(enabled = busy == null) { model = m }.padding(12.dp),
                 ) {
-                    Text(m.label + if (ready) "  ·  pronto" else "  ·  ${m.sizeMb} MB da scaricare", style = MaterialTheme.typography.titleSmall, color = if (on) VV.Tally else VV.Text)
+                    Text(m.label + if (ready) "  ·  listo" else "  ·  ${m.sizeMb} MB por descargar", style = MaterialTheme.typography.titleSmall, color = if (on) VV.Tally else VV.Text)
                     Text(m.hint, style = MaterialTheme.typography.bodySmall)
                 }
             }
             if (qas != null && qas.isNotEmpty()) {
-                PanelLabel("Domande e risposte trovate")
-                Hint("Il testo della domanda è quello del cartello: correggilo qui se serve. Togli con ✕ le domande che non vuoi nel video. Le risposte non trovate restano fuori da sole.")
+                PanelLabel("Preguntas y respuestas encontradas")
+                Hint("El texto de la pregunta es el del cartel: corrígelo aquí si hace falta. Quita con ✕ las preguntas que no quieras en el video. Las respuestas no encontradas se quedan fuera solas.")
                 qas.forEachIndexed { i, qa ->
                     Row(
                         Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(VV.Raised).padding(start = 12.dp),
@@ -151,11 +151,11 @@ fun InterviewScreen(vm: EditorViewModel) {
                                 enabled = busy == null, modifier = Modifier.fillMaxWidth(), label = { Text("Domanda ${i + 1}", color = VV.Faint) },
                             )
                             Text(
-                                "A: " + (qa.a?.let { sec(it.lengthUs) } ?: "non trovata") + "   ·   B: " + (qa.b?.let { sec(it.lengthUs) } ?: "non trovata"),
+                                "A: " + (qa.a?.let { sec(it.lengthUs) } ?: "no encontrada") + "   ·   B: " + (qa.b?.let { sec(it.lengthUs) } ?: "no encontrada"),
                                 style = MaterialTheme.typography.bodySmall, color = if (qa.usable) VV.Dim else VV.Danger,
                             )
                         }
-                        IconBtn(VVIcons.Close, "Togli la domanda", enabled = busy == null) { vm.removeInterviewQuestion(i) }
+                        IconBtn(VVIcons.Close, "Quitar la pregunta", enabled = busy == null) { vm.removeInterviewQuestion(i) }
                     }
                 }
             }
@@ -166,17 +166,17 @@ fun InterviewScreen(vm: EditorViewModel) {
             if (busy != null) {
                 Text(busy, style = MaterialTheme.typography.bodyMedium)
                 LinearProgressIndicator(Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)), color = VV.Tally, trackColor = VV.Raised2)
-                SecondaryButton("Annulla", Modifier.fillMaxWidth(), onClick = { vm.cancelSubtitles() })
+                SecondaryButton("Deshacer", Modifier.fillMaxWidth(), onClick = { vm.cancelSubtitles() })
             } else if (qas != null && qas.any { it.usable }) {
-                PrimaryButton("Crea l'intervista", Modifier.fillMaxWidth()) {
+                PrimaryButton("Crear la entrevista", Modifier.fillMaxWidth()) {
                     vm.createInterview(InterviewOptions(format, nameA, nameB, capA, capB, cardUs = if (cards) 2_500_000L else 0L))
                 }
-                SecondaryButton("Rifai l'analisi", Modifier.fillMaxWidth(), onClick = { vm.analyzeInterview(model, "it", if (auto) emptyList() else questions) })
+                SecondaryButton("Rehacer el análisis", Modifier.fillMaxWidth(), onClick = { vm.analyzeInterview(model, "es", if (auto) emptyList() else questions) })
             } else {
-                PrimaryButton("Analizza i due video", Modifier.fillMaxWidth(), enabled = ready && (auto || questions.isNotEmpty())) {
-                    vm.analyzeInterview(model, "it", if (auto) emptyList() else questions)
+                PrimaryButton("Analizar los dos videos", Modifier.fillMaxWidth(), enabled = ready && (auto || questions.isNotEmpty())) {
+                    vm.analyzeInterview(model, "es", if (auto) emptyList() else questions)
                 }
-                if (!ready) Hint("Scegli prima il video A e il video B.")
+                if (!ready) Hint("Primero elige el video A y el video B.")
             }
         }
     }
@@ -191,10 +191,10 @@ private fun VideoRow(who: String, c: Clip?, enabled: Boolean, onPick: () -> Unit
     ) {
         Text(who, style = MaterialTheme.typography.titleMedium, color = VV.Tally, modifier = Modifier.padding(end = 12.dp))
         Column(Modifier.weight(1f)) {
-            Text(c?.fileName?.ifBlank { "Video $who" } ?: "Scegli il video $who", style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(c?.fileName?.ifBlank { "Video $who" } ?: "Elegir el video $who", style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (c != null) Text("${formatTime(c.sourceDurationUs)} · ${c.width}×${c.height}", style = MaterialTheme.typography.bodySmall, color = VV.Dim)
         }
-        Text(if (c == null) "Scegli" else "Cambia", style = MaterialTheme.typography.labelLarge, color = VV.Tally)
+        Text(if (c == null) "Elegir" else "Cambiar", style = MaterialTheme.typography.labelLarge, color = VV.Tally)
     }
 }
 

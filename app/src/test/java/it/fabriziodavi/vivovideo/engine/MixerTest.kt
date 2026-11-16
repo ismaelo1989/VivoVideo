@@ -52,14 +52,14 @@ class MixerTest {
     }
 
     @Test fun tracksGoToTheRightGroup() {
-        val song = MusicTrack(uri = "content://m/1", name = "Brano", sourceDurationUs = 5_000_000)
+        val song = MusicTrack(uri = "content://m/1", name = "Canción", sourceDurationUs = 5_000_000)
         val voice = MusicTrack(uri = "file:///data/files/voice/voce_1.wav", name = "Voce 1", sourceDurationUs = 1_000_000, dialog = true)
         val detached = MusicTrack(uri = "content://v/2", name = "Audio clip 2", sourceDurationUs = 1_000_000, dialog = true)
         assertEquals(Bus.MUSIC, song.bus()); assertEquals(Bus.VOICE, voice.bus()); assertEquals(Bus.DETACHED, detached.bus())
         val p = Project(
             name = "m", clips = listOf(Clip(uri = "content://v/1", sourceDurationUs = 5_000_000, trimEndUs = 5_000_000)),
             music = listOf(song, voice),
-            layers = listOf(Layer(uri = "content://v/3", name = "Sopra", width = 10, height = 10, isVideo = true, sourceDurationUs = 2_000_000)),
+            layers = listOf(Layer(uri = "content://v/3", name = "Arriba", width = 10, height = 10, isVideo = true, sourceDurationUs = 2_000_000)),
         )
         assertEquals(listOf(Bus.CLIPS, Bus.VOICE, Bus.MUSIC, Bus.OVERLAY), p.buses())
     }

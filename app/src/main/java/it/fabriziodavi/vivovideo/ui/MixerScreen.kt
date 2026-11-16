@@ -59,25 +59,25 @@ fun MixerScreen(vm: EditorViewModel) {
     val mix = p.mix
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro") { vm.closeMixer() }
-            Text("Mixer", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás") { vm.closeMixer() }
+            Text("Mezclador", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
             Text(formatTime(vm.playheadUs), style = MaterialTheme.typography.bodySmall, color = VV.Dim)
             Spacer(Modifier.width(8.dp))
             Box(
                 Modifier.size(40.dp).clip(CircleShape).background(VV.Tally).clickable { vm.togglePlay() },
                 contentAlignment = Alignment.Center,
-            ) { Icon(if (vm.isPlaying) VVIcons.Pause else VVIcons.Play, if (vm.isPlaying) "Pausa" else "Ascolta", tint = VV.Canvas) }
+            ) { Icon(if (vm.isPlaying) VVIcons.Pause else VVIcons.Play, if (vm.isPlaying) "Pausa" else "Escuchar", tint = VV.Canvas) }
             Spacer(Modifier.width(8.dp))
         }
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Hint("Fai partire l'anteprima e regola ogni gruppo ascoltando: gli indicatori mostrano il livello. Quello che senti è quello che esporti (il volume finale per la destinazione si applica nel video esportato).")
+            Hint("Inicia la vista previa y ajusta cada grupo escuchando: los indicadores muestran el nivel. Lo que oyes es lo que exportas (el volumen final para el destino se aplica en el video exportado).")
             p.buses().forEach { b -> ChannelCard(vm, b, mix.bus(b), mix.audible(b)) }
             MasterCard(vm)
             if (!mix.neutral || mix.target != LoudTarget.SOCIAL || !mix.limiter || mix.duckSpeed != DuckSpeed.NORMAL) {
-                SecondaryButton("Azzera il mixer", Modifier.fillMaxWidth(), onClick = { vm.resetMix() })
+                SecondaryButton("Reiniciar el mezclador", Modifier.fillMaxWidth(), onClick = { vm.resetMix() })
             }
             Spacer(Modifier.height(24.dp))
         }
@@ -105,21 +105,21 @@ private fun ChannelCard(vm: EditorViewModel, b: Bus, m: BusMix, audible: Boolean
         LabeledSlider("Volume", null, m.gainDb.roundToInt(), range = -30..12, format = { if (it > 0) "+$it dB" else "$it dB" }) {
             vm.setBus(b, m.copy(gainDb = it.toFloat()))
         }
-        LabeledSlider("Bilanciamento", null, (m.pan * 100).roundToInt(), range = -100..100, format = { v ->
+        LabeledSlider("Balance", null, (m.pan * 100).roundToInt(), range = -100..100, format = { v ->
             when { v == 0 -> "Centro"; v < 0 -> "Sinistra ${-v}"; else -> "Destra $v" }
         }) { vm.setBus(b, m.copy(pan = it / 100f)) }
-        PanelLabel("Equalizzatore")
-        PillRow(EqPreset.entries.map { it.label } + "A mano", EqPreset.of(m.eq)?.takeIf { !manual }?.label ?: "A mano", { it }) { label ->
+        PanelLabel("Ecualizador")
+        PillRow(EqPreset.entries.map { it.label } + "Manual", EqPreset.of(m.eq)?.takeIf { !manual }?.label ?: "Manual", { it }) { label ->
             val preset = EqPreset.entries.firstOrNull { it.label == label }
             if (preset == null) manual = true else { manual = false; vm.setBus(b, m.copy(eq = preset.eq)) }
         }
         if (manual) {
             val f = { v: Int -> if (v > 0) "+$v dB" else "$v dB" }
-            LabeledSlider("Bassi (120 Hz)", null, m.eq.lowDb.roundToInt(), range = -12..12, format = f) { vm.setBus(b, m.copy(eq = m.eq.copy(lowDb = it.toFloat()))) }
-            LabeledSlider("Medi (1,5 kHz)", null, m.eq.midDb.roundToInt(), range = -12..12, format = f) { vm.setBus(b, m.copy(eq = m.eq.copy(midDb = it.toFloat()))) }
-            LabeledSlider("Alti (8 kHz)", null, m.eq.highDb.roundToInt(), range = -12..12, format = f) { vm.setBus(b, m.copy(eq = m.eq.copy(highDb = it.toFloat()))) }
+            LabeledSlider("Graves (120 Hz)", null, m.eq.lowDb.roundToInt(), range = -12..12, format = f) { vm.setBus(b, m.copy(eq = m.eq.copy(lowDb = it.toFloat()))) }
+            LabeledSlider("Medios (1,5 kHz)", null, m.eq.midDb.roundToInt(), range = -12..12, format = f) { vm.setBus(b, m.copy(eq = m.eq.copy(midDb = it.toFloat()))) }
+            LabeledSlider("Agudos (8 kHz)", null, m.eq.highDb.roundToInt(), range = -12..12, format = f) { vm.setBus(b, m.copy(eq = m.eq.copy(highDb = it.toFloat()))) }
         }
-        PanelLabel("Compressore")
+        PanelLabel("Compresor")
         Segmented(Comp.entries, m.comp, { it.label }) { vm.setBus(b, m.copy(comp = it)) }
     }
 }
@@ -129,17 +129,17 @@ private fun MasterCard(vm: EditorViewModel) {
     val p = vm.project ?: return
     val mix = p.mix
     Card {
-        Text("Uscita", style = MaterialTheme.typography.titleSmall)
+        Text("Salida", style = MaterialTheme.typography.titleSmall)
         LevelMeter(null, vm.isPlaying, Modifier.fillMaxWidth().height(10.dp))
-        PanelLabel("Volume finale per")
+        PanelLabel("Volumen final para")
         PillRow(LoudTarget.entries, mix.target, { it.label }) { vm.setMix { m -> m.copy(target = it) } }
-        Hint("Si applica nel video esportato, se in Esporta è acceso \"Volume uniformato\".")
-        ToggleRow("Limitatore dei picchi (niente distorsione)", mix.limiter) { vm.setMix { m -> m.copy(limiter = it) } }
-        PanelLabel("Musica sotto le voci (ducking)")
-        ToggleRow("Abbassa la musica quando si parla", p.duck) { vm.setDuck(on = it) }
+        Hint("Se aplica en el video exportado, si en Exportar está activado \"Volumen uniformado\".")
+        ToggleRow("Limitador de picos (sin distorsión)", mix.limiter) { vm.setMix { m -> m.copy(limiter = it) } }
+        PanelLabel("Música bajo las voces (ducking)")
+        ToggleRow("Bajar la música cuando se habla", p.duck) { vm.setDuck(on = it) }
         if (p.duck) {
-            LabeledSlider("Quanto abbassarla", null, p.duckDb, range = 4..24, format = { "–$it dB" }) { vm.setDuck(db = it) }
-            PanelLabel("Velocità")
+            LabeledSlider("Cuánto bajarla", null, p.duckDb, range = 4..24, format = { "–$it dB" }) { vm.setDuck(db = it) }
+            PanelLabel("Velocidad")
             Segmented(DuckSpeed.entries, mix.duckSpeed, { it.label }) { vm.setMix { m -> m.copy(duckSpeed = it) } }
         }
     }
@@ -163,7 +163,7 @@ private fun LevelMeter(b: Bus?, playing: Boolean, modifier: Modifier) {
         while (playing) { withFrameMillis { }; val v = Meters.db(b); if (abs(v - db) > 0.2f) db = v }
         db = -60f
     }
-    Canvas(modifier.clip(RoundedCornerShape(4.dp)).background(VV.Raised).semantics { contentDescription = "Livello ${db.roundToInt()} dB" }) {
+    Canvas(modifier.clip(RoundedCornerShape(4.dp)).background(VV.Raised).semantics { contentDescription = "Nivel ${db.roundToInt()} dB" }) {
         val x = ((db + 60f) / 60f).coerceIn(0f, 1f) * size.width
         val y12 = (48f / 60f) * size.width
         val y3 = (57f / 60f) * size.width

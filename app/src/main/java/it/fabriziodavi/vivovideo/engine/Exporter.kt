@@ -74,18 +74,18 @@ class Exporter(
                 (!project.mix.neutral && project.clips.any { !it.muted && !it.isPhoto })
             var audio: File? = null
             if (needsNative) {
-                onState(ExportState.Running(null, "Elaborazione audio…"))
+                onState(ExportState.Running(null, "Procesando audio…"))
                 val r = withContext(Dispatchers.Default) {
                     runCatching {
                         renderTimelineAudio(context, project, options.loudness, isCancelled = { cancelled }) { p ->
-                            handler.post { if (!cancelled) onState(ExportState.Running((p * 100).toInt(), "Elaborazione audio…")) }
+                            handler.post { if (!cancelled) onState(ExportState.Running((p * 100).toInt(), "Procesando audio…")) }
                         }
                     }
                 }
                 // Annullato mentre si preparava l'audio: nessun errore da mostrare (lo stato è già tornato a riposo).
                 if (cancelled) return@launch
                 if (r.isFailure) {
-                    onState(ExportState.Failed("Errore nell'elaborazione dell'audio: ${r.exceptionOrNull()}"))
+                    onState(ExportState.Failed("Error al procesar el audio: ${r.exceptionOrNull()}"))
                     return@launch
                 }
                 audio = r.getOrNull()
@@ -103,17 +103,17 @@ class Exporter(
         val wanted = project.clips.dropLast(1).withIndex().filter { (_, c) -> c.transitionOut?.type?.composite == true }
         if (wanted.isEmpty()) return ""
         val made = project.crossfades().associateBy { it.index }
-        return "Transizioni a due clip nell'esportazione: " + wanted.joinToString("; ") { (i, c) ->
+        return "Transiciones entre dos clips en la exportación: " + wanted.joinToString("; ") { (i, c) ->
             val t = c.transitionOut!!.type
             val cf = made[i]
-            val base = "${i + 1}→${i + 2} ${t.label}: " + if (cf == null) "NON fatta" else "prima ${cf.beforeUs / 1000} ms, dopo ${cf.afterUs / 1000} ms"
+            val base = "${i + 1}→${i + 2} ${t.label}: " + if (cf == null) "NO se hizo" else "antes ${cf.beforeUs / 1000} ms, después ${cf.afterUs / 1000} ms"
             if (t != TransitionType.MASK_PASS) base else {
                 val fx = c.person
-                if (fx == null) "$base, senza scontorno" else {
+                if (fx == null) "$base, sin recorte de fondo" else {
                     val file = java.io.File(fx.maskFile)
                     val lastUs = fx.fromUs + (fx.count - 1).coerceAtLeast(0) * 1_000_000L / fx.rateHz.coerceAtLeast(1)
                     val needUs = c.trimEndUs + (cf?.afterUs ?: 0)
-                    "$base, maschere ${fx.count}${if (fx.precise) " (precise)" else ""} (${if (file.exists()) "file ok" else "FILE MANCANTE"}) fino a ${lastUs / 1000} ms del video, servono fino a ${needUs / 1000} ms; clip ${c.width}×${c.height}, HDR ${c.hdr}, velocità ${c.speed}"
+                    "$base, máscaras ${fx.count}${if (fx.precise) " (precisas)" else ""} (${if (file.exists()) "archivo ok" else "FALTA EL ARCHIVO"}) hasta ${lastUs / 1000} ms del video, se necesitan hasta ${needUs / 1000} ms; clip ${c.width}×${c.height}, HDR ${c.hdr}, velocidad ${c.speed}"
                 }
             }
         }
@@ -168,15 +168,15 @@ class Exporter(
             Mode.QUALITY -> {
                 settings.setBitrateMode(android.media.MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CBR)
                 settings.setEncoderPerformanceParameters(VideoEncoderSettings.RATE_UNSET, VideoEncoderSettings.RATE_UNSET)
-                "qualità piena"
+                "calidad completa"
             }
-            Mode.FAST -> "massima velocità"
-            Mode.STANDARD -> { settings.setEncoderPerformanceParameters(VideoEncoderSettings.RATE_UNSET, VideoEncoderSettings.RATE_UNSET); "velocità standard" }
-            Mode.REALTIME -> { settings.setEncoderPerformanceParameters(outFps.toInt().coerceAtLeast(1), 1); "tempo reale" }
+            Mode.FAST -> "máxima velocidad"
+            Mode.STANDARD -> { settings.setEncoderPerformanceParameters(VideoEncoderSettings.RATE_UNSET, VideoEncoderSettings.RATE_UNSET); "velocidad estándar" }
+            Mode.REALTIME -> { settings.setEncoderPerformanceParameters(outFps.toInt().coerceAtLeast(1), 1); "tiempo real" }
             Mode.SOFTWARE -> {
                 settings.setEncoderPerformanceParameters(outFps.toInt().coerceAtLeast(1), 1)
                 softwareDecoder = true
-                "decoder software (lento)"
+                "decodificador por software (lento)"
             }
         }
         val outFile = File(context.cacheDir, "export_${System.currentTimeMillis()}.mp4")
@@ -194,21 +194,21 @@ class Exporter(
                     val saved = withContext(Dispatchers.IO) { runCatching { saveToGallery(outFile) } }
                     saved.onSuccess { uri ->
                         onState(ExportState.Done(uri, buildString {
-                            append("Durata: ${"%.1f".format(exportResult.durationMs / 1000.0)} s")
+                            append("Duración: ${"%.1f".format(exportResult.durationMs / 1000.0)} s")
                             append(" · ${"%.1f".format(exportResult.fileSizeBytes / 1_048_576.0)} MB")
-                            append("\nClip: ${project.clips.size} · ${outW}×${outH}")
-                            append("\nTempo di esportazione: ${"%.1f".format(seconds)} s")
+                            append("\nClips: ${project.clips.size} · ${outW}×${outH}")
+                            append("\nTiempo de exportación: ${"%.1f".format(seconds)} s")
                             append("\nCodec: ${options.codec.label}, ${bitrate / 1_000_000} Mbps, max ${"%.0f".format(outFps)} fps")
-                            exportResult.videoEncoderName?.let { append("\nEncoder: $it ($mode)") }
+                            exportResult.videoEncoderName?.let { append("\nCodificador: $it ($mode)") }
                             append("\nColore: $color")
-                            if (log.any { it.startsWith("• HDR") }) append(" (l'HDR non è riuscito: vedi sotto)")
-                            if (audio != null) append("\nAudio: tono naturale (Signalsmith)")
-                            if (log.isNotEmpty()) append("\nTentativi falliti prima: ${log.size}\n" + log.joinToString("\n"))
+                            if (log.any { it.startsWith("• HDR") }) append(" (el HDR falló: ver abajo)")
+                            if (audio != null) append("\nAudio: tono natural (Signalsmith)")
+                            if (log.isNotEmpty()) append("\nIntentos fallidos antes: ${log.size}\n" + log.joinToString("\n"))
                             if (!allowMulti && (project.layers.any { it.isVideo } || project.crossfades().isNotEmpty())) {
-                                append("\nAttenzione: esportato senza video sovrapposti e con le dissolvenze incrociate come passaggio al nero (il compositore ha dato errore).")
+                                append("\nAtención: se exportó sin videos superpuestos y con los fundidos cruzados como paso por negro (el compositor dio error).")
                             }
                         }))
-                    }.onFailure { onState(ExportState.Failed("Video creato ma non salvato in galleria: ${it.message}")) }
+                    }.onFailure { onState(ExportState.Failed("Video creado pero no guardado en la galería: ${it.message}")) }
                 }
             }
 
@@ -218,7 +218,7 @@ class Exporter(
                 outFile.delete()
                 transformer = null
                 val cause = exportException.cause
-                val codecInfo = (cause as? MediaCodec.CodecException)?.let { " [codice ${it.errorCode}]" } ?: ""
+                val codecInfo = (cause as? MediaCodec.CodecException)?.let { " [código ${it.errorCode}]" } ?: ""
                 log += "• $mode, ${bitrate / 1_000_000} Mbps: ${exportException.errorCodeName}$codecInfo"
                 val retryable = exportException.errorCode == ExportException.ERROR_CODE_ENCODER_INIT_FAILED ||
                     exportException.errorCode == ExportException.ERROR_CODE_DECODER_INIT_FAILED ||
@@ -237,19 +237,19 @@ class Exporter(
                     val why = generateSequence(exportException as Throwable) { it.cause }.take(3)
                         .joinToString(" ← ") { it.message?.take(100) ?: it.javaClass.simpleName }
                     log += "• HDR: $why"
-                    onState(ExportState.Running(null, "HDR non riuscito, esporto in SDR…"))
+                    onState(ExportState.Running(null, "El HDR falló, exportando en SDR…"))
                     handler.post { attempt(project, options.copy(hdr = false), audio, 0, log, allowMulti) }
                     return
                 }
                 if (exportException.errorCode == ExportException.ERROR_CODE_DECODING_FAILED && !softwareDecoder && !cancelled) {
                     // Il decodificatore video si è guastato a metà (capita con progetti lunghi o molti video):
                     // cambiare l'encoder non serve, si riprova subito con il decodificatore software.
-                    onState(ExportState.Running(null, "Nuovo tentativo con il decodificatore software…"))
+                    onState(ExportState.Running(null, "Nuevo intento con el decodificador por software…"))
                     handler.post { attempt(project, options, audio, ladder.lastIndex, log, allowMulti) }
                     return
                 }
                 if (retryable && step < ladder.lastIndex && !cancelled) {
-                    onState(ExportState.Running(null, "Nuovo tentativo con impostazioni più prudenti…"))
+                    onState(ExportState.Running(null, "Nuevo intento con ajustes más prudentes…"))
                     handler.post { attempt(project, options, audio, attempt + 1, log, allowMulti) }
                     return
                 }
@@ -257,8 +257,8 @@ class Exporter(
                     // Ultimo ripiego: senza compositore a più ingressi.
                     val chain = generateSequence(exportException.cause) { it.cause }.take(3)
                         .joinToString(" ← ") { "${it.javaClass.simpleName}: ${it.message?.take(100) ?: ""}" }
-                    log += "• compositore: $chain"
-                    onState(ExportState.Running(null, "Nuovo tentativo senza sovrapposizioni…"))
+                    log += "• compositor: $chain"
+                    onState(ExportState.Running(null, "Nuevo intento sin superposiciones…"))
                     handler.post { attempt(project, options, audio, 0, log, allowMulti = false) }
                     return
                 }
@@ -266,7 +266,7 @@ class Exporter(
                 val causeText = generateSequence(cause) { it.cause }.take(3)
                     .joinToString("") { "\nCausa: ${it.javaClass.simpleName}: ${it.message?.take(160)}" }
                 onState(ExportState.Failed(
-                    "Errore ${exportException.errorCode} (${exportException.errorCodeName})$causeText\n\nTentativi:\n" +
+                    "Error ${exportException.errorCode} (${exportException.errorCodeName})$causeText\n\nIntentos:\n" +
                         log.joinToString("\n")
                 ))
             }
@@ -288,10 +288,10 @@ class Exporter(
         } catch (e: Exception) {
             transformer = null
             audio?.delete()
-            onState(ExportState.Failed("Impossibile avviare l'esportazione: ${e.message}"))
+            onState(ExportState.Failed("No se pudo iniciar la exportación: ${e.message}"))
             return
         }
-        pollProgress(if (attempt > 0) "Esportazione (nuovo tentativo)…" else "Esportazione…")
+        pollProgress(if (attempt > 0) "Exportación (nuevo intento)…" else "Exportación…")
     }
 
     /** Colore del file uscito: "HDR HLG 10 bit", "HDR10 10 bit" o "SDR". */
@@ -324,7 +324,7 @@ class Exporter(
             put(MediaStore.Video.Media.IS_PENDING, 1)
         }
         val uri = resolver.insert(MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values)
-            ?: error("MediaStore non disponibile")
+            ?: error("MediaStore no disponible")
         try {
             resolver.openOutputStream(uri)!!.use { out -> file.inputStream().use { it.copyTo(out, 1 shl 20) } }
             values.clear()

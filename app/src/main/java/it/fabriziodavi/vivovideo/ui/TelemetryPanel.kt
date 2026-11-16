@@ -44,7 +44,7 @@ import it.fabriziodavi.vivovideo.model.TeleWidget
 import it.fabriziodavi.vivovideo.model.Telemetry
 import java.util.Locale
 
-val SPORT_TABS = listOf("Attività", "Indicatori", "Stile")
+val SPORT_TABS = listOf("Actividad", "Indicadores", "Estilo")
 
 /** Frecce corte per i posti nel quadro. */
 private fun TeleSlot.arrow() = when (this) {
@@ -69,16 +69,16 @@ fun TelemetryPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPick: () -
     val t = p.telemetry
     val enabled = !running
     if (t == null) {
-        Hint("Metti sul video i dati del giro registrati dal Garmin (o dal telefono): velocità, battito, potenza, cadenza, pendenza, quota e la mappa che si disegna mentre pedali. Si abbinano da soli ai video grazie all'ora delle riprese.")
-        PrimaryButton("Scegli il file dell'attività", Modifier.fillMaxWidth(), enabled = enabled, onClick = onPick)
-        Hint("File .fit (Garmin Connect: attività → ⚙ → Esporta originale), .gpx o .tcx (Strava: attività → ⋯ → Esporta GPX). Va bene anche lo .zip di Garmin così com'è, e i .gz.")
+        Hint("Pon en el video los datos del recorrido registrados por el Garmin (o por el teléfono): velocidad, pulso, potencia, cadencia, pendiente, altitud y el mapa que se dibuja mientras pedaleas. Se asocian solos a los videos gracias a la hora de las tomas.")
+        PrimaryButton("Elige el archivo de la actividad", Modifier.fillMaxWidth(), enabled = enabled, onClick = onPick)
+        Hint("Archivo .fit (Garmin Connect: actividad → ⚙ → Exportar original), .gpx o .tcx (Strava: actividad → ⋯ → Exportar GPX). También sirve el .zip de Garmin tal cual, y los .gz.")
         return
     }
     val track = remember(t.file) { TeleStore.load(t.file) }
     LaunchedEffect(p.clips.map { it.uri }) { vm.syncTelemetry() }
     if (track == null) {
-        Hint("Il file dell'attività non si legge più. Sceglilo di nuovo.")
-        PrimaryButton("Scegli il file dell'attività", Modifier.fillMaxWidth(), enabled = enabled, onClick = onPick)
+        Hint("El archivo de la actividad ya no se puede leer. Elígelo de nuevo.")
+        PrimaryButton("Elige el archivo de la actividad", Modifier.fillMaxWidth(), enabled = enabled, onClick = onPick)
         return
     }
     when (tab) {
@@ -95,20 +95,20 @@ private fun ActivityTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, ena
     val durS = (track.endMs - track.startMs) / 1000
     Text(t.name, style = MaterialTheme.typography.titleSmall)
     Text(
-        String.format(Locale.ITALIAN, "%02d/%02d/%d alle %02d:%02d · %.1f km · %d:%02d h · +%.0f m",
+        String.format(Locale.ITALIAN, "%02d/%02d/%d a las %02d:%02d · %.1f km · %d:%02d h · +%.0f m",
             start.dayOfMonth, start.monthValue, start.year, start.hour, start.minute, track.totalDistanceM / 1000f, durS / 3600, (durS / 60) % 60, track.climbM),
         style = MaterialTheme.typography.bodySmall,
     )
     val have = TeleWidget.entries.filter { track.supports(it) && it != TeleWidget.DISTANCE && it != TeleWidget.TIME }.joinToString(", ") { it.label.lowercase() }
-    Hint("Nel file: $have.")
+    Hint("En el archivo: $have.")
     val videos = p.clips.count { !it.isPhoto }
     val n = TeleSync.covered(t, track, p.clips)
-    PanelLabel("Abbinamento ai video")
+    PanelLabel("Asociación con los videos")
     Text(
-        if (n == videos) "Tutti i video ($n) cadono dentro l'attività." else "$n video su $videos cadono dentro l'attività.",
+        if (n == videos) "Todos los videos ($n) caen dentro de la actividad." else "$n videos de $videos caen dentro de la actividad.",
         style = MaterialTheme.typography.bodyMedium, color = if (n == 0) VV.Danger else VV.Text,
     )
-    Hint("L'app usa l'ora delle riprese e, se il video ha la posizione, il punto del giro in cui eri. Se i numeri sono in anticipo o in ritardo (ad esempio la velocità sale prima che parti), spostali qui.")
+    Hint("La app usa la hora de las tomas y, si el video tiene la ubicación, el punto del recorrido en que estabas. Si los números van adelantados o atrasados (por ejemplo la velocidad sube antes de que arranques), muévelos aquí.")
     val off = t.offsetMs
     Text("Spostamento: " + String.format(Locale.ITALIAN, "%+.1f s", off / 1000f), style = MaterialTheme.typography.bodyMedium)
     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -119,29 +119,29 @@ private fun ActivityTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, ena
         }
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Azzera", onClick = { if (enabled) vm.updateTelemetry { it.copy(offsetMs = 0) } })
-        SecondaryButton("Rifai l'abbinamento", onClick = { if (enabled) vm.syncTelemetry(force = true) })
+        SecondaryButton("Reiniciar", onClick = { if (enabled) vm.updateTelemetry { it.copy(offsetMs = 0) } })
+        SecondaryButton("Rehacer la asociación", onClick = { if (enabled) vm.syncTelemetry(force = true) })
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Cambia file", onClick = { if (enabled) onPick() })
-        SecondaryButton("Togli i dati", onClick = { if (enabled) vm.removeTelemetry() })
+        SecondaryButton("Cambiar archivo", onClick = { if (enabled) onPick() })
+        SecondaryButton("Quitar los datos", onClick = { if (enabled) vm.removeTelemetry() })
     }
 }
 
 @Composable
 private fun WidgetsTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, enabled: Boolean) {
-    PanelLabel("Schemi pronti")
+    PanelLabel("Esquemas listos")
     PillRow(TeleLayout.entries, null as TeleLayout?, { it?.label ?: "" }, enabled) { l ->
         if (l != null) vm.updateTelemetry { it.copy(items = l.items.filter { i -> track.supports(i.widget) }) }
     }
-    Hint("Poi accendi, sposta e ingrandisci ogni indicatore. Quelli nello stesso posto si mettono uno sopra l'altro.")
+    Hint("Luego enciende, mueve y agranda cada indicador. Los que están en el mismo lugar se ponen uno sobre otro.")
     TeleWidget.entries.forEach { w ->
         val item = t.items.firstOrNull { it.widget == w }
         val ok = track.supports(w)
         Column(
             Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(if (item != null) VV.Raised2 else VV.Raised).padding(horizontal = 12.dp, vertical = 6.dp),
         ) {
-            ToggleRow(w.label + if (ok) "" else " (non nel file)", item != null, enabled && ok) { on ->
+            ToggleRow(w.label + if (ok) "" else " (no está en el archivo)", item != null, enabled && ok) { on ->
                 vm.updateTelemetry { tt ->
                     if (on) tt.copy(items = tt.items + TeleItem(w, defaultSlot(w, tt)))
                     else tt.copy(items = tt.items.filter { it.widget != w })
@@ -160,7 +160,7 @@ private fun WidgetsTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, enab
                         ) { Text(s.arrow(), color = if (on) VV.TallyInk else VV.Text) }
                     }
                 }
-                LabeledSlider("Grandezza", null, (item.scale * 100).toInt(), enabled, range = 50..200, format = { "$it%" }) { v ->
+                LabeledSlider("Tamaño", null, (item.scale * 100).toInt(), enabled, range = 50..200, format = { "$it%" }) { v ->
                     vm.updateTelemetry { tt -> tt.copy(items = tt.items.map { if (it.widget == w) it.copy(scale = v / 100f) else it }) }
                 }
             }
@@ -181,7 +181,7 @@ private fun defaultSlot(w: TeleWidget, t: Telemetry): TeleSlot {
 @Composable
 private fun StyleTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, enabled: Boolean) {
     val ctx = LocalContext.current
-    PanelLabel("Stile")
+    PanelLabel("Estilo")
     // Ogni stile con un'anteprima vera: contagiri e battito al momento più veloce del giro.
     val peak = remember(track) {
         var best = 0; for (i in 0 until track.size) if (!track.speedKmh[i].isNaN() && track.speedKmh[i] > track.speedKmh[best].let { if (it.isNaN()) -1f else it }) best = i
@@ -206,7 +206,7 @@ private fun StyleTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, enable
             }
         }
     }
-    PanelLabel("Colore di risalto")
+    PanelLabel("Color de resalte")
     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         Telemetry.ACCENTS.forEach { c ->
             Box(
@@ -216,14 +216,14 @@ private fun StyleTab(vm: EditorViewModel, t: Telemetry, track: TeleTrack, enable
             )
         }
     }
-    LabeledSlider("Grandezza di tutti", null, (t.size * 100).toInt(), enabled, range = 50..180, format = { "$it%" }) { v -> vm.updateTelemetry { it.copy(size = v / 100f) } }
-    LabeledSlider("Opacità", null, (t.opacity * 100).toInt(), enabled, range = 20..100, format = { "$it%" }) { v -> vm.updateTelemetry { it.copy(opacity = v / 100f) } }
-    ToggleRow("Badge MAX quando tocchi il massimo del giro", t.peaks, enabled) { v -> vm.updateTelemetry { it.copy(peaks = v) } }
-    ToggleRow("Zona sicura per reel e TikTok (video verticali)", t.safeZone, enabled) { v -> vm.updateTelemetry { it.copy(safeZone = v) } }
-    PanelLabel("Zone di potenza e battito")
-    LabeledSlider("FTP", if (t.ftp == 0) "Stimata dal giro: ${track.ftpAuto} W" else null, t.ftp, enabled, range = 0..500,
+    LabeledSlider("Tamaño de todos", null, (t.size * 100).toInt(), enabled, range = 50..180, format = { "$it%" }) { v -> vm.updateTelemetry { it.copy(size = v / 100f) } }
+    LabeledSlider("Opacidad", null, (t.opacity * 100).toInt(), enabled, range = 20..100, format = { "$it%" }) { v -> vm.updateTelemetry { it.copy(opacity = v / 100f) } }
+    ToggleRow("Insignia MAX cuando llegas al máximo del recorrido", t.peaks, enabled) { v -> vm.updateTelemetry { it.copy(peaks = v) } }
+    ToggleRow("Zona segura para reels y TikTok (videos verticales)", t.safeZone, enabled) { v -> vm.updateTelemetry { it.copy(safeZone = v) } }
+    PanelLabel("Zonas de potencia y pulso")
+    LabeledSlider("FTP", if (t.ftp == 0) "Estimada del recorrido: ${track.ftpAuto} W" else null, t.ftp, enabled, range = 0..500,
         format = { if (it == 0) "auto" else "$it W" }) { v -> vm.updateTelemetry { it.copy(ftp = v) } }
-    LabeledSlider("Frequenza massima", if (t.hrMax == 0) "Dal giro: ${track.hrMaxAuto} bpm" else null, t.hrMax, enabled, range = 0..220,
+    LabeledSlider("Frecuencia máxima", if (t.hrMax == 0) "Del recorrido: ${track.hrMaxAuto} lpm" else null, t.hrMax, enabled, range = 0..220,
         format = { if (it == 0) "auto" else "$it bpm" }) { v -> vm.updateTelemetry { it.copy(hrMax = v) } }
 }
 

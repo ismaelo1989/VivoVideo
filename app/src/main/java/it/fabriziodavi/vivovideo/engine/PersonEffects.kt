@@ -106,12 +106,12 @@ object PersonMasks {
         java.io.RandomAccessFile(path, "r").use { f ->
             val n = f.readInt(); val side = f.readInt()
             val len = n.toLong() * side * side
-            if (n <= 0 || side <= 0 || 8 + len > f.length()) error("file delle maschere incompleto ($n × $side, ${f.length()} byte)")
+            if (n <= 0 || side <= 0 || 8 + len > f.length()) error("archivo de máscaras incompleto ($n × $side, ${f.length()} bytes)")
             // La mappa resta valida anche dopo la chiusura del file.
             Masks(n, side, f.channel.map(java.nio.channels.FileChannel.MapMode.READ_ONLY, 8, len))
         }
     } catch (t: Throwable) {
-        Diary.log("Scontorno non leggibile ($path): ${t.javaClass.simpleName}: ${t.message}")
+        Diary.log("Recorte ilegible ($path): ${t.javaClass.simpleName}: ${t.message}")
         null
     }
 
@@ -128,12 +128,12 @@ object PersonMasks {
         val modules = ModuleInstall.getClient(ctx)
         fun ready() = Tasks.await(modules.areModulesAvailable(seg), 20, TimeUnit.SECONDS).areModulesAvailable()
         if (!ready()) {
-            onStatus("Scarico il modello di Google…")
+            onStatus("Descargando el modelo de Google…")
             Tasks.await(modules.installModules(ModuleInstallRequest.newBuilder().addApi(seg).build()), 60, TimeUnit.SECONDS)
             var waited = 0
             while (!ready()) {
                 coroutineContext.ensureActive()
-                check(waited < 180) { "modello non arrivato" }
+                check(waited < 180) { "el modelo no llegó" }
                 kotlinx.coroutines.delay(2000); waited += 2
             }
         }
@@ -151,7 +151,7 @@ object PersonMasks {
     ): PersonFx =
         withContext(Dispatchers.Default) {
             val subject = if (precise) preciseSegmenter(ctx, onStatus) else null
-            if (subject != null) onStatus("Scontorno preciso…")
+            if (subject != null) onStatus("Recorte preciso…")
             val selfie = if (subject == null) Segmentation.getClient(
                 SelfieSegmenterOptions.Builder().setDetectorMode(SelfieSegmenterOptions.STREAM_MODE).enableRawSizeMask().build()
             ) else null
@@ -181,7 +181,7 @@ object PersonMasks {
                     onProgress(((t - fromUs).toFloat() / (toUs - fromUs).coerceAtLeast(1)).coerceIn(0f, 1f))
                 }
             } finally { selfie?.close(); subject?.close() }
-            check(count > 0) { "Non sono riuscito a leggere i fotogrammi del video." }
+            check(count > 0) { "No pude leer los fotogramas del video." }
             val f = File(dir(ctx), "persona_${System.currentTimeMillis()}.bin")
             DataOutputStream(f.outputStream().buffered()).use { o -> o.writeInt(count); o.writeInt(side); o.write(masks.toByteArray()) }
             PersonFx(mode = mode, maskFile = f.absolutePath, fromUs = fromUs, rateHz = RATE, count = count, precise = subject != null)
@@ -201,7 +201,7 @@ object FrameReader {
         val ex = MediaExtractor()
         ex.setDataSource(ctx, Uri.parse(uri), null)
         val vt = (0 until ex.trackCount).firstOrNull { ex.getTrackFormat(it).getString(MediaFormat.KEY_MIME)?.startsWith("video/") == true }
-            ?: run { ex.release(); error("Nel video non c'è la traccia video.") }
+            ?: run { ex.release(); error("El video no tiene pista de video.") }
         val fmt = ex.getTrackFormat(vt)
         ex.selectTrack(vt)
         val rotation = if (fmt.containsKey(MediaFormat.KEY_ROTATION)) fmt.getInteger(MediaFormat.KEY_ROTATION) else runCatching {

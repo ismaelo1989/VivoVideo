@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 /** Gruppi del mixer: ogni suono del progetto appartiene a uno di questi. */
 @Serializable
 enum class Bus(val label: String) {
-    CLIPS("Audio delle clip"),
-    VOICE("Voce fuori campo"),
-    MUSIC("Musica"),
-    DETACHED("Audio staccato"),
-    OVERLAY("Video sovrapposti"),
+    CLIPS("Audio de los clips"),
+    VOICE("Voz en off"),
+    MUSIC("Música"),
+    DETACHED("Audio separado"),
+    OVERLAY("Videos superpuestos"),
 }
 
 /** Equalizzatore a 3 bande: bassi (scaffale 120 Hz), medi (campana 1,5 kHz), alti (scaffale 8 kHz), in dB. */
@@ -20,12 +20,12 @@ data class Eq(val lowDb: Float = 0f, val midDb: Float = 0f, val highDb: Float = 
 
 /** Equalizzazioni pronte. */
 enum class EqPreset(val label: String, val eq: Eq) {
-    FLAT("Piatto", Eq()),
-    VOICE_CLEAR("Voce nitida", Eq(lowDb = -3f, midDb = 1f, highDb = 3f)),
-    VOICE_WARM("Voce calda", Eq(lowDb = 2.5f, midDb = -1f, highDb = -1.5f)),
-    UNDER_VOICE("Musica sotto la voce", Eq(lowDb = 0f, midDb = -4f, highDb = -1f)),
-    NO_RUMBLE("Togli rimbombo", Eq(lowDb = -8f)),
-    BRIGHT("Più brillante", Eq(highDb = 4f));
+    FLAT("Platillo", Eq()),
+    VOICE_CLEAR("Voz nítida", Eq(lowDb = -3f, midDb = 1f, highDb = 3f)),
+    VOICE_WARM("Voz cálida", Eq(lowDb = 2.5f, midDb = -1f, highDb = -1.5f)),
+    UNDER_VOICE("Música bajo la voz", Eq(lowDb = 0f, midDb = -4f, highDb = -1f)),
+    NO_RUMBLE("Quitar reverberación", Eq(lowDb = -8f)),
+    BRIGHT("Más brillante", Eq(highDb = 4f));
 
     companion object { fun of(eq: Eq) = entries.firstOrNull { it.eq == eq } }
 }
@@ -33,10 +33,10 @@ enum class EqPreset(val label: String, val eq: Eq) {
 /** Compressore: soglia (dBFS) e rapporto; il guadagno di compensazione è automatico. */
 @Serializable
 enum class Comp(val label: String, val thresholdDb: Float, val ratio: Float) {
-    OFF("Spento", 0f, 1f),
-    LIGHT("Leggero", -18f, 2f),
+    OFF("Apagado", 0f, 1f),
+    LIGHT("Ligero", -18f, 2f),
     MEDIUM("Medio", -22f, 3f),
-    STRONG("Forte", -26f, 4.5f),
+    STRONG("Fuerte", -26f, 4.5f),
 }
 
 /** Regolazioni di un gruppo del mixer. */
@@ -57,17 +57,17 @@ data class BusMix(
 /** Volume finale secondo la destinazione. */
 @Serializable
 enum class LoudTarget(val label: String, val lufs: Double?) {
-    SOCIAL("Social e YouTube (–14 LUFS)", -14.0),
+    SOCIAL("Redes y YouTube (–14 LUFS)", -14.0),
     PODCAST("Podcast (–16 LUFS)", -16.0),
-    TV("TV e cinema (–23 LUFS)", -23.0),
-    OFF("Come viene", null),
+    TV("TV y cine (–23 LUFS)", -23.0),
+    OFF("Tal cual", null),
 }
 
 /** Velocità del ducking: quanto tiene giù la musica dopo la voce e quanto ci mette a risalire (blocchi da 10 ms). */
 @Serializable
 enum class DuckSpeed(val label: String, val holdBlocks: Int, val releaseBlocks: Int) {
-    FAST("Veloce", 15, 25),
-    NORMAL("Normale", 30, 50),
+    FAST("Rápido", 15, 25),
+    NORMAL("Normal", 30, 50),
     SLOW("Lento", 60, 120),
 }
 

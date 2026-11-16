@@ -22,12 +22,12 @@ fun importPhoto(context: Context, uri: Uri, dirName: String = "photos", keepAlph
     val cr = context.contentResolver
     val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
     cr.openInputStream(uri)!!.use { BitmapFactory.decodeStream(it, null, bounds) }
-    require(bounds.outWidth > 0 && bounds.outHeight > 0) { "immagine non leggibile" }
+    require(bounds.outWidth > 0 && bounds.outHeight > 0) { "imagen ilegible" }
     var sample = 1
     while (maxOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= MAX_SIDE) sample *= 2
     val opts = BitmapFactory.Options().apply { inSampleSize = sample }
     var bmp = cr.openInputStream(uri)!!.use { BitmapFactory.decodeStream(it, null, opts) }
-        ?: error("immagine non leggibile")
+        ?: error("imagen ilegible")
     val orientation = runCatching {
         cr.openInputStream(uri)!!.use { ExifInterface(it).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL) }
     }.getOrDefault(ExifInterface.ORIENTATION_NORMAL)

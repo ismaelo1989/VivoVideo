@@ -116,7 +116,7 @@ class DesignRenderTest {
         val r = DLayout.rect(d, title.box, 794f, 794f / a.ratio)
         val plain = render(t, s, 794)
         // Scritta cambiata: cambia la zona del titolo.
-        val other = render(t, s.copy(texts = mapOf("title" to "MARE")), 794)
+        val other = render(t, s.copy(texts = mapOf("title" to "MAR")), 794)
         var diff = 0
         for (y in r[1].toInt() until (r[1] + r[3]).toInt() step 4) for (x in 0 until 794 step 4) if (!near(plain.getPixel(x, y), other.getPixel(x, y), 10)) diff++
         assertTrue("il titolo è cambiato ($diff)", diff > 200)

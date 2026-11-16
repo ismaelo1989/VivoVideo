@@ -287,10 +287,10 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
 
     fun saveTemplate(name: String) {
         val p = project ?: return
-        if (p.clips.isEmpty()) { message = "Il modello prende la struttura delle clip: aggiungine almeno una."; return }
+        if (p.clips.isEmpty()) { message = "La plantilla toma la estructura de los clips: agrega al menos uno."; return }
         templateStore.save(Templates.fromProject(p, name))
         templates = templateStore.list()
-        message = "Modello salvato: lo trovi in Home → Da un modello."
+        message = "Plantilla guardada: la encuentras en Inicio → Desde una plantilla."
     }
 
     fun deleteTemplate(id: String) { templateStore.delete(id); templates = templateStore.list() }
@@ -301,19 +301,19 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         viewModelScope.launch {
             val clips = uris.mapIndexedNotNull { i, u ->
-                busy = "Preparo foto e video… ${i + 1} di ${uris.size}"
+                busy = "Preparando fotos y videos… ${i + 1} de ${uris.size}"
                 withContext(Dispatchers.IO) { importClip(ctx, u) }
             }
-            if (clips.isEmpty()) { busy = null; message = "Non sono riuscito a leggere le foto e i video scelti."; return@launch }
+            if (clips.isEmpty()) { busy = null; message = "No pude leer las fotos y videos elegidos."; return@launch }
             val scans = smartScans(ctx, clips.filter { !it.isPhoto }, true)
-            busy = "Montaggio…"
+            busy = "Montaje…"
             val p = withContext(Dispatchers.Default) {
                 Templates.apply(t, clips, t.name) { c, len -> scans[c.uri]?.let { Moments.bestStarts(it, len, 1).first() } }
             }
             busy = null
             store.save(p)
             openProject(p)
-            message = "Progetto dal modello \"${t.name}\": ${p.clips.size} clip. Ritocca quello che vuoi."
+            message = "Proyecto desde la plantilla \"${t.name}\": ${p.clips.size} clips. Retoca lo que quieras."
         }
     }
 
@@ -330,7 +330,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 runCatching {
                     val name = Backup.describe(ctx, uri.toString()).name.ifBlank { "font.ttf" }.replace(Regex("[^A-Za-z0-9._ -]"), "_")
                     val ext = name.substringAfterLast('.', "").lowercase()
-                    require(ext == "ttf" || ext == "otf") { "Servono file .ttf o .otf." }
+                    require(ext == "ttf" || ext == "otf") { "Se necesitan archivos .ttf o .otf." }
                     val out = File(fontDir, name)
                     ctx.contentResolver.openInputStream(uri)!!.use { s -> out.outputStream().use { s.copyTo(it) } }
                     // Prova: se Android non lo legge, meglio dirlo subito.
@@ -341,8 +341,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             f.onSuccess { file ->
                 fonts = (fonts + file.absolutePath).distinct().sorted()
                 updateText { it.copy(fontFile = file.absolutePath) }
-                message = "Font aggiunto: ${file.nameWithoutExtension}."
-            }.onFailure { message = "Font non leggibile: ${it.message}" }
+                message = "Fuente agregada: ${file.nameWithoutExtension}."
+            }.onFailure { message = "Fuente ilegible: ${it.message}" }
         }
     }
 
@@ -366,9 +366,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         p.music.firstOrNull { it.uri == uri }?.let { return MediaRef(uri, it.name) }
         // Senza nome registrato: si dice almeno quale elemento è.
         p.clips.indexOfFirst { it.uri == uri }.takeIf { it >= 0 }?.let { i ->
-            return MediaRef(uri, (if (p.clips[i].isPhoto) "Foto" else "Video") + " della clip ${i + 1}")
+            return MediaRef(uri, (if (p.clips[i].isPhoto) "Foto" else "Video") + " del clip ${i + 1}")
         }
-        p.layers.firstOrNull { it.uri == uri }?.let { return MediaRef(uri, "Livello «${it.name}»") }
+        p.layers.firstOrNull { it.uri == uri }?.let { return MediaRef(uri, "Capa «${it.name}»") }
         return MediaRef(uri)
     }
 
@@ -415,26 +415,26 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun autoRelink(quiet: Boolean = false) {
         val ctx = getApplication<Application>()
         val todo = missingFiles
-        if (todo.isEmpty()) { if (!quiet) message = "Tutti i file sono al loro posto."; return }
+        if (todo.isEmpty()) { if (!quiet) message = "Todos los archivos están en su lugar."; return }
         viewModelScope.launch {
-            if (!quiet) busy = "Cerco i file nel telefono…"
+            if (!quiet) busy = "Buscando los archivos en el teléfono…"
             val found = withContext(Dispatchers.IO) { todo.mapNotNull { u -> (Backup.findByName(ctx, searchInfo(u)) ?: videoLookalike(ctx, u))?.let { u to it } }.toMap() }
             busy = null
-            val names = found.keys.map { missingInfo(it).name.ifBlank { "il file" } }
+            val names = found.keys.map { missingInfo(it).name.ifBlank { "el archivo" } }
             relink(found)
             // L'avviso tecnico dell'anteprima non serve più: o il file è tornato, o c'è il pulsante Ricollega.
-            if (previewError?.startsWith("Un file del progetto") == true) previewError = null
+            if (previewError?.startsWith("Un archivo del proyecto") == true) previewError = null
             if (found.isNotEmpty() && player != null) rebuildPreview(playheadUs / 1000)
-            val left = todo.filter { it !in found }.map { missingInfo(it).name.ifBlank { "un file senza nome" } }
+            val left = todo.filter { it !in found }.map { missingInfo(it).name.ifBlank { "un archivo sin nombre" } }
             relinkNote = when {
                 left.isEmpty() -> null
                 !it.fabriziodavi.vivovideo.media.Gallery.fullAccess(ctx) ->
-                    "Non trovo ${left.joinToString { "«$it»" }}: l'app vede solo le foto e i video che le hai permesso. Tocca «Scegli» e indicalo tu."
-                else -> "Non trovo ${left.joinToString { "«$it»" }} nel telefono (forse è stato cancellato, o rinominato con un altro nome). Tocca «Scegli» e indicalo tu."
+                    "No encuentro ${left.joinToString { "«$it»" }}: la app solo ve las fotos y videos que le permitiste. Toca «Elegir» e indícalo tú."
+                else -> "No encuentro ${left.joinToString { "«$it»" }} en el teléfono (quizá se borró, o se renombró). Toca «Elegir» e indícalo tú."
             }
             message = when {
-                found.isNotEmpty() && left.isEmpty() -> "Ritrovat${if (names.size == 1) "o ${names[0].let { "«$it»" }}" else "i tutti i ${names.size} file"}: il progetto è a posto."
-                found.isNotEmpty() -> "Ritrovati ${found.size} file; ${relinkNote}"
+                found.isNotEmpty() && left.isEmpty() -> "Encontrad${if (names.size == 1) "o ${names[0].let { "«$it»" }}" else "os los ${names.size} archivos"}: el proyecto está en orden."
+                found.isNotEmpty() -> "Se encontraron ${found.size} archivos; ${relinkNote}"
                 quiet -> null
                 else -> relinkNote
             } ?: message
@@ -452,7 +452,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         if (missingFiles.isEmpty()) relinkNote = null
         previewError = null
         rebuildPreview(playheadUs / 1000)
-        message = if (name.isNotBlank()) "«$name» ricollegato." else "File ricollegato."
+        message = if (name.isNotBlank()) "«$name» reconectado." else "Archivo reconectado."
     }
 
     /** Copia di sicurezza del progetto in [target] (file .vivo scelto dall'utente). */
@@ -460,11 +460,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val p = project ?: return
         store.save(p)
         val ctx = getApplication<Application>()
-        runClipWork(if (withMedia) "Salvo il progetto con tutti i file…" else "Salvo il progetto…") { prog ->
+        runClipWork(if (withMedia) "Guardando el proyecto con todos los archivos…" else "Guardando el proyecto…") { prog ->
             withContext(Dispatchers.IO) {
                 ctx.contentResolver.openOutputStream(target, "wt")!!.use { out -> Backup.export(ctx, p, withMedia, out) { f -> prog(f) } }
             }
-            message = "Copia di sicurezza salvata."
+            message = "Copia de seguridad guardada."
         }
     }
 
@@ -472,7 +472,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun importBackup(source: Uri) {
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Apro la copia di sicurezza…"
+            busy = "Abriendo la copia de seguridad…"
             val r = withContext(Dispatchers.IO) {
                 runCatching {
                     val imp = ctx.contentResolver.openInputStream(source)!!.use { Backup.import(ctx, it, store.list().map { p -> p.id }.toSet()) }
@@ -485,8 +485,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 }
             }
             busy = null
-            r.onSuccess { p -> store.save(p); refreshProjects(); openProject(p); message = "Progetto aperto dalla copia di sicurezza." }
-                .onFailure { message = "Non riesco ad aprire questa copia: ${it.message}" }
+            r.onSuccess { p -> store.save(p); refreshProjects(); openProject(p); message = "Proyecto abierto desde la copia de seguridad." }
+                .onFailure { message = "No puedo abrir esta copia: ${it.message}" }
         }
     }
 
@@ -594,11 +594,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             val clips = ArrayList<Clip>()
             uris.forEachIndexed { i, u ->
-                busy = if (uris.size > 3) "Lettura di video e foto… ${i + 1} di ${uris.size}" else "Lettura di video e foto…"
+                busy = if (uris.size > 3) "Leyendo videos y fotos… ${i + 1} de ${uris.size}" else "Leyendo videos y fotos…"
                 withContext(Dispatchers.IO) { importClip(ctx, u) }?.let { clips += it }
             }
             busy = null
-            if (clips.size < uris.size) message = "${uris.size - clips.size} file non leggibili sono stati saltati."
+            if (clips.size < uris.size) message = "Se omitieron ${uris.size - clips.size} archivos ilegibles."
             if (clips.isEmpty()) return@launch
             val p = project ?: return@launch
             // Inserisce dopo la clip selezionata, o in fondo.
@@ -629,16 +629,16 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
 
     fun addText(auto: Boolean = false) {
         val p = project ?: return
-        if (p.clips.isEmpty()) { message = "Aggiungi prima un video o una foto."; return }
+        if (p.clips.isEmpty()) { message = "Primero agrega un video o una foto."; return }
         val total = p.durationUs
         val start = if (total - playheadUs < TextItem.MIN_US) 0L else playheadUs
         val last = p.texts.lastOrNull()
         // Il nuovo testo riprende lo stile dell'ultimo, così una serie di didascalie resta coerente.
-        val t = (last?.copy(id = java.util.UUID.randomUUID().toString(), text = "Testo") ?: TextItem())
+        val t = (last?.copy(id = java.util.UUID.randomUUID().toString(), text = "Texto") ?: TextItem())
             .copy(startUs = start, durationUs = minOf(3_000_000L, total - start).coerceAtLeast(TextItem.MIN_US))
         update { it.copy(texts = it.texts + t) }
         selectedTextId = t.id
-        if (auto) message = "Nuovo testo all'indicatore: scrivi le tue parole al posto di «Testo». Se non ti serve, Elimina."
+        if (auto) message = "Texto nuevo en el indicador: escribe tus palabras en lugar de «Texto». Si no lo necesitas, Eliminar."
     }
 
     /** Seleziona un testo e porta l'indicatore dove si vede (dopo l'animazione di entrata). */
@@ -723,13 +723,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun addLayer(uri: Uri) {
         val ctx = getApplication<Application>()
         val p = project ?: return
-        if (p.clips.isEmpty()) { message = "Aggiungi prima un video o una foto."; return }
+        if (p.clips.isEmpty()) { message = "Primero agrega un video o una foto."; return }
         viewModelScope.launch {
-            busy = "Preparazione dell'immagine…"
+            busy = "Preparando la imagen…"
             val layer = withContext(Dispatchers.IO) {
                 runCatching {
                     val mime = ctx.contentResolver.getType(uri).orEmpty()
-                    val (name, _) = runCatching { readAudioInfo(ctx, uri) }.getOrDefault("Immagine" to 0L)
+                    val (name, _) = runCatching { readAudioInfo(ctx, uri) }.getOrDefault("Imagen" to 0L)
                     val total = p.durationUs
                     val start = if (total - playheadUs < Layer.MIN_US) 0L else playheadUs
                     if (mime.startsWith("video/")) {
@@ -753,7 +753,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 }.getOrNull()
             }
             busy = null
-            if (layer == null) { message = "Questa immagine non si può leggere."; return@launch }
+            if (layer == null) { message = "Esta imagen no se puede leer."; return@launch }
             update { it.copy(layers = it.layers + layer) }
             editEnd = false
             selectedLayerId = layer.id
@@ -845,7 +845,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             downloading = t.id
             val f = runCatching { Library.download(ctx, t) }
             downloading = null
-            val file = f.getOrElse { message = "Non sono riuscito a scaricare \"${t.title}\": ${it.message}"; return@launch }
+            val file = f.getOrElse { message = "No pude descargar \"${t.title}\": ${it.message}"; return@launch }
             val uri = Uri.fromFile(file)
             onlineInfo[uri.toString()] = (if (t.artist.isBlank()) t.title else "${t.title} – ${t.artist}") to t.credit
             library = null
@@ -863,9 +863,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             if (bytes != null) {
                 // MIDI: lo suona il sintetizzatore di Android e lo si salva come WAV;
                 // tempo e battiti si leggono esatti dal file.
-                withContext(Dispatchers.Main) { busy = "Conversione del MIDI…" }
-                val pcm = decodeAudioRange(ctx, uri, 0, Long.MAX_VALUE / 4) ?: error("MIDI non riproducibile")
-                if (pcm.size < 2 * 4800) error("MIDI vuoto")
+                withContext(Dispatchers.Main) { busy = "Convirtiendo el MIDI…" }
+                val pcm = decodeAudioRange(ctx, uri, 0, Long.MAX_VALUE / 4) ?: error("MIDI no reproducible")
+                if (pcm.size < 2 * 4800) error("MIDI vacío")
                 val dir = File(ctx.filesDir, "music").apply { mkdirs() }
                 val wav = File(dir, "midi_${System.currentTimeMillis()}.wav")
                 writeWavFile(wav, pcm)
@@ -911,14 +911,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             var music: MusicTrack? = null
             if (musicUri != null) {
-                busy = "Lettura del brano…"
+                busy = "Leyendo la canción…"
                 music = readMusic(ctx, musicUri)
-                if (music == null) { busy = null; message = "Questo file audio non si può leggere."; return@launch }
+                if (music == null) { busy = null; message = "Este archivo de audio no se puede leer."; return@launch }
             }
             // Prima il ritmo: serve a sapere quante scene ci stanno nel brano.
             val m1 = music
             if (m1 != null && (m1.beatsUs.isEmpty() || m1.energy.isEmpty())) {
-                busy = "Analisi del ritmo…"
+                busy = "Analizando el ritmo…"
                 val r = findBeatsAndEnergy(ctx, m1)
                 if (r != null) music = m1.copy(beatsUs = r.first.beatsUs, bpm = r.first.bpm, energy = r.second)
             }
@@ -928,19 +928,19 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             val raw = all.map { AutoSource(it.uri.toString(), it.isVideo, it.durationMs * 1000, it.dateMs, it.width, it.height) }
             val sources = if (handPicked) raw.sortedBy { it.dateMs } else chooseSources(ctx, raw, o, music)
             val picked = AutoEdit.pick(sources.map { it.item() }, o.style, o.targetUs, slotUs = AutoEdit.beatSlotUs(o.style, music)).map { sources[it] }
-            if (picked.isEmpty()) { busy = null; message = "Fra quelli scelti non ci sono foto o video."; return@launch }
+            if (picked.isEmpty()) { busy = null; message = "Entre los elegidos no hay fotos ni videos."; return@launch }
             val imported = importSources(ctx, picked, emptyMap())
             val clips = picked.mapNotNull { imported[it.uri] }
-            if (clips.isEmpty()) { busy = null; message = "Non sono riuscito a leggere le foto e i video scelti."; return@launch }
+            if (clips.isEmpty()) { busy = null; message = "No pude leer las fotos y videos elegidos."; return@launch }
             val m0 = music
             if (m0 != null && m0.beatsUs.isEmpty()) {
-                busy = "Analisi del ritmo…"
+                busy = "Analizando el ritmo…"
                 val r = findBeats(ctx, m0)
                 if (r != null) music = m0.copy(beatsUs = r.beatsUs, bpm = r.bpm)
             }
             val scans = smartScans(ctx, clips, o.smart)
-            busy = "Montaggio…"
-            val name = options.title.ifBlank { "Video automatico" }.take(40)
+            busy = "Montaje…"
+            val name = options.title.ifBlank { "Video automático" }.take(40)
             // Data vera di ogni elemento (per i temi con la data della videocamera), per indirizzo della clip.
             val dates = picked.mapNotNull { s -> imported[s.uri]?.let { it.uri to s.dateMs } }.toMap()
             val built = withContext(Dispatchers.Default) { AutoEdit.build(name, clips, music, o, scans, dates) }
@@ -950,9 +950,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             showAuto = false
             store.save(p)
             openProject(p)
-            message = "Video pronto: ${p.clips.size} scene, ${formatTime(p.durationUs)}." +
-                (if (clips.size < picked.size) " ${picked.size - clips.size} file non leggibili saltati." else "") +
-                " Guardalo in anteprima, ritocca quello che vuoi ed esporta."
+            message = "Video listo: ${p.clips.size} escenas, ${formatTime(p.durationUs)}." +
+                (if (clips.size < picked.size) " Se omitieron ${picked.size - clips.size} archivos ilegibles." else "") +
+                " Míralo en la vista previa, retoca lo que quieras y exporta."
         }
     }
 
@@ -968,7 +968,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         }.take(240)
         val samples = HashMap<String, MomentSample>()
         if (o.smart) inBurst.forEachIndexed { i, s ->
-            busy = "Scelgo le foto migliori… ${i + 1} di ${inBurst.size}"
+            busy = "Eligiendo las mejores fotos… ${i + 1} de ${inBurst.size}"
             runCatching { SmartAnalyzer.scan(ctx, s.uri, true, 0L) }
                 .onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }
                 .getOrNull()?.samples?.firstOrNull()?.let { samples[s.uri] = it }
@@ -985,7 +985,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         if (!smart) return emptyMap()
         val out = HashMap<String, MomentScan>()
         clips.distinctBy { it.uri }.forEachIndexed { i, c ->
-            busy = "Cerco i momenti migliori… ${i + 1} di ${clips.size}"
+            busy = "Buscando los mejores momentos… ${i + 1} de ${clips.size}"
             runCatching { SmartAnalyzer.scan(ctx, c.uri, c.isPhoto, c.sourceDurationUs) }
                 .onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }
                 .getOrNull()?.let { out[c.uri] = it }
@@ -998,7 +998,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val out = HashMap(known)
         val missing = picked.filter { it.uri !in out }
         missing.forEachIndexed { i, src ->
-            busy = "Preparo foto e video… ${i + 1} di ${missing.size}"
+            busy = "Preparando fotos y videos… ${i + 1} de ${missing.size}"
             withContext(Dispatchers.IO) { importClip(ctx, Uri.parse(src.uri)) }?.let { out[src.uri] = it }
         }
         return out
@@ -1020,11 +1020,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             val imported = importSources(ctx, picked, r.imported)
             val clips = picked.mapNotNull { imported[it.uri] }
             val scans = smartScans(ctx, clips, o.smart)
-            busy = "Nuova proposta…"
+            busy = "Nueva propuesta…"
             val dates = picked.mapNotNull { s -> imported[s.uri]?.let { it.uri to s.dateMs } }.toMap()
             val built = withContext(Dispatchers.Default) { AutoEdit.build(p.name, clips, r.music, o, scans, dates) }
             busy = null
-            if (built.clips.isEmpty()) { message = "Non sono riuscito a leggere le foto e i video degli album."; return@launch }
+            if (built.clips.isEmpty()) { message = "No pude leer las fotos y videos de los álbumes."; return@launch }
             pause()
             update { cur ->
                 cur.copy(clips = built.clips, texts = built.texts, music = built.music, format = built.format,
@@ -1038,14 +1038,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun addMusic(uri: Uri) {
         val ctx = getApplication<Application>()
         val p = project ?: return
-        if (p.clips.isEmpty()) { message = "Aggiungi prima un video."; return }
+        if (p.clips.isEmpty()) { message = "Primero agrega un video."; return }
         viewModelScope.launch {
-            busy = "Lettura del brano…"
+            busy = "Leyendo la canción…"
             val total = p.durationUs
             val start = if (total - playheadUs < 1_000_000) 0L else playheadUs
             val track = readMusic(ctx, uri)?.let { it.copy(startUs = start, lengthUs = minOf(it.sourceDurationUs, total - start)) }
             busy = null
-            if (track == null || track.sourceDurationUs <= 0) { message = "Questo file audio non si può leggere."; return@launch }
+            if (track == null || track.sourceDurationUs <= 0) { message = "Este archivo de audio no se puede leer."; return@launch }
             update { it.copy(music = it.music + track) }
             selectedMusicId = track.id
         }
@@ -1073,10 +1073,10 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val t = selectedMusic ?: return
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Analisi del ritmo…"
+            busy = "Analizando el ritmo…"
             val r = findBeats(ctx, t)
             busy = null
-            if (r == null) { message = "Non ho trovato un ritmo chiaro in questo brano."; return@launch }
+            if (r == null) { message = "No encontré un ritmo claro en esta canción."; return@launch }
             update { p ->
                 val cur = p.music.firstOrNull { it.id == t.id } ?: return@update null
                 p.replaceMusic(cur.copy(beatsUs = r.beatsUs, bpm = r.bpm))
@@ -1095,7 +1095,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     /** Segna o toglie un battito nel punto dell'indicatore. */
     fun toggleBeatAtPlayhead() {
         val t = selectedMusic ?: return
-        val src = musicSrcAt(t, playheadUs) ?: run { message = "Porta l'indicatore sopra il brano."; return }
+        val src = musicSrcAt(t, playheadUs) ?: run { message = "Lleva el indicador sobre la canción."; return }
         update(rebuild = false) { it.replaceMusic(t.toggleBeatAt(src)) }
     }
 
@@ -1128,7 +1128,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         cuts.forEach { c -> q.splitAt(c)?.let { q = it; n++ } }
         if (n == 0) return
         update { q }
-        message = "$n ${if (n == 1) "taglio fatto" else "tagli fatti"} sui tuoi tocchi a tempo. Annulla li toglie tutti insieme."
+        message = "$n ${if (n == 1) "corte hecho" else "cortes hechos"} con tus toques al compás. Deshacer los quita todos juntos."
     }
 
     fun clearBeats() = updateMusic { it.copy(beatsUs = emptyList(), bpm = 0f, markersUs = emptyList(), hiddenUs = emptyList(), beatShiftUs = 0) }
@@ -1137,7 +1137,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     /** Battiti automatici spostati di mezzo battito (battere ↔ levare); i tagli già fatti sui battiti si rifanno con «Allinea». */
     fun flipBeatPhase() {
         updateBeats { it.flipBeatPhase() }
-        message = "Battiti spostati di mezzo battito. Se avevi già tagliato a ritmo, tocca «Allinea i tagli al ritmo»; ritocca il pulsante per tornare indietro."
+        message = "Beats movidos medio beat. Si ya habías cortado al ritmo, toca «Alinear los cortes al ritmo»; vuelve a tocar el botón para regresar."
     }
 
     fun updateBeats(change: (MusicTrack) -> MusicTrack) {
@@ -1155,7 +1155,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun alignCutsToBeats() {
         val p = project ?: return
         val r = p.alignCutsToBeats()
-        if (r == null) { message = "I tagli sono già sul ritmo (o le clip non hanno abbastanza video per arrivare al battito)."; return }
+        if (r == null) { message = "Los cortes ya están en el ritmo (o los clips no tienen video suficiente para llegar al beat)."; return }
         update { r }
     }
 
@@ -1166,13 +1166,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun splitOnBeats() {
         val p0 = project ?: return
         val songs = p0.music.filter { !it.dialog }
-        if (songs.isEmpty()) { message = "Aggiungi prima un brano."; return }
+        if (songs.isEmpty()) { message = "Primero agrega una canción."; return }
         val ctx = getApplication<Application>()
         viewModelScope.launch {
             var unclear = 0
             val todo = songs.filter { !it.hasBeats }
             todo.forEachIndexed { i, t ->
-                busy = "Analisi del ritmo… brano ${i + 1} di ${todo.size}"
+                busy = "Analizando el ritmo… canción ${i + 1} de ${todo.size}"
                 val r = findBeats(ctx, t)
                 if (r == null) unclear++
                 else update(keepUndo = false, rebuild = false) { p ->
@@ -1183,14 +1183,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             busy = null
             val p = project ?: return@launch
             val before = p.clips.size
-            val skipped = if (unclear > 0) " ($unclear ${if (unclear == 1) "brano senza" else "brani senza"} un ritmo chiaro: lì niente tagli)" else ""
+            val skipped = if (unclear > 0) " ($unclear ${if (unclear == 1) "canción sin" else "canciones sin"} un ritmo claro: ahí no hay cortes)" else ""
             val r = p.splitAtBeats()
-            if (r == null) { message = "Nessun battito dentro i video$skipped."; return@launch }
+            if (r == null) { message = "Ningún beat dentro de los videos$skipped."; return@launch }
             update { r }
             val brani = p.music.count { !it.dialog && it.hasBeats }
-            message = "Tagliato su ogni battito di $brani ${if (brani == 1) "brano" else "brani"}: da $before a ${r.clips.size} clip$skipped. " +
-                "Elimina o sostituisci i pezzi che non ti servono; un Annulla toglie tutti i tagli." +
-                (if (r.clips.size > 600) " Sono tanti: con «Ogni 2» o «Ogni 4» nella scheda Ritmo i tagli si diradano." else "")
+            message = "Cortado en cada beat de $brani ${if (brani == 1) "canción" else "canciones"}: de $before a ${r.clips.size} clips$skipped. " +
+                "Elimina o sustituye los trozos que no te sirvan; un Deshacer quita todos los cortes." +
+                (if (r.clips.size > 600) " Son muchos: con «Cada 2» o «Cada 4» en la pestaña Ritmo los cortes se espacian." else "")
         }
     }
 
@@ -1199,7 +1199,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val t = selectedMusic ?: return
         val cut = playheadUs - t.startUs
         if (cut < MusicTrack.MIN_US || t.lengthUs - cut < MusicTrack.MIN_US) {
-            message = "Porta l'indicatore dentro il brano, lontano dai bordi."; return
+            message = "Lleva el indicador dentro de la canción, lejos de los bordes."; return
         }
         val a = t.copy(lengthUs = cut, fadeOutUs = 0)
         val b = t.copy(id = java.util.UUID.randomUUID().toString(), startUs = t.startUs + cut, offsetUs = t.offsetUs + cut, lengthUs = t.lengthUs - cut, fadeInUs = 0)
@@ -1211,7 +1211,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val p = project ?: return
         val located = p.locate(playheadUs) ?: return
         val result = p.splitAt(playheadUs)
-        if (result == null) { message = "Sposta l'indicatore un po' più lontano dal bordo della clip."; return }
+        if (result == null) { message = "Mueve el indicador un poco más lejos del borde del clip."; return }
         update { result }
         selectedClipId = result.clips[located.first + 1].id
     }
@@ -1261,7 +1261,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     /** Cambia la trasformazione nel punto dell'indicatore: crea il keyframe se non c'è. */
     fun setTransformAtPlayhead(value: Transform) {
         val t = playheadInSelected()
-        if (t == null) { message = "Porta l'indicatore dentro la clip selezionata per mettere un keyframe."; return }
+        if (t == null) { message = "Lleva el indicador dentro del clip seleccionado para poner un keyframe."; return }
         updateSelected { c -> c.copy(keyframes = Keyframes.set(c.keyframes, t, value)) }
     }
 
@@ -1320,13 +1320,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun setSpeedAtPlayhead(speed: Float) {
         val c = selectedClip ?: return
         val f = playheadFraction()
-        if (f == null) { message = "Porta l'indicatore dentro la clip selezionata."; return }
+        if (f == null) { message = "Lleva el indicador dentro del clip seleccionado."; return }
         changeCurveKeepingFrame(SpeedPoints.set(c.curvePoints, f, speed))
     }
 
     fun toggleSpeedPointAtPlayhead() {
         val c = selectedClip ?: return
-        val f = playheadFraction() ?: run { message = "Porta l'indicatore dentro la clip selezionata."; return }
+        val f = playheadFraction() ?: run { message = "Lleva el indicador dentro del clip seleccionado."; return }
         val near = SpeedPoints.nearest(c.curvePoints, f)
         if (near != null && near.t > 0f && near.t < 1f) {
             changeCurveKeepingFrame(c.curvePoints - near)
@@ -1407,9 +1407,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 block { p -> viewModelScope.launch { clipWorkProgress = p } }
             } catch (e: kotlinx.coroutines.CancellationException) {
-                message = "Annullato."
+                message = "Cancelado."
             } catch (e: Throwable) {
-                message = "Non riuscito: ${e.message ?: e.javaClass.simpleName}"
+                message = "No se logró: ${e.message ?: e.javaClass.simpleName}"
             } finally {
                 clipWork = null; clipJob = null
                 rebuildPreview(playheadUs / 1000)
@@ -1422,7 +1422,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val p = project ?: return
         val (i, off) = p.locate(playheadUs) ?: return
         val c = p.clips[i]
-        if (c.isPhoto) { message = "Il fermo immagine si fa sui video."; return }
+        if (c.isPhoto) { message = "La imagen congelada se hace en los videos."; return }
         val ctx = getApplication<Application>()
         val at = playheadUs
         viewModelScope.launch {
@@ -1435,7 +1435,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                         val long = maxOf(c.width, c.height).coerceAtLeast(1)
                         val k = minOf(1f, 3840f / long)
                         r.getScaledFrameAtTime(src, android.media.MediaMetadataRetriever.OPTION_CLOSEST, (c.width * k).toInt().coerceAtLeast(2), (c.height * k).toInt().coerceAtLeast(2))
-                    } finally { r.release() }) ?: error("fotogramma non leggibile")
+                    } finally { r.release() }) ?: error("fotograma ilegible")
                     val f = File(File(ctx.filesDir, "fermi").apply { mkdirs() }, "fermo_${System.currentTimeMillis()}.jpg")
                     f.outputStream().use { bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 95, it) }
                     Triple(f, bmp.width, bmp.height).also { bmp.recycle() }
@@ -1445,28 +1445,28 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 val photo = ClipTools.freezeClip(c, Uri.fromFile(f).toString(), w, h)
                 update { it.insertAt(at, photo) }
                 selectedClipId = photo.id
-                message = "Fermo immagine aggiunto (2 s): allungalo o accorcialo come una foto."
-            }.onFailure { message = "Fermo immagine non riuscito: ${it.message}" }
+                message = "Imagen congelada agregada (2 s): alárgala o acórtala como una foto."
+            }.onFailure { message = "No se logró la imagen congelada: ${it.message}" }
         }
     }
 
     /** Al contrario (o di nuovo nel verso normale) la clip selezionata. */
     fun toggleReverse() {
         val c = workClip() ?: return
-        if (c.isPhoto) { message = "Le foto non hanno un verso."; return }
+        if (c.isPhoto) { message = "Las fotos no tienen orientación."; return }
         if (c.reversed != null) {
             update { it.replaceClip(ClipTools.unreversed(c)) }
-            message = "Clip di nuovo nel verso normale."
+            message = "Clip de nuevo en el sentido normal."
             return
         }
-        if (c.trimmedUs > Reverser.MAX_US) { message = "Al contrario si possono mettere clip fino a 60 secondi: accorciala prima."; return }
+        if (c.trimmedUs > Reverser.MAX_US) { message = "Al revés se pueden poner clips de hasta 60 segundos: acórtalo antes."; return }
         val ctx = getApplication<Application>()
-        runClipWork("Metto la clip al contrario…") { prog ->
+        runClipWork("Poniendo el clip al revés…") { prog ->
             val r = Reverser.reverse(ctx, c, prog)
             val now = project?.clips?.firstOrNull { it.id == c.id }
             if (now == null || now.uri != c.uri) { r.file.delete(); return@runClipWork }
             update { it.replaceClip(ClipTools.reversed(now, Uri.fromFile(r.file).toString(), r.durationUs, r.width, r.height)) }
-            message = "Clip al contrario. Si torna indietro da qui o con Annulla."
+            message = "Clip al revés. Se regresa desde aquí o con Deshacer."
         }
     }
 
@@ -1476,13 +1476,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
      */
     fun makeTimelapse(speed: Int, trails: it.fabriziodavi.vivovideo.model.TimelapseTrails, ambient: Boolean, moving: Boolean, flash: Boolean) {
         val c0 = workClip() ?: return
-        if (c0.isPhoto) { message = "Il time-lapse è per i video."; return }
+        if (c0.isPhoto) { message = "El time-lapse es para videos."; return }
         // Se è già un time-lapse si riparte dall'originale.
         val c = if (c0.timelapse != null) ClipTools.untimelapsed(c0) else c0
         val plan = it.fabriziodavi.vivovideo.model.TimelapsePlan(c.trimmedUs, speed, c.fps, trails)
-        if (plan.outFrames < 15) { message = "La clip è troppo corta per $speed×: verrebbe meno di mezzo secondo. Scegli meno velocità o una clip più lunga."; return }
+        if (plan.outFrames < 15) { message = "El clip es demasiado corto para $speed×: duraría menos de medio segundo. Elige menos velocidad o un clip más largo."; return }
         val ctx = getApplication<Application>()
-        runClipWork("Preparo il time-lapse $speed×…") { prog ->
+        runClipWork("Preparando el time-lapse $speed×…") { prog ->
             val r = it.fabriziodavi.vivovideo.engine.Timelapse.render(ctx, c, speed, trails, ambient) { f -> prog(if (moving) f * 0.75f else f) }
             val now = project?.clips?.firstOrNull { it.id == c0.id }
             if (now == null || now.uri != c0.uri) { r.file.delete(); return@runClipWork }
@@ -1490,8 +1490,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             if (flash) tl = tl.copy(transitionOut = TransitionSpec(TransitionType.FLASH, 300_000))
             if (moving) runCatching { Stabilizer.analyze(ctx, tl, 0.9f) { f -> prog(0.75f + f * 0.25f) } }.onSuccess { st -> tl = tl.copy(stab = st) }
             update { it.replaceClip(tl) }
-            Diary.log("Time-lapse: ${speed}×, scie ${trails.label}, ${formatTime(c.trimmedUs)} → ${formatTime(r.durationUs)}, ${r.width}×${r.height}${if (moving) ", stabilizzato" else ""}.")
-            message = "Time-lapse $speed× pronto: ${formatTime(c.trimmedUs)} diventano ${formatTime(r.durationUs)}. Per tornare indietro: Velocità → Torna al video originale."
+            Diary.log("Time-lapse: ${speed}×, estelas ${trails.label}, ${formatTime(c.trimmedUs)} → ${formatTime(r.durationUs)}, ${r.width}×${r.height}${if (moving) ", estabilizado" else ""}.")
+            message = "Time-lapse $speed× listo: ${formatTime(c.trimmedUs)} se convierten en ${formatTime(r.durationUs)}. Para regresar: Velocidad → Volver al video original."
         }
     }
 
@@ -1500,20 +1500,20 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val c = workClip() ?: return
         if (c.timelapse == null) return
         update { it.replaceClip(ClipTools.untimelapsed(c)) }
-        message = "Clip di nuovo a velocità normale."
+        message = "Clip de nuevo a velocidad normal."
     }
 
     /** Misura il movimento della clip e lo leviga. */
     fun stabilize(strength: Float = 0.6f) {
         val c = workClip() ?: return
-        if (c.isPhoto) { message = "La stabilizzazione è per i video."; return }
+        if (c.isPhoto) { message = "La estabilización es para los videos."; return }
         val ctx = getApplication<Application>()
-        runClipWork("Misuro il movimento della camera…") { prog ->
+        runClipWork("Midiendo el movimiento de la cámara…") { prog ->
             val s = Stabilizer.analyze(ctx, c, strength, prog)
             val now = project?.clips?.firstOrNull { it.id == c.id } ?: return@runClipWork
-            if (now.uri != c.uri || now.trimStartUs != c.trimStartUs || now.trimEndUs != c.trimEndUs) { message = "La clip è cambiata: riprova."; return@runClipWork }
+            if (now.uri != c.uri || now.trimStartUs != c.trimStartUs || now.trimEndUs != c.trimEndUs) { message = "El clip cambió: vuelve a intentar."; return@runClipWork }
             update { it.replaceClip(now.copy(stab = s)) }
-            message = "Clip stabilizzata (zoom ${"%.0f".format((StabMath.plan(s).zoom - 1) * 100)}%)."
+            message = "Clip estabilizado (zoom ${"%.0f".format((StabMath.plan(s).zoom - 1) * 100)}%)."
         }
     }
 
@@ -1522,10 +1522,10 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     /** Tiene la stessa durata ma sposta il taglio sul tratto migliore del video; ripetuto, propone il successivo. */
     fun bestMoment() {
         val c = workClip() ?: return
-        if (c.isPhoto) { message = "Il momento migliore si cerca nei video."; return }
-        if (c.trimmedUs >= c.sourceDurationUs - 100_000) { message = "La clip usa già tutto il video: accorciala prima, poi cerco il tratto migliore di quella durata."; return }
+        if (c.isPhoto) { message = "El mejor momento se busca en los videos."; return }
+        if (c.trimmedUs >= c.sourceDurationUs - 100_000) { message = "El clip ya usa todo el video: acórtalo primero, y luego busco el mejor tramo de esa duración."; return }
         val ctx = getApplication<Application>()
-        runClipWork("Cerco il momento migliore…") { prog ->
+        runClipWork("Buscando el mejor momento…") { prog ->
             prog(0.02f)
             val scan = SmartAnalyzer.scan(ctx, c.uri, false, c.sourceDurationUs) { prog(0.02f + 0.95f * it) }
             val best = Moments.bestStarts(scan, c.trimmedUs, 3)
@@ -1535,8 +1535,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             val start = best[k]
             update { it.replaceClip(now.copy(trimStartUs = start, trimEndUs = start + now.trimmedUs)) }
             val why = Moments.describe(scan, start, now.trimmedUs)
-            message = "Tratto ${k + 1} di ${best.size}" + (if (why.isNotBlank()) ": $why." else " per qualità (nitidezza, luce, volti, camera ferma).") +
-                (if (best.size > 1) " Tocca di nuovo per il successivo." else "")
+            message = "Tramo ${k + 1} de ${best.size}" + (if (why.isNotBlank()) ": $why." else " por calidad (nitidez, luz, rostros, cámara quieta).") +
+                (if (best.size > 1) " Toca de nuevo para el siguiente." else "")
         }
     }
 
@@ -1544,14 +1544,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun followSubject() {
         val c = workClip() ?: return
         val ctx = getApplication<Application>()
-        runClipWork("Cerco il soggetto…") { prog ->
+        runClipWork("Buscando el sujeto…") { prog ->
             prog(0.1f)
             val scan = SmartAnalyzer.scan(ctx, c.uri, c.isPhoto, c.sourceDurationUs)
             val path = Moments.subjectPath(scan)
             val now = project?.clips?.firstOrNull { it.id == c.id } ?: return@runClipWork
-            if (path == null) { message = "Non ho trovato un soggetto chiaro da seguire."; return@runClipWork }
+            if (path == null) { message = "No encontré un sujeto claro que seguir."; return@runClipWork }
             update { it.replaceClip(now.withMode(FrameMode.FILL).copy(reframe = path)) }
-            message = if (scan.hasFaces) "Inquadratura che segue i volti." else "Nessun volto: seguo la zona con più dettagli."
+            message = if (scan.hasFaces) "Encuadre que sigue los rostros." else "Ningún rostro: sigo la zona con más detalles."
         }
     }
 
@@ -1561,7 +1561,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     var personPrecise by mutableStateOf(false)
 
     private fun personMessage(fx: it.fabriziodavi.vivovideo.model.PersonFx, ok: String) =
-        if (personPrecise && !fx.precise) "Il modello preciso di Google non è disponibile ora (servono i servizi Google e internet la prima volta): ho usato quello veloce. $ok" else ok
+        if (personPrecise && !fx.precise) "El modelo preciso de Google no está disponible ahora (hacen falta los servicios de Google e internet la primera vez): usé el rápido. $ok" else ok
 
     /** Scontorna la persona della clip (maschere calcolate una volta) e tratta lo sfondo come [mode]. */
     /** Stile cinetico del testo scelto (o di tutti i sottotitoli). Un testo scritto a mano riceve i tempi delle parole. */
@@ -1589,7 +1589,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         updateText { x ->
             x.copy(kinetic = style, highlight = if (style != null && x.highlight == TextItem().highlight) Subtitles.KINETIC_HIGHLIGHT else x.highlight)
         }
-        if (style != null && t.text.isBlank()) message = "Scrivi il testo: le parole arriveranno una alla volta."
+        if (style != null && t.text.isBlank()) message = "Escribe el texto: las palabras llegarán una a la vez."
     }
 
     /**
@@ -1604,9 +1604,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val under = p.clips.filterIndexed { i, c -> !c.isPhoto && starts[i] < t.endUs && starts[i] + c.outputUs > t.startUs }
         val missing = under.filter { it.person?.maskFile.isNullOrEmpty() }
         when {
-            under.isEmpty() -> message = "Sotto al testo ci sono solo foto: il testo dietro la persona funziona sui video."
+            under.isEmpty() -> message = "Debajo del texto solo hay fotos: el texto detrás de la persona funciona en los videos."
             missing.isNotEmpty() -> {
-                if (missing.size > 1) message = "Scontorno la prima clip sotto al testo; per le altre: Effetti → Persona."
+                if (missing.size > 1) message = "Recorto la primera persona debajo del texto; para los demás: Efectos → Persona."
                 cutPerson(PersonMode.KEEP, missing.first()) { done -> placeBehind(t.id, done) }
             }
             else -> placeBehind(t.id, under.first())
@@ -1623,7 +1623,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val starts = p.clipStartsUs()
         val c = clip?.let { k -> p.clips.firstOrNull { it.id == k.id } }
             ?: p.clips.filterIndexed { i, k -> !k.isPhoto && starts[i] < t.endUs && starts[i] + k.outputUs > t.startUs }.firstOrNull { !it.person?.maskFile.isNullOrEmpty() }
-            ?: run { message = "Prima serve lo scontorno della persona sulla clip sotto al testo."; return }
+            ?: run { message = "Primero hace falta el recorte de la persona en el clip debajo del texto."; return }
         val fx = c.person?.takeIf { it.maskFile.isNotEmpty() } ?: return
         val idx = p.clips.indexOfFirst { it.id == c.id }
         val (fw, fh) = factory.outputSize(p, 1080)
@@ -1640,25 +1640,25 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 }
                 BehindPlacement.place(frames, m.side, fw, fh, t.text, t.upper)
             }
-            if (spot == null) { message = "Non trovo la persona nella clip sotto al testo: mettilo tu dove vuoi."; return@launch }
+            if (spot == null) { message = "No encuentro a la persona en el clip debajo del texto: ponlo tú donde quieras."; return@launch }
             val now = project?.texts?.firstOrNull { it.id == textId } ?: return@launch
             update { it.replaceText(now.copy(x = spot.x, y = spot.y, size = spot.size, behindShow = spot.show, endPose = null)) }
-            message = if (spot.tight) "Sopra la testa non c'è spazio: ho messo il testo in alto e si legge un po' anche attraverso la persona (Si legge attraverso)."
-                else "Testo messo dietro la testa: la persona ne copre solo la parte bassa. Puoi spostarlo come vuoi."
+            message = if (spot.tight) "Encima de la cabeza no hay espacio: puse el texto arriba y se lee un poco también a través de la persona (Se lee a través)."
+                else "Texto puesto detrás de la cabeza: la persona solo cubre la parte baja. Puedes moverlo como quieras."
         }
     }
 
     fun cutPerson(mode: PersonMode = PersonMode.BLUR, target: Clip? = null, onDone: ((Clip) -> Unit)? = null) {
         val c = target ?: workClip() ?: return
-        if (c.isPhoto) { message = "Lo scontorno della persona è per i video."; return }
+        if (c.isPhoto) { message = "El recorte de la persona es para los videos."; return }
         val ctx = getApplication<Application>()
-        runClipWork(if (personPrecise) "Scontorno preciso…" else "Scontorno la persona…") { prog ->
+        runClipWork(if (personPrecise) "Recorte preciso…" else "Recortando a la persona…") { prog ->
             val from = (c.trimStartUs - 500_000).coerceAtLeast(0)
             val to = (c.trimEndUs + 500_000).coerceAtMost(c.sourceDurationUs)
             val fx = PersonMasks.analyze(ctx, c.uri, from, to, mode, prog, personPrecise) { st -> viewModelScope.launch { if (clipWork != null) clipWork = st } }
             val now = project?.clips?.firstOrNull { it.id == c.id } ?: return@runClipWork
             update { it.replaceClip(now.copy(person = fx)) }
-            message = personMessage(fx, if (mode == PersonMode.KEEP) "Persona scontornata: il testo ora le passa dietro." else "Persona scontornata: scegli cosa fare dello sfondo.")
+            message = personMessage(fx, if (mode == PersonMode.KEEP) "Persona recortada: el texto ahora pasa por detrás." else "Persona recortada: elige qué hacer con el fondo.")
             onDone?.invoke(now.copy(person = fx))
         }
     }
@@ -1686,7 +1686,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         pause()
         viewModelScope.launch {
-            busy = "Cerco gli oggetti nel fotogramma…"
+            busy = "Buscando los objetos en el fotograma…"
             val bmp = withContext(Dispatchers.IO) {
                 runCatching {
                     if (c.isPhoto) it.fabriziodavi.vivovideo.decodePhotoThumb(Uri.parse(c.uri).path ?: "", 1080)
@@ -1701,7 +1701,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                     }
                 }.getOrNull()
             }
-            if (bmp == null) { busy = null; message = "Non riesco a leggere il fotogramma."; return@launch }
+            if (bmp == null) { busy = null; message = "No puedo leer el fotograma."; return@launch }
             objectPickBoxes = runCatching { it.fabriziodavi.vivovideo.engine.Redactor.objectsIn(bmp) }.getOrDefault(emptyList())
             busy = null
             redactSeedSrcUs = if (c.isPhoto) 0L else c.trimStartUs + c.speedCurve().sourceTimeAt(off)
@@ -1725,17 +1725,17 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun redactClip() {
         val c = workClip() ?: return
         val seed = redactSeed?.takeIf { redactSeedClipId == c.id }
-        if (!redactFaces && !redactPlates && seed == null) { message = "Scegli almeno cosa oscurare."; return }
+        if (!redactFaces && !redactPlates && seed == null) { message = "Elige al menos qué ocultar."; return }
         val ctx = getApplication<Application>()
         val want = it.fabriziodavi.vivovideo.model.Redaction(faces = redactFaces, plates = redactPlates, objectSeed = seed, style = redactStyle)
-        runClipWork(if (c.isPhoto) "Cerco cosa oscurare…" else "Cerco cosa oscurare in ogni fotogramma…") { prog ->
+        runClipWork(if (c.isPhoto) "Buscando qué ocultar…" else "Buscando qué ocultar en cada fotograma…") { prog ->
             val r = it.fabriziodavi.vivovideo.engine.Redactor.analyze(ctx, c, want, redactSeedSrcUs, prog)
             val now = project?.clips?.firstOrNull { it.id == c.id } ?: return@runClipWork
             update { it.replaceClip(now.copy(redact = r)) }
             message = when {
-                r.found == 0 -> "Non ho trovato volti, targhe o l'oggetto in questa clip."
-                c.isPhoto -> "Oscurati ${r.found} elementi. Cambia lo stile qui sotto; Annulla per togliere."
-                else -> "Fatto: qualcosa da oscurare in ${r.found} fotogrammi su ${r.count}. Guarda l'anteprima; Annulla per togliere."
+                r.found == 0 -> "No encontré rostros, placas ni el objeto en este clip."
+                c.isPhoto -> "Se ocultaron ${r.found} elementos. Cambia el estilo más abajo; Deshacer para quitarlo."
+                else -> "Listo: algo que ocultar en ${r.found} fotogramas de ${r.count}. Mira la vista previa; Deshacer para quitarlo."
             }
         }
     }
@@ -1754,15 +1754,15 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     /** Video sovrapposto: solo la persona (sfondo trasparente), per metterla sopra a un altro video. */
     fun cutLayerPerson() {
         val l = selectedLayer ?: return
-        if (!l.isVideo) { message = "Lo scontorno della persona è per i video sovrapposti."; return }
+        if (!l.isVideo) { message = "El recorte de la persona es para los videos superpuestos."; return }
         val ctx = getApplication<Application>()
-        runClipWork(if (personPrecise) "Scontorno preciso…" else "Scontorno la persona…") { prog ->
+        runClipWork(if (personPrecise) "Recorte preciso…" else "Recortando a la persona…") { prog ->
             val fx = PersonMasks.analyze(ctx, l.uri, l.sourceStartUs, l.sourceStartUs + l.durationUs, PersonMode.REMOVE, prog, personPrecise) { st ->
                 viewModelScope.launch { if (clipWork != null) clipWork = st }
             }
             val now = project?.layers?.firstOrNull { it.id == l.id } ?: return@runClipWork
             update { it.replaceLayer(now.copy(person = fx)) }
-            message = personMessage(fx, "Persona scontornata: in anteprima si vede appena il tratto è pronto, nel video esportato sempre.")
+            message = personMessage(fx, "Persona recortada: en la vista previa se ve en cuanto el tramo está listo, en el video exportado siempre.")
         }
     }
 
@@ -1791,14 +1791,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun restoreOriginals() {
         val p = project ?: return
         if (busy != null || exportState is ExportState.Running) return
-        val r = p.restoreOriginals() ?: run { message = "Non ci sono video da ripristinare."; return }
+        val r = p.restoreOriginals() ?: run { message = "No hay videos que restaurar."; return }
         pause()
         update { r }
         selectedClipId = r.clips.firstOrNull()?.id
         selectedTextId = null; selectedLayerId = null; selectedMusicId = null
         multiIds = null
-        Diary.log("Torna ai video originali: ${r.clips.size} clip (prima ${p.clips.size}).")
-        message = "Progetto riportato ai ${r.clips.size} video e foto originali, senza modifiche. Annulla per tornare a com'era."
+        Diary.log("Vuelve a los videos originales: ${r.clips.size} clips (antes ${p.clips.size}).")
+        message = "Proyecto devuelto a los ${r.clips.size} videos y fotos originales, sin cambios. Deshacer para volver a como estaba."
     }
 
     // ---------------- Intervista doppia ----------------
@@ -1816,10 +1816,10 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun pickInterviewVideo(first: Boolean, uri: Uri) {
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Lettura del video…"
+            busy = "Leyendo el video…"
             val c = withContext(Dispatchers.IO) { importClip(ctx, uri) }
             busy = null
-            if (c == null || c.isPhoto) { message = "Serve un video, non una foto."; return@launch }
+            if (c == null || c.isPhoto) { message = "Hace falta un video, no una foto."; return@launch }
             if (first) interviewA = c else interviewB = c
             interviewQas = null
         }
@@ -1859,23 +1859,23 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         subtitleJob = viewModelScope.launch {
             try {
                 if (!Whisper.isDownloaded(ctx, model)) {
-                    busy = "Scarico il modello ${model.label} (${model.sizeMb} MB, solo la prima volta)…"
-                    Whisper.download(ctx, model) { f -> handler.post { busy = "Scarico il modello ${model.label}… ${(f * 100).toInt()}%" } }
+                    busy = "Descargando el modelo ${model.label} (${model.sizeMb} MB, solo la primera vez)…"
+                    Whisper.download(ctx, model) { f -> handler.post { busy = "Descargando el modelo ${model.label}… ${(f * 100).toInt()}%" } }
                 }
                 suspend fun listen(c: Clip, who: String): Pair<List<SpokenWord>, FloatArray> {
-                    busy = "Preparo l'audio di $who…"
+                    busy = "Preparando el audio de $who…"
                     val pcm = withContext(Dispatchers.Default) {
                         val wav = renderTimelineAudio(ctx, Project(name = "intervista", clips = listOf(c)), loudness = false)
                         try { Whisper.wavTo16kMono(wav) } finally { wav.delete() }
                     }
-                    busy = "Ascolto $who… 0%"
-                    val poll = launch { while (true) { kotlinx.coroutines.delay(400); busy = "Ascolto $who… ${Whisper.progress()}%" } }
+                    busy = "Escuchando a $who… 0%"
+                    val poll = launch { while (true) { kotlinx.coroutines.delay(400); busy = "Escuchando a $who… ${Whisper.progress()}%" } }
                     return try { Whisper.transcribe(Whisper.modelFile(ctx, model), pcm, lang, "", Whisper.SUBTITLE_BEAM) to pcm } finally { poll.cancel() }
                 }
                 val key = "${a.uri}|${b.uri}|${model.name}|$lang"
                 val heard = interviewHeard?.takeIf { it.key == key } ?: run {
-                    val (wa, pa) = listen(a, "il video A")
-                    val (wb, pb) = listen(b, "il video B")
+                    val (wa, pa) = listen(a, "el video A")
+                    val (wb, pb) = listen(b, "el video B")
                     InterviewHeard(key, wa, wb, pa, pb)
                 }
                 interviewHeard = heard
@@ -1885,23 +1885,23 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                     Interview.match(wa, wb, a.sourceDurationUs, b.sourceDurationUs, typed, heard.pa, heard.pb, 16_000)
                 }
                 interviewQas = qas
-                Diary.log("Intervista doppia: ${wa.size} + ${wb.size} parole, ${qas.size} domande, risposte trovate A ${qas.count { it.a != null }} e B ${qas.count { it.b != null }}." +
+                Diary.log("Entrevista doble: ${wa.size} + ${wb.size} palabras, ${qas.size} preguntas, respuestas encontradas A ${qas.count { it.a != null }} y B ${qas.count { it.b != null }}." +
                     qas.joinToString("") { q ->
                         fun sp(x: Span?) = x?.let { String.format(java.util.Locale.ITALIAN, "%.1f–%.1f s", it.startUs / 1e6, it.endUs / 1e6) } ?: "-"
                         " «${q.question.take(80)}» A ${sp(q.a)}, B ${sp(q.b)}."
                     })
                 // Il parlato riconosciuto, con l'inizio di ogni parola in secondi: serve a capire le segnalazioni.
                 fun heardText(w: List<SpokenWord>) = w.joinToString(" ") { x -> x.text.trim() + "@" + String.format(java.util.Locale.ITALIAN, "%.1f", x.startUs / 1e6) }.take(900)
-                Diary.log("Intervista doppia, parlato A: " + heardText(wa))
-                Diary.log("Intervista doppia, parlato B: " + heardText(wb))
+                Diary.log("Entrevista doble, habla A: " + heardText(wa))
+                Diary.log("Entrevista doble, habla B: " + heardText(wb))
                 if (qas.isEmpty()) {
-                    message = "Non ho trovato domande nei video: scrivile tu, una per riga, come le ha dette chi intervista."
+                    message = "No encontré preguntas en los videos: escríbelas tú, una por línea, como las dijo quien entrevista."
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 busy = null; throw e
             } catch (e: Exception) {
                 busy = null
-                message = "Analisi non riuscita: ${e.message ?: e.javaClass.simpleName}"
+                message = "Análisis fallido: ${e.message ?: e.javaClass.simpleName}"
             }
         }
     }
@@ -1915,7 +1915,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         } finally { r.release() } ?: return@runCatching null
         val f = File(File(ctx.filesDir, "fermi").apply { mkdirs() }, "intervista_${System.nanoTime()}.jpg")
         f.outputStream().use { bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 92, it) }
-        Layer(uri = Uri.fromFile(f).toString(), name = "Ascolta", width = bmp.width, height = bmp.height).also { bmp.recycle() }
+        Layer(uri = Uri.fromFile(f).toString(), name = "Escuchar", width = bmp.width, height = bmp.height).also { bmp.recycle() }
     }.getOrNull()
 
     /** Monta l'intervista e la apre nell'editor (un progetto nuovo, da ritoccare come gli altri). */
@@ -1923,10 +1923,10 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val a = interviewA ?: return
         val b = interviewB ?: return
         val qas = interviewQas?.filter { it.usable } ?: return
-        if (qas.isEmpty()) { message = "Nessuna risposta trovata da montare."; return }
+        if (qas.isEmpty()) { message = "No se encontró ninguna respuesta para montar."; return }
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Monto l'intervista…"
+            busy = "Montando la entrevista…"
             val built = withContext(Dispatchers.IO) {
                 runCatching {
                     // Misura del video finale: quella del video A (nello schermo diviso il fondo nero la fissa).
@@ -1940,7 +1940,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                         bmp.recycle()
                     }
                     val black = Clip(uri = Uri.fromFile(f).toString(), sourceDurationUs = Clip.PHOTO_MAX_US, trimEndUs = 5_000_000, isPhoto = true, width = w, height = h, fill = true)
-                    val name = listOf(o.nameA, o.nameB).filter { it.isNotBlank() }.joinToString(" e ").ifBlank { "Intervista doppia" }.take(40)
+                    val name = listOf(o.nameA, o.nameB).filter { it.isNotBlank() }.joinToString(" e ").ifBlank { "Entrevista doble" }.take(40)
                     Interview.build(name, a, b, qas, o, black, w, h) { who, at -> stillLayer(ctx, who, at) }
                 }
             }
@@ -1949,9 +1949,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 store.save(p)
                 closeInterview()
                 openProject(p)
-                message = "Intervista pronta: ${qas.size} domande, ${formatTime(p.durationUs)}. Ritocca quello che vuoi ed esporta." +
-                    if (o.format == InterviewFormat.SPLIT) " Nello schermo diviso l'anteprima prepara i tratti con i due video dopo qualche secondo." else ""
-            }.onFailure { message = "Intervista non riuscita: ${it.message ?: it.javaClass.simpleName}" }
+                message = "Entrevista lista: ${qas.size} preguntas, ${formatTime(p.durationUs)}. Retoca lo que quieras y exporta." +
+                    if (o.format == InterviewFormat.SPLIT) " En la pantalla dividida la vista previa prepara los tramos con los dos videos después de unos segundos." else ""
+            }.onFailure { message = "La entrevista falló: ${it.message ?: it.javaClass.simpleName}" }
         }
     }
 
@@ -2006,7 +2006,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             }
             updateCollage { s -> s.copy(items = s.items.map { cur -> items.firstOrNull { it.uri == cur.uri }?.let { cur.copy(takenMs = it.takenMs, place = it.place) } ?: cur }) }
             val found = items.count { it.place.isNotEmpty() }
-            message = if (found > 0) "Luoghi trovati in $found foto: le scritte si sono aggiornate." else "Queste foto non hanno il luogo (GPS) salvato."
+            message = if (found > 0) "Lugares encontrados en $found fotos: los textos se actualizaron." else "Estas fotos no tienen guardado el lugar (GPS)."
         }
     }
 
@@ -2044,9 +2044,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         if (uris.isEmpty()) return
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Preparo le foto per il collage…"
+            busy = "Preparando las fotos para el collage…"
             val items = withContext(Dispatchers.IO) { collageItems(ctx, uris.take(CollageSpec.MAX_ITEMS)) }
-            if (items.isEmpty()) { busy = null; message = "Non sono riuscito a leggere le foto scelte."; return@launch }
+            if (items.isEmpty()) { busy = null; message = "No pude leer las fotos elegidas."; return@launch }
             loadCollageThumbs(ctx, items)
             busy = null
             val aspect = project?.takeIf { intoProject }?.let { p -> factory.outputSize(p, null).let { (w, h) -> CollageAspect.closest(w, h) } } ?: CollageAspect.STORY
@@ -2057,7 +2057,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             collageTarget = if (intoProject) CollageTarget.Add else CollageTarget.NewProject
             collage = CollageSpec(t.id, aspect, items, t.style, t.motion)
             ensureCollageMasks()
-            if (uris.size > CollageSpec.MAX_ITEMS) message = "Il collage tiene al massimo ${CollageSpec.MAX_ITEMS} foto: ho preso le prime ${CollageSpec.MAX_ITEMS}."
+            if (uris.size > CollageSpec.MAX_ITEMS) message = "El collage admite como máximo ${CollageSpec.MAX_ITEMS} fotos: tomé las primeras ${CollageSpec.MAX_ITEMS}."
         }
     }
 
@@ -2114,7 +2114,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val spec = collage ?: return
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Preparo la stampa ${fmt.label}…"
+            busy = "Preparando la impresión ${fmt.label}…"
             collageProgress = 0f
             val r = withContext(Dispatchers.Default) {
                 runCatching { CollageRenderer.savePrint(ctx, spec, fmt, shop, collageFace(ctx)) { step, f -> handler.post { busy = step; collageProgress = f } } }
@@ -2122,13 +2122,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             busy = null; collageProgress = null
             r.onSuccess { (uri, w, h) ->
                 val dpi = fmt.pixels(shop).third
-                collageResult = CollageResult("Pronto da stampare: ${fmt.label}",
-                    "${w}×$h pixel a $dpi dpi, in Galleria → Immagini → VivoVideo.\n\n" +
-                        (if (shop) "Ha 3 mm di margine di taglio per lato: al negozio o sul sito scegli la stampa «al vivo» o «senza bordo» nel formato ${fmt.label}."
-                        else "Ha un bordo bianco di 4 mm, perché la stampante di casa non arriva al bordo del foglio. Stampa al 100% (senza «adatta alla pagina») su carta ${fmt.label}.") +
-                        "\n\nCon «Condividi» lo mandi all'app del fotografo, a Drive o per email.", uri)
-                Diary.log("Collage per la stampa: ${spec.templateId}, ${fmt.label}, ${if (shop) "negozio" else "casa"}, ${w}×$h a $dpi dpi.")
-            }.onFailure { message = "Stampa non preparata: ${it.message ?: it.javaClass.simpleName}" }
+                collageResult = CollageResult("Listo para imprimir: ${fmt.label}",
+                    "${w}×$h píxeles a $dpi dpi, en Galería → Imágenes → VivoVideo.\n\n" +
+                        (if (shop) "Tiene 3 mm de margen de corte por lado: en la tienda o en el sitio elige la impresión «sin márgenes» o «a sangre» en el formato ${fmt.label}."
+                        else "Tiene un borde blanco de 4 mm, porque la impresora de casa no llega al borde de la hoja. Imprime al 100% (sin «ajustar a la página») en papel ${fmt.label}.") +
+                        "\n\nCon «Compartir» la mandas a la app del fotógrafo, a Drive o por correo.", uri)
+                Diary.log("Collage para imprimir: ${spec.templateId}, ${fmt.label}, ${if (shop) "tienda" else "casa"}, ${w}×$h a $dpi dpi.")
+            }.onFailure { message = "Impresión no preparada: ${it.message ?: it.javaClass.simpleName}" }
         }
     }
 
@@ -2149,7 +2149,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val s0 = collage ?: return
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Preparo le foto…"
+            busy = "Preparando las fotos…"
             val room = CollageSpec.MAX_ITEMS - s0.items.size
             val more = withContext(Dispatchers.IO) { collageItems(ctx, uris.take(room.coerceAtLeast(0))) }
             loadCollageThumbs(ctx, more)
@@ -2164,11 +2164,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun replaceCollageItem(cell: Int, uri: Uri) {
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Preparo la foto…"
+            busy = "Preparando la foto…"
             val item = withContext(Dispatchers.IO) { collageItems(ctx, listOf(uri)) }.firstOrNull()
             if (item != null) loadCollageThumbs(ctx, listOf(item))
             busy = null
-            if (item == null) { message = "Non riesco ad aprire questa foto."; return@launch }
+            if (item == null) { message = "No puedo abrir esta foto."; return@launch }
             updateCollage { s -> s.withItemReplaced(CollagePlan.itemFor(cell, s.items.size), item) }
             ensureCollageMasks()
         }
@@ -2213,11 +2213,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val spec = collage ?: return
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Salvo l'immagine…"
+            busy = "Guardando la imagen…"
             val r = withContext(Dispatchers.Default) { runCatching { CollageRenderer.saveImage(ctx, spec, collageFace(ctx)) } }
             busy = null
-            r.onSuccess { uri -> collageResult = CollageResult("Immagine salvata", "Lato corto 2160 pixel, in Galleria → Immagini → VivoVideo. Pronta per i social: con «Condividi» la mandi dove vuoi.", uri); Diary.log("Collage salvato come immagine: ${spec.templateId}, ${spec.items.size} foto, ${spec.aspect.label}.") }
-                .onFailure { message = "Immagine non salvata: ${it.message ?: it.javaClass.simpleName}" }
+            r.onSuccess { uri -> collageResult = CollageResult("Imagen guardada", "Lado corto de 2160 píxeles, en Galería → Imágenes → VivoVideo. Lista para redes: con «Compartir» la mandas adonde quieras.", uri); Diary.log("Collage guardado como imagen: ${spec.templateId}, ${spec.items.size} fotos, ${spec.aspect.label}.") }
+                .onFailure { message = "Imagen no guardada: ${it.message ?: it.javaClass.simpleName}" }
         }
     }
 
@@ -2227,21 +2227,21 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val target = collageTarget
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Preparo il collage… 0%"
+            busy = "Preparando el collage… 0%"
             collageProgress = 0f
             val out = File(File(ctx.filesDir, "collage").apply { mkdirs() }, "collage_${System.currentTimeMillis()}.mp4")
             val r = withContext(Dispatchers.Default) {
                 runCatching {
-                    CollageRenderer.renderVideo(ctx, spec, out, collageFace(ctx)) { f -> handler.post { collageProgress = f; busy = "Preparo il collage… ${(f * 100).toInt()}%" } }
+                    CollageRenderer.renderVideo(ctx, spec, out, collageFace(ctx)) { f -> handler.post { collageProgress = f; busy = "Preparando el collage… ${(f * 100).toInt()}%" } }
                 }
             }
             busy = null; collageProgress = null
             val (w, h) = r.getOrElse {
                 out.delete()
-                message = "Collage non riuscito: ${it.message ?: it.javaClass.simpleName}"
+                message = "El collage falló: ${it.message ?: it.javaClass.simpleName}"
                 return@launch
             }
-            Diary.log("Collage video: ${spec.templateId}, ${spec.items.size} elementi, ${spec.motion.label}, ${w}×$h, ${spec.durationUs / 1000} ms.")
+            Diary.log("Collage de video: ${spec.templateId}, ${spec.items.size} elementos, ${spec.motion.label}, ${w}×$h, ${spec.durationUs / 1000} ms.")
             val clip = Clip(
                 uri = Uri.fromFile(out).toString(), sourceDurationUs = spec.durationUs, trimEndUs = spec.durationUs,
                 width = w, height = h, fps = CollageRenderer.FPS.toFloat(), collage = spec, fileName = out.name, fileSize = out.length(),
@@ -2253,7 +2253,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                     val p = Project(name = "Collage ${projects.size + 1}", format = fmt).addClips(listOf(clip)).copy(originals = listOf(clip))
                     store.save(p)
                     openProject(p)
-                    message = "Collage pronto nel video (${formatTime(spec.durationUs)}). Aggiungi musica, testi o altre clip, poi esporta. Per cambiarlo: tocca la clip → Modifica collage."
+                    message = "Collage listo en el video (${formatTime(spec.durationUs)}). Agrega música, textos u otros clips y luego exporta. Para cambiarlo: toca el clip → Editar collage."
                 }
                 CollageTarget.Add -> {
                     val p = project ?: return@launch
@@ -2290,21 +2290,21 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val again = canShuffleAgain
         val base = if (again) shuffleBase ?: p else p
         val useIds = if (again) shuffleIds else ids
-        if (useIds != null && useIds.size < 2) { message = "Scegli almeno due clip da rimescolare."; return }
+        if (useIds != null && useIds.size < 2) { message = "Elige al menos dos clips para mezclar."; return }
         val r = Shuffle.apply(base, useIds, kotlin.random.Random.nextLong())
-            ?: run { message = "Servono almeno due clip da rimescolare."; return }
+            ?: run { message = "Hacen falta al menos dos clips para mezclar."; return }
         pause()
         // La seconda volta non si aggiunge un passo di Annulla: si torna sempre all'ordine di partenza.
         update(keepUndo = !again) { r.project }
         shuffleBase = base
         shuffleIds = useIds
         shuffleResult = project
-        Diary.log("Rimescola: ${r.moved} clip spostate su ${useIds?.size ?: base.clips.size}, a ritmo ${r.onBeat}, video uguali vicini ${r.sameNeighbours}.")
+        Diary.log("Mezclar: ${r.moved} clips movidos de ${useIds?.size ?: base.clips.size}, al ritmo ${r.onBeat}, videos iguales juntos ${r.sameNeighbours}.")
         if (!again) message = buildString {
-            append("Clip rimescolate (${r.moved} cambiate di posto). ")
-            if (r.onBeat) append("Erano tagliate a ritmo: le durate restano, i tagli sono ancora sul battito. ")
-            if (r.sameNeighbours > 0) append("Qualche pezzo dello stesso video è rimasto vicino: non c'erano abbastanza video diversi. ")
-            append("«Rimescola ancora» per un altro ordine, Annulla per tornare com'era.")
+            append("Clips mezclados (${r.moved} cambiaron de lugar). ")
+            if (r.onBeat) append("Estaban cortados al ritmo: las duraciones se conservan, los cortes siguen en el beat. ")
+            if (r.sameNeighbours > 0) append("Algunos trozos del mismo video quedaron juntos: no había suficientes videos distintos. ")
+            append("«Mezclar otra vez» para otro orden, Deshacer para volver a como estaba.")
         }
     }
 
@@ -2320,7 +2320,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         copiedStyle = c
         // Si entra subito nella scelta delle clip: basta toccarle nella timeline e poi "Incolla attributi".
         if (multiIds == null) multiIds = emptySet()
-        message = "Attributi copiati. Ora tocca nella timeline le clip su cui incollarli (o «Tutte»), poi «Incolla attributi»."
+        message = "Atributos copiados. Ahora toca en la línea de tiempo los clips donde pegarlos (o «Todos»), y luego «Pegar atributos»."
     }
 
     /** Clip su cui si incolla: quelle della selezione multipla, altrimenti quella selezionata. */
@@ -2331,13 +2331,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ids = targetIds() - src.id
         if (ids.isEmpty() || attrs.isEmpty()) return
         update { p -> p.copy(clips = p.clips.map { if (it.id in ids) ClipStyle.paste(src, it, attrs) else it }) }
-        message = "Attributi incollati su ${ids.size} clip."
+        message = "Atributos pegados en ${ids.size} clips."
     }
 
     fun deleteMulti() {
         val ids = multiIds ?: return
         if (ids.isEmpty()) return
-        update { p -> p.copy(clips = p.clips.filterNot { it.id in ids }).takeIf { it.clips.isNotEmpty() } ?: run { message = "Deve restare almeno una clip."; null } }
+        update { p -> p.copy(clips = p.clips.filterNot { it.id in ids }).takeIf { it.clips.isNotEmpty() } ?: run { message = "Debe quedar al menos un clip."; null } }
         multiIds = emptySet()
         selectedClipId = project?.clips?.firstOrNull()?.id
     }
@@ -2430,29 +2430,29 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         subtitleJob = viewModelScope.launch {
             try {
                 if (!Whisper.isDownloaded(ctx, model)) {
-                    busy = "Scarico il modello ${model.label} (${model.sizeMb} MB, solo la prima volta)…"
-                    Whisper.download(ctx, model) { f -> handler.post { busy = "Scarico il modello ${model.label}… ${(f * 100).toInt()}%" } }
+                    busy = "Descargando el modelo ${model.label} (${model.sizeMb} MB, solo la primera vez)…"
+                    Whisper.download(ctx, model) { f -> handler.post { busy = "Descargando el modelo ${model.label}… ${(f * 100).toInt()}%" } }
                 }
-                busy = "Preparo l'audio…"
+                busy = "Preparando el audio…"
                 val voiceOnly = p.copy(music = p.music.filter { it.dialog })
                 val pcm = withContext(Dispatchers.Default) {
                     val wav = renderTimelineAudio(ctx, voiceOnly, loudness = false)
                     try { Whisper.wavTo16kMono(wav) } finally { wav.delete() }
                 }
-                busy = "Ascolto il video… 0%"
-                val poll = launch { while (true) { kotlinx.coroutines.delay(400); busy = "Ascolto il video… ${Whisper.progress()}%" } }
+                busy = "Escuchando el video… 0%"
+                val poll = launch { while (true) { kotlinx.coroutines.delay(400); busy = "Escuchando el video… ${Whisper.progress()}%" } }
                 val words = try { Whisper.transcribe(Whisper.modelFile(ctx, model), pcm, lang) } finally { poll.cancel() }
                 busy = null
                 val subs = Subtitles.build(words, style, pos, p.durationUs, accent)
-                if (subs.isEmpty()) { message = "Non ho sentito parole nel video (la musica non viene ascoltata, solo l'audio delle clip e le voci)."; return@launch }
+                if (subs.isEmpty()) { message = "No escuché palabras en el video (la música no se escucha, solo el audio de los clips y las voces)."; return@launch }
                 update { it.copy(texts = it.texts.filterNot { t -> t.subtitle } + subs) }
                 showSubtitles = false
-                message = "${subs.size} sottotitoli creati. Tocca un sottotitolo nella timeline per correggere una parola, spostarlo o cambiarne lo stile; Annulla li toglie tutti."
+                message = "${subs.size} subtítulos creados. Toca un subtítulo en la línea de tiempo para corregir una palabra, moverlo o cambiar su estilo; Deshacer los quita todos."
             } catch (e: kotlinx.coroutines.CancellationException) {
                 busy = null; throw e
             } catch (e: Exception) {
                 busy = null
-                message = "Sottotitoli non riusciti: ${e.message ?: e.javaClass.simpleName}"
+                message = "Los subtítulos fallaron: ${e.message ?: e.javaClass.simpleName}"
             }
         }
     }
@@ -2480,16 +2480,16 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val keys = it.fabriziodavi.vivovideo.model.Tutorial.zoomKeyframes(clip.keyframes, local, clip.trimmedUs, spot.x, spot.y, scale, holdUs)
         update { it.replaceClip(clip.copy(keyframes = keys)) }
         selectedClipId = clip.id
-        message = "Zoom aggiunto: guarda l'anteprima. Si ritocca dallo strumento Keyframe; Annulla lo toglie."
+        message = "Zoom agregado: mira la vista previa. Se retoca desde la herramienta Keyframe; Deshacer lo quita."
     }
 
     /** Freccia, cerchio, riquadro o numero come livello dall'indicatore (3 s), al centro: poi lo sposti con le dita. */
     fun addTutorialMark(mark: it.fabriziodavi.vivovideo.model.Tutorial.Mark) {
         val ctx = getApplication<Application>()
         val p = project ?: return
-        if (p.clips.isEmpty()) { message = "Aggiungi prima un video o una foto."; return }
+        if (p.clips.isEmpty()) { message = "Primero agrega un video o una foto."; return }
         val n = it.fabriziodavi.vivovideo.model.Tutorial.nextStep(p)
-        val (f, w, h) = runCatching { it.fabriziodavi.vivovideo.engine.TutorialMarks.file(ctx, mark, n) }.getOrElse { message = "Non riesco a preparare l'immagine."; return }
+        val (f, w, h) = runCatching { it.fabriziodavi.vivovideo.engine.TutorialMarks.file(ctx, mark, n) }.getOrElse { message = "No puedo preparar la imagen."; return }
         val total = p.durationUs
         val start = if (total - playheadUs < Layer.MIN_US) 0L else playheadUs
         val scale = when (mark) {
@@ -2511,7 +2511,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     /** Passo numerato ("1. …") dall'indicatore, in alto a sinistra: si scrive il testo nel pannello. */
     fun addStep() {
         val p = project ?: return
-        if (p.clips.isEmpty()) { message = "Aggiungi prima un video o una foto."; return }
+        if (p.clips.isEmpty()) { message = "Primero agrega un video o una foto."; return }
         val total = p.durationUs
         val start = if (total - playheadUs < TextItem.MIN_US) 0L else playheadUs
         val t = it.fabriziodavi.vivovideo.model.Tutorial.stepText(it.fabriziodavi.vivovideo.model.Tutorial.nextStep(p), start, minOf(4_000_000L, total - start).coerceAtLeast(TextItem.MIN_US))
@@ -2524,7 +2524,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     var showCredits by mutableStateOf(false)
     /** Ultime scelte nella schermata dei titoli (si ritrovano riaprendola). */
     var creditsTitle by mutableStateOf("")
-    var creditsRows by mutableStateOf(listOf(it.fabriziodavi.vivovideo.model.Credits.Row("Riprese e montaggio", "")))
+    var creditsRows by mutableStateOf(listOf(it.fabriziodavi.vivovideo.model.Credits.Row("Grabación y montaje", "")))
     var creditsMusic by mutableStateOf(true)
     var creditsOnBlack by mutableStateOf(true)
     var creditsSeconds by mutableStateOf(0)
@@ -2539,12 +2539,12 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         val p = project ?: return
         val text = creditsText()
-        if (text.isBlank()) { message = "Scrivi almeno un titolo o una riga."; return }
+        if (text.isBlank()) { message = "Escribe al menos un título o una línea."; return }
         val dur = if (creditsSeconds > 0) creditsSeconds * 1_000_000L else it.fabriziodavi.vivovideo.model.Credits.suggestedUs(text)
         val black = if (creditsOnBlack) blackClip(ctx, p) else null
         update { it.withCredits(text, dur, creditsOnBlack, black) }
         showCredits = false
-        message = "Titoli di coda pronti (${dur / 1_000_000} s). Nella timeline sono un testo che si può spostare; Annulla li toglie."
+        message = "Créditos finales listos (${dur / 1_000_000} s). En la línea de tiempo son un texto que se puede mover; Deshacer los quita."
     }
 
     fun removeCredits() { update { it.withoutCredits() }; showCredits = false }
@@ -2585,7 +2585,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         speechWords = emptyList()
         subtitleJob = viewModelScope.launch {
             try {
-                busy = "Preparo l'audio…"
+                busy = "Preparando el audio…"
                 // Solo l'audio delle clip: voci fuori campo e musica non si tagliano.
                 val pcm = withContext(Dispatchers.Default) {
                     val wav = renderTimelineAudio(ctx, p.copy(music = emptyList()), loudness = false)
@@ -2595,8 +2595,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 var subtitleWords = emptyList<SpokenWord>()
                 if (fillers || transcribe) {
                     if (!Whisper.isDownloaded(ctx, model)) {
-                        busy = "Scarico il modello ${model.label} (${model.sizeMb} MB, solo la prima volta)…"
-                        Whisper.download(ctx, model) { f -> handler.post { busy = "Scarico il modello ${model.label}… ${(f * 100).toInt()}%" } }
+                        busy = "Descargando el modelo ${model.label} (${model.sizeMb} MB, solo la primera vez)…"
+                        Whisper.download(ctx, model) { f -> handler.post { busy = "Descargando el modelo ${model.label}… ${(f * 100).toInt()}%" } }
                     }
                     // Due ascolti diversi: per gli ehm con l'esempio che li fa scrivere (veloce); per i sottotitoli senza
                     // esempio e con la ricerca a fascio (l'esempio degli ehm faceva sbagliare parole ai sottotitoli).
@@ -2605,11 +2605,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                         val poll = launch { while (true) { kotlinx.coroutines.delay(400); busy = "$label… ${Whisper.progress()}%" } }
                         return try { Whisper.transcribe(Whisper.modelFile(ctx, model), pcm, lang, prompt, beam) } finally { poll.cancel() }
                     }
-                    val fillerWords = if (fillers) listen("Ascolto gli ehm", Whisper.FILLER_PROMPT, 1) else emptyList()
-                    subtitleWords = if (transcribe) listen("Ascolto le parole per i sottotitoli", "", Whisper.SUBTITLE_BEAM) else emptyList()
+                    val fillerWords = if (fillers) listen("Escuchando los «ehm»", Whisper.FILLER_PROMPT, 1) else emptyList()
+                    subtitleWords = if (transcribe) listen("Escuchando las palabras para los subtítulos", "", Whisper.SUBTITLE_BEAM) else emptyList()
                     words = fillerWords
                 }
-                busy = "Cerco le pause…"
+                busy = "Buscando las pausas…"
                 val plan = withContext(Dispatchers.Default) { it.fabriziodavi.vivovideo.model.SpeechCuts.plan(p, pcm, words, minPauseUs, fillers = fillers) }
                 busy = null
                 speechPcm = pcm
@@ -2617,15 +2617,15 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 speechPlan = plan
                 // Per le segnalazioni: cosa ha sentito il riconoscimento vocale e cosa ha trovato il suono.
                 if (fillers) Diary.log(
-                    "Analisi del parlato: ${words.size} parole riconosciute, ${plan.fillerCuts.count { it.word != null && !it.doubtful }} ehm sentiti e ritrovati nel suono, " +
-                        "${plan.fillerCuts.count { it.doubtful }} da controllare, ${plan.fillerCuts.count { it.word == null }} trovati solo dal suono, ${plan.pauses} pause. " +
+                    "Análisis del habla: ${words.size} palabras reconocidas, ${plan.fillerCuts.count { it.word != null && !it.doubtful }} «ehm» oídos y encontrados en el sonido, " +
+                        "${plan.fillerCuts.count { it.doubtful }} por revisar, ${plan.fillerCuts.count { it.word == null }} encontrados solo por el sonido, ${plan.pauses} pausas. " +
                         "Testo: " + words.joinToString(" ") { it.text }.take(400)
                 )
             } catch (e: kotlinx.coroutines.CancellationException) {
                 busy = null; throw e
             } catch (e: Exception) {
                 busy = null
-                message = "Analisi non riuscita: ${e.message ?: e.javaClass.simpleName}"
+                message = "Análisis fallido: ${e.message ?: e.javaClass.simpleName}"
             }
         }
     }
@@ -2694,7 +2694,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val after = project?.durationUs ?: before
         closeSpeechCut()
         selectedClipId = null
-        message = "Tolti ${formatSeconds(before - after)} di pause e parole di riempimento. Annulla per tornare indietro."
+        message = "Se quitaron ${formatSeconds(before - after)} de pausas y muletillas. Deshacer para volver atrás."
     }
 
     private fun formatSeconds(us: Long): String = String.format(java.util.Locale.ITALIAN, "%.1f s", us / 1e6)
@@ -2732,12 +2732,12 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 val videos = p0.clips.filter { !it.isPhoto }.distinctBy { it.uri }
                 val paths = HashMap<String, Reframe>()
                 videos.forEachIndexed { i, c ->
-                    busy = if (videos.size == 1) "Cerco il volto…" else "Cerco i volti… ${i + 1} di ${videos.size}"
+                    busy = if (videos.size == 1) "Buscando el rostro…" else "Buscando los rostros… ${i + 1} de ${videos.size}"
                     val scan = runCatching { SmartAnalyzer.scan(ctx, c.uri, false, c.sourceDurationUs) }
                         .onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }.getOrNull()
                     if (scan != null && scan.hasFaces) Moments.subjectPath(scan)?.let { paths[c.uri] = it }
                 }
-                busy = "Preparo i jump cut…"
+                busy = "Preparando los jump cuts…"
                 val now = project ?: return@launch
                 val outcome = withContext(Dispatchers.Default) {
                     JumpCuts.apply(now, plan.spans, style, pcm, words, whoosh, outAspect(now), maxHoldUs) { uri, srcUs ->
@@ -2756,21 +2756,21 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 selectedClipId = null
                 val sm = outcome.summary
                 message = buildString {
-                    append("Jump cut fatti: ${sm.cuts} tagli, tolti ${formatSeconds(sm.removedUs)}")
-                    if (sm.reframes > 0) append(", ${sm.reframes} cambi d'inquadratura nelle frasi lunghe")
+                    append("Jump cuts hechos: ${sm.cuts} cortes, se quitaron ${formatSeconds(sm.removedUs)}")
+                    if (sm.reframes > 0) append(", ${sm.reframes} cambios de encuadre en las frases largas")
                     if (sm.punches > 0) append(", ${sm.punches} punch-in")
-                    if (sm.flashes > 0) append(", ${sm.flashes} lampi")
-                    if (sm.subtitles > 0) append(", ${sm.subtitles} sottotitoli")
+                    if (sm.flashes > 0) append(", ${sm.flashes} destellos")
+                    if (sm.subtitles > 0) append(", ${sm.subtitles} subtítulos")
                     append(". ")
-                    append(if (paths.isEmpty()) "Nessun volto trovato: l'inquadratura stretta è al centro. " else "Inquadratura stretta centrata sul volto. ")
-                    append("Annulla per tornare indietro.")
+                    append(if (paths.isEmpty()) "No se encontró ningún rostro: el encuadre cerrado va al centro. " else "Encuadre cerrado centrado en el rostro. ")
+                    append("Deshacer para volver atrás.")
                 }
-                Diary.log("Jump cut ${style.name}: ${sm.cuts} tagli, ${sm.reframes} cambi senza taglio, ${sm.zoomed} stretti, ${sm.punches} punch-in, ${sm.flashes} lampi, ${sm.whooshes} whoosh, ${sm.subtitles} sottotitoli, volti in ${paths.size} video su ${videos.size}.")
+                Diary.log("Jump cut ${style.name}: ${sm.cuts} cortes, ${sm.reframes} cambios sin corte, ${sm.zoomed} cerrados, ${sm.punches} punch-in, ${sm.flashes} destellos, ${sm.whooshes} whoosh, ${sm.subtitles} subtítulos, rostros en ${paths.size} videos de ${videos.size}.")
             } catch (e: kotlinx.coroutines.CancellationException) {
                 busy = null; throw e
             } catch (e: Exception) {
                 busy = null
-                message = "Jump cut non riusciti: ${e.message ?: e.javaClass.simpleName}"
+                message = "Los jump cuts fallaron: ${e.message ?: e.javaClass.simpleName}"
             }
         }
     }
@@ -2795,7 +2795,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val r = VoiceRecorder(f)
         if (!runCatching { r.start() }.getOrDefault(false)) {
             f.delete()
-            message = "Non riesco a usare il microfono (forse lo usa un'altra app)."
+            message = "No puedo usar el micrófono (quizá lo usa otra app)."
             return
         }
         recorder = r; recordFile = f; recording = true
@@ -2812,8 +2812,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         player?.let { pl -> runCatching { pl.volume = 1f } }
         val ctx = getApplication<Application>()
         val p = project ?: return
-        if (raw == null || n < VoiceChain.RATE / 2) { raw?.delete(); message = "Registrazione troppo breve."; return }
-        message = "Pulisco la voce…"
+        if (raw == null || n < VoiceChain.RATE / 2) { raw?.delete(); message = "Grabación demasiado corta."; return }
+        message = "Limpiando la voz…"
         viewModelScope.launch {
             // Catena da podcast: niente rimbombo né fruscio, volume uniforme e chiaro (WAV senza perdite).
             val wav = withContext(Dispatchers.IO) {
@@ -2824,7 +2824,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                     out
                 }.getOrNull().also { raw.delete() }
             }
-            if (wav == null) { message = "Registrazione non leggibile."; return@launch }
+            if (wav == null) { message = "Grabación ilegible."; return@launch }
             val durUs = n * 1_000_000 / VoiceChain.RATE
             val q = project ?: p
             val count = q.music.count { it.dialog && it.uri.contains("/voice/") } + 1
@@ -2841,8 +2841,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 it.copy(music = it.music + t, duck = if (hasSong) true else it.duck, mix = mix)
             }
             selectedMusicId = t.id
-            message = if (autoMix) "Voce aggiunta e pulita. Musica abbassata di 6 dB e ducking acceso: regola tutto in Audio → Mixer audio."
-                else "Voce aggiunta: pulita e a volume uniforme."
+            message = if (autoMix) "Voz agregada y limpiada. Música bajada 6 dB y ducking activado: ajusta todo en Audio → Mezclador de audio."
+                else "Voz agregada: limpia y con volumen uniforme."
         }
     }
 
@@ -2850,16 +2850,16 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun detachAudio() {
         val p = project ?: return
         val c = selectedClip ?: return
-        if (c.isPhoto || c.muted) { message = "Questa clip non ha audio da staccare."; return }
-        if (c.speedCurve().speeds.any { it != 1f }) { message = "Per staccare l'audio la clip deve essere a velocità normale."; return }
+        if (c.isPhoto || c.muted) { message = "Este clip no tiene audio que separar."; return }
+        if (c.speedCurve().speeds.any { it != 1f }) { message = "Para separar el audio el clip debe estar a velocidad normal."; return }
         val i = p.clips.indexOf(c)
         val t = MusicTrack(
-            uri = c.uri, name = "Audio clip ${i + 1}", sourceDurationUs = c.sourceDurationUs,
+            uri = c.uri, name = "Audio del clip ${i + 1}", sourceDurationUs = c.sourceDurationUs,
             startUs = p.clipStartsUs()[i], offsetUs = c.trimStartUs, lengthUs = c.outputUs, volume = c.volume, dialog = true,
         )
         update { q -> q.replaceClip(c.copy(muted = true)).copy(music = q.music + t) }
         selectedMusicId = t.id
-        message = "Audio staccato: ora è una riga nella timeline. Trascinalo o allungalo con le maniglie per farlo iniziare prima o finire dopo il taglio."
+        message = "Audio separado: ahora es una fila en la línea de tiempo. Arrástralo o alárgalo con los tiradores para que empiece antes o termine después del corte."
     }
 
     // ---------------- Mixer ----------------
@@ -2919,7 +2919,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             val now = project ?: return@launch
             if (!ok || PreviewLoudness.key(now) != k || player == null) return@launch
             val g = PreviewLoudness.gainFor(now)
-            Diary.log("Volume dell'anteprima: ${"%+.1f".format(java.util.Locale.ITALIAN, PreviewLoudness.db(g))} dB, come nel video esportato.")
+            Diary.log("Volumen de la vista previa: ${"%+.1f".format(java.util.Locale.ITALIAN, PreviewLoudness.db(g))} dB, como en el video exportado.")
             if (kotlin.math.abs(PreviewLoudness.db(g) - PreviewLoudness.db(factory.previewGain)) >= 1.0) {
                 if (isPlaying) pendingLoudRebuild = true else rebuildPreview(playheadUs / 1000)
             }
@@ -2967,7 +2967,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         viewModelScope.launch {
             val path = if (c.isPhoto) null else {
-                busy = "Cerco il volto…"
+                busy = "Buscando el rostro…"
                 val scan = runCatching { SmartAnalyzer.scan(ctx, c.uri, false, c.sourceDurationUs) }
                     .onFailure { if (it is kotlinx.coroutines.CancellationException) { busy = null; throw it } }.getOrNull()
                 busy = null
@@ -2977,8 +2977,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             val cur = now.clips.firstOrNull { it.id == c.id } ?: return@launch
             val f = JumpCuts.punchFrame(cur.copy(frame = Transform()), zoom, path?.at((cur.trimStartUs + cur.trimEndUs) / 2), outAspect(now))
             update { p -> p.copy(clips = p.clips.map { if (it.id == c.id) it.copy(frame = f) else it }) }
-            message = if (path == null && !c.isPhoto) "Nessun volto trovato: zoom al centro. Per allungarlo: «Allunga lo zoom alla clip dopo»."
-            else "Zoom sul volto. Per allungarlo: «Allunga lo zoom alla clip dopo»; per farlo finire in un punto preciso: Dividi lì e togli lo zoom dal pezzo dopo."
+            message = if (path == null && !c.isPhoto) "No se encontró ningún rostro: zoom al centro. Para alargarlo: «Alargar el zoom al clip siguiente»."
+            else "Zoom en el rostro. Para alargarlo: «Alargar el zoom al clip siguiente»; para que termine en un punto preciso: Divide ahí y quita el zoom del trozo siguiente."
         }
     }
 
@@ -2987,9 +2987,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val p = project ?: return
         val id = selectedClipId ?: return
         val r = p.extendFrameTo(id, playheadUs)
-        if (r == null) { message = "Porta l'indicatore più avanti, dove vuoi che lo zoom finisca, poi tocca di nuovo."; return }
+        if (r == null) { message = "Lleva el indicador más adelante, donde quieras que termine el zoom, y toca de nuevo."; return }
         update { r }
-        message = "Zoom allungato fino a ${formatSeconds(playheadUs)}. Annulla per tornare indietro."
+        message = "Zoom alargado hasta ${formatSeconds(playheadUs)}. Deshacer para volver atrás."
     }
 
     /** Bianco e nero (o di nuovo colore) dall'indicatore fino alla fine, con il passaggio sfumato se [fade]. */
@@ -2998,8 +2998,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         if (p.clips.isEmpty()) return
         val r = p.bwFrom(playheadUs, on, if (fade) 600_000L else 0L)
         update { r }
-        message = (if (on) "Bianco e nero da ${formatSeconds(playheadUs)} fino alla fine." else "Di nuovo a colori da ${formatSeconds(playheadUs)}.") +
-            " Sposta l'indicatore e tocca «" + (if (on) "Colore da qui" else "Bianco e nero da qui") + "» per cambiare ancora."
+        message = (if (on) "Blanco y negro desde ${formatSeconds(playheadUs)} hasta el final." else "De nuevo a color desde ${formatSeconds(playheadUs)}.") +
+            " Mueve el indicador y toca «" + (if (on) "Color desde aquí" else "Blanco y negro desde aquí") + "» para cambiar otra vez."
     }
 
     /**
@@ -3011,12 +3011,12 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val i = p.clips.indexOfFirst { it.id == selectedClipId }
         if (i < 0) return
         val next = p.clips.getOrNull(i + 1)
-        if (next == null) { message = "È l'ultima clip: lo zoom arriva già alla fine."; return }
+        if (next == null) { message = "Es el último clip: el zoom ya llega al final."; return }
         val frame = p.clips[i].frame
         update { q -> q.copy(clips = q.clips.map { if (it.id == next.id) it.copy(frame = frame) else it }) }
         selectedClipId = next.id
         val end = (project ?: p).let { q -> q.clipStartsUs()[i + 1] + q.clips[i + 1].outputUs }
-        message = "Zoom allungato fino a ${formatSeconds(end)}. Tocca ancora per allungarlo di un altro pezzo."
+        message = "Zoom alargado hasta ${formatSeconds(end)}. Toca otra vez para alargarlo un trozo más."
     }
 
     /** Copia inquadratura e Adatta/Riempi della clip selezionata su tutte le clip. */
@@ -3042,10 +3042,10 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
 
     fun createSlideshow(o: SlideshowOptions) {
         val p = project ?: return
-        if (p.clips.none { it.isPhoto } && o.noTransitions) { message = "Aggiungi qualche foto per lo slideshow."; return }
+        if (p.clips.none { it.isPhoto } && o.noTransitions) { message = "Agrega algunas fotos para la presentación."; return }
         update { it.slideshow(o, seed = (System.currentTimeMillis() % 10_000).toInt()) }
-        message = "Slideshow pronto: ${p.clips.count { it.isPhoto }} foto" +
-            (if (o.beatsPerPhoto > 0) " a ritmo di musica." else ".") + " Puoi sempre ritoccare ogni clip o annullare."
+        message = "Presentación lista: ${p.clips.count { it.isPhoto }} fotos" +
+            (if (o.beatsPerPhoto > 0) " al ritmo de la música." else ".") + " Siempre puedes retocar cada clip o deshacer."
     }
 
     fun applyTextPreset(preset: TextPreset) = updateText { preset.applyTo(it) }
@@ -3074,7 +3074,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             q.makeRoomForTransition(i)?.let { (r, us) -> removed = us; r } ?: q
         }
         // Una volta sola, quando si sceglie la transizione (non a ogni passo del cursore della durata).
-        if (removed > 0 && spec?.type != oldType) message = "Per la transizione «${spec?.type?.label}» serve un po' di video oltre il taglio: ho accorciato le clip vicino al taglio di ${formatSeconds(removed)}. Annulla per tornare com'era."
+        if (removed > 0 && spec?.type != oldType) message = "Para la transición «${spec?.type?.label}» hace falta un poco de video más allá del corte: acorté los clips cerca del corte ${formatSeconds(removed)}. Deshacer para volver a como estaba."
     }
 
     /** Stessa transizione su tutti i tagli del progetto (facendo spazio dove serve, come sopra). */
@@ -3086,7 +3086,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             for (i in q.clips.lastIndex - 1 downTo 0) q.makeRoomForTransition(i)?.let { (r, us) -> q = r; removed += us }
             q
         }
-        if (removed > 0) message = "Per la transizione «${spec?.type?.label}» su tutti i tagli serve video oltre ogni taglio: ho accorciato le clip vicino ai tagli, ${formatSeconds(removed)} in tutto. Annulla per tornare com'era."
+        if (removed > 0) message = "Para la transición «${spec?.type?.label}» en todos los cortes hace falta video más allá de cada corte: acorté los clips cerca de los cortes, ${formatSeconds(removed)} en total. Deshacer para volver a como estaba."
     }
 
     // ---- Dati della pedalata (Garmin, Strava) ----
@@ -3100,7 +3100,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
     fun importTelemetry(uri: Uri) {
         val ctx = getApplication<Application>()
         viewModelScope.launch {
-            busy = "Lettura dell'attività…"
+            busy = "Leyendo la actividad…"
             val r = withContext(Dispatchers.IO) {
                 runCatching {
                     val bytes = ctx.contentResolver.openInputStream(uri)!!.use { it.readBytes() }
@@ -3114,21 +3114,21 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 }.getOrNull()
             }
             busy = null
-            if (r == null) { message = "Questo file non contiene un'attività con i tempi (servono .fit, .gpx o .tcx)."; return@launch }
+            if (r == null) { message = "Este archivo no contiene una actividad con tiempos (se necesitan .fit, .gpx o .tcx)."; return@launch }
             val (path, name, track) = r
             val old = project?.telemetry
             val t = (old ?: Telemetry(file = path, name = name)).copy(file = path, name = name, clipStartMs = emptyMap(), offsetMs = 0)
             update { it.copy(telemetry = t) }
-            busy = "Abbino i video all'attività…"
+            busy = "Asociando los videos a la actividad…"
             syncTelemetryNow(force = true)
             busy = null
             val p = project ?: return@launch
             val n = TeleSync.covered(p.telemetry ?: return@launch, track, p.clips)
             val videos = p.clips.count { !it.isPhoto }
             message = when {
-                n == 0 -> "Nessun video cade dentro l'attività (${formatClock(track.startMs)}–${formatClock(track.endMs)}): controlla che sia il giro giusto, o sposta i dati a mano."
-                n < videos -> "Dati abbinati a $n video su $videos (gli altri sono fuori dall'attività)."
-                else -> "Dati abbinati a tutti i video ($n)."
+                n == 0 -> "Ningún video cae dentro de la actividad (${formatClock(track.startMs)}–${formatClock(track.endMs)}): comprueba que sea el recorrido correcto, o mueve los datos a mano."
+                n < videos -> "Datos asociados a $n videos de $videos (los demás están fuera de la actividad)."
+                else -> "Datos asociados a todos los videos ($n)."
             }
         }
     }
@@ -3189,7 +3189,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 }
             }
             r.onSuccess { (path, name) -> updateColor { it.copy(lutPath = path, lutName = name) } }
-                .onFailure { message = "LUT non valida: ${it.message}" }
+                .onFailure { message = "LUT no válida: ${it.message}" }
         }
     }
 
@@ -3286,7 +3286,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 runCatching { CacheJanitor.run(ctx, store.list() + listOfNotNull(project)) }.getOrDefault(0L)
             }
             if (freed > 50L * 1024 * 1024) {
-                Diary.log("Pulizia della cache: liberati ${"%.0f".format(java.util.Locale.ITALIAN, freed / 1_048_576.0)} MB.")
+                Diary.log("Limpieza de la caché: se liberaron ${"%.0f".format(java.util.Locale.ITALIAN, freed / 1_048_576.0)} MB.")
             }
         }
     }
@@ -3345,7 +3345,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             // Un file ricomparso (per esempio la fine di uno spostamento): l'anteprima riparte.
             if (appeared) { previewError = null; if (player != null) rebuildPreview(playheadUs / 1000) }
             // L'anteprima non leggeva un file, ma tutti i file risultano a posto: si riprova una volta.
-            if (missing.isEmpty() && previewError?.startsWith("Un file del progetto") == true) {
+            if (missing.isEmpty() && previewError?.startsWith("Un archivo del proyecto") == true) {
                 previewError = null
                 if (player != null) rebuildPreview(playheadUs / 1000)
             }
@@ -3365,7 +3365,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         preparePreviewLoudness(p)
         factory.previewGain = if (exportOptions.loudness) PreviewLoudness.gainFor(p) else 1f
         val composition = runCatching { factory.build(shown, exportOptions, forPreview = true, nativeAudio = null, allowMulti = allowMulti) }
-            .getOrElse { previewError = "Anteprima non disponibile: ${it.message}"; return }
+            .getOrElse { previewError = "Vista previa no disponible: ${it.message}"; return }
         // Con video sovrapposti o dissolvenze incrociate serve il compositore a più ingressi:
         // si ricrea il lettore se cambia modalità.
         val multi = allowMulti && (p.layers.any { it.isVideo } || p.crossfades().isNotEmpty())
@@ -3398,7 +3398,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                         Safety.pendingPreview(getApplication(), false)
                         handler.post {
                             rebuildPreview(playheadUs / 1000)
-                            previewError = "Anteprima semplificata (dissolvenza incrociata mostrata come passaggio al nero, video sovrapposti nascosti). Dettaglio: $detail"
+                            previewError = "Vista previa simplificada (fundido cruzado mostrado como paso por negro, videos superpuestos ocultos). Detalle: $detail"
                         }
                         return
                     }
@@ -3409,11 +3409,11 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                         project?.let { q -> bad.filter { b -> q.clips.any { it.uri == b } || q.layers.any { it.uri == b } || q.music.any { it.uri == b } } }?.let { unreadable += it }
                         // Un file non si legge più (spostato, cancellato, permesso scaduto): niente errore tecnico,
                         // si ricontrolla, si cerca da soli e, se serve, si offre Ricollega.
-                        previewError = "Un file del progetto non si legge più. Lo sto cercando…"
+                        previewError = "Un archivo del proyecto ya no se puede leer. Lo estoy buscando…"
                         handler.post { recheckFiles() }
                         return
                     }
-                    previewError = "Errore anteprima: $detail"
+                    previewError = "Error de vista previa: $detail"
                 }
             })
             np.repeatMode = Player.REPEAT_MODE_ALL
@@ -3433,9 +3433,9 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 multiFailed = true
                 releasePlayer()
                 rebuildPreview(positionMs)
-                previewError = "Anteprima semplificata. Dettaglio: ${e.javaClass.simpleName}: ${e.message?.take(160)}"
+                previewError = "Vista previa simplificada. Detalle: ${e.javaClass.simpleName}: ${e.message?.take(160)}"
             } else {
-                previewError = "Anteprima non disponibile: ${e.javaClass.simpleName}: ${e.message?.take(160)}"
+                previewError = "Vista previa no disponible: ${e.javaClass.simpleName}: ${e.message?.take(160)}"
             }
             return
         }
@@ -3513,8 +3513,8 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
 
     private val exporter = Exporter(app, viewModelScope, factory) { s ->
         when (s) {
-            is ExportState.Done -> Diary.log("Esportazione riuscita: ${s.details}")
-            is ExportState.Failed -> Diary.log("Esportazione fallita: ${s.message}")
+            is ExportState.Done -> Diary.log("Exportación lograda: ${s.details}")
+            is ExportState.Failed -> Diary.log("La exportación falló: ${s.message}")
             else -> {}
         }
         exportState = s
@@ -3530,14 +3530,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         val p = if (withProject) project else null
         viewModelScope.launch {
-            busy = "Preparo la segnalazione…"
+            busy = "Preparando el reporte…"
             val text = withContext(Dispatchers.IO) { runCatching { Diagnostics.report(ctx, p, note, extra, compact = true) } }
             busy = null
             text.onSuccess { t ->
                 val cm = ctx.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                cm.setPrimaryClip(android.content.ClipData.newPlainText("VivoVideo: segnalazione", t))
-                message = "Segnalazione copiata (${t.length / 1000} mila caratteri). Apri la chat con Claude, tieni premuto nel campo del messaggio e scegli Incolla."
-            }.onFailure { message = "Segnalazione non riuscita: ${it.message}" }
+                cm.setPrimaryClip(android.content.ClipData.newPlainText("VivoVideo: reporte", t))
+                message = "Reporte copiado (${t.length / 1000} mil caracteres). Abre el chat con Claude, mantén presionado en el campo del mensaje y elige Pegar."
+            }.onFailure { message = "El reporte falló: ${it.message}" }
         }
     }
 
@@ -3546,7 +3546,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         val p = if (withProject) project else null
         viewModelScope.launch {
-            busy = "Preparo la segnalazione…"
+            busy = "Preparando el reporte…"
             val r = withContext(Dispatchers.IO) {
                 runCatching {
                     val text = Diagnostics.report(ctx, p, note, extra)
@@ -3556,14 +3556,14 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                         put(android.provider.MediaStore.Downloads.MIME_TYPE, "text/plain")
                         put(android.provider.MediaStore.Downloads.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS)
                     }
-                    val uri = ctx.contentResolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values) ?: error("cartella Download non disponibile")
+                    val uri = ctx.contentResolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values) ?: error("carpeta Descargas no disponible")
                     ctx.contentResolver.openOutputStream(uri)!!.use { it.write(text.toByteArray()) }
                     name
                 }
             }
             busy = null
-            r.onSuccess { name -> message = "Salvata in Download: $name. Nella chat con Claude tocca la graffetta (o +), scegli File e cerca in Download." }
-                .onFailure { message = "Non riesco a salvare in Download: ${it.message}" }
+            r.onSuccess { name -> message = "Guardado en Descargas: $name. En el chat con Claude toca el clip (o +), elige Archivo y busca en Descargas." }
+                .onFailure { message = "No puedo guardar en Descargas: ${it.message}" }
         }
     }
 
@@ -3571,7 +3571,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val ctx = getApplication<Application>()
         val p = if (withProject) project else null
         viewModelScope.launch {
-            busy = "Preparo la segnalazione…"
+            busy = "Preparando el reporte…"
             val f = withContext(Dispatchers.IO) { runCatching { Diagnostics.write(ctx, Diagnostics.report(ctx, p, note, extra)) } }
             busy = null
             f.onSuccess { file ->
@@ -3579,13 +3579,13 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
                 val send = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_STREAM, uri)
-                    putExtra(Intent.EXTRA_SUBJECT, "VivoVideo: segnalazione")
+                    putExtra(Intent.EXTRA_SUBJECT, "VivoVideo: reporte")
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
                 runCatching {
-                    ctx.startActivity(Intent.createChooser(send, "Manda la segnalazione").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION))
-                }.onFailure { message = "Non riesco ad aprire la condivisione: ${it.message}" }
-            }.onFailure { message = "Segnalazione non riuscita: ${it.message}" }
+                    ctx.startActivity(Intent.createChooser(send, "Enviar el reporte").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION))
+                }.onFailure { message = "No puedo abrir el menú de compartir: ${it.message}" }
+            }.onFailure { message = "El reporte falló: ${it.message}" }
         }
     }
 
@@ -3635,7 +3635,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         preparing = queue.size
-        preparingLabel = if (queue.size == 1) "Preparo la copia leggera…" else "Preparo ${queue.size} copie leggere…"
+        preparingLabel = if (queue.size == 1) "Preparando la copia ligera…" else "Preparando ${queue.size} copias ligeras…"
         val (w, h) = p.clips.firstOrNull { it.uri == uri }?.let { it.width to it.height }
             ?: p.layers.firstOrNull { it.uri == uri }?.let { it.width to it.height } ?: (1920 to 1080)
         val (pw, ph) = Proxies.size(w, h)
@@ -3788,7 +3788,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         val pos = playheadUs
         releasePlayer()
         playheadUs = pos
-        exportState = ExportState.Running(null, "Preparazione…")
+        exportState = ExportState.Running(null, "Preparación…")
         exporter.start(p, exportOptions)
     }
 

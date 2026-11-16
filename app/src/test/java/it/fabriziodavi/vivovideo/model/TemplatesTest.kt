@@ -14,7 +14,7 @@ class TemplatesTest {
             transitionOut = TransitionSpec(TransitionType.CROSSFADE, 400_000)),
         Clip(id = "s3", uri = "old3", sourceDurationUs = Clip.PHOTO_MAX_US, trimEndUs = 1_500_000, isPhoto = true, width = 1080, height = 1920),
     )
-    private val tpl = Templates.fromProject(Project(name = "Reel", clips = slots, texts = listOf(TextItem(text = "Titolo")), format = VideoFormat.VERTICAL), "Il mio reel")
+    private val tpl = Templates.fromProject(Project(name = "Reel", clips = slots, texts = listOf(TextItem(text = "Título")), format = VideoFormat.VERTICAL), "Il mio reel")
 
     private fun v(i: Int, dur: Long = 20_000_000, w: Int = 1080, h: Int = 1920) = Clip(id = "n$i", uri = "new$i", sourceDurationUs = dur, trimEndUs = dur, width = w, height = h)
     private val photo = Clip(id = "np", uri = "file:///np.jpg", sourceDurationUs = Clip.PHOTO_MAX_US, trimEndUs = 3_000_000, isPhoto = true, width = 1080, height = 1920)

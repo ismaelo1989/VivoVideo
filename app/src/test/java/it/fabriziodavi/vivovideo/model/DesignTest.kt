@@ -64,7 +64,7 @@ class DesignTest {
         assertEquals("03 → 14.08.2026", DesignTexts.fill("{dal_al}", m))
         assertEquals("12", DesignTexts.fill("{giorni}", m))
         assertEquals("18:42", DesignTexts.fill("{ora}", m))
-        assertEquals("estate", DesignTexts.fill("{stagione|inverno}", m))
+        assertEquals("verano", DesignTexts.fill("{stagione|inverno}", m))
         assertEquals("Santorini · Naxos", DesignTexts.fill("{luoghi}", m))
         assertEquals("Naxos", DesignTexts.fill("{luogo2|Paros}", m))
         assertEquals("Paros", DesignTexts.fill("{luogo1|Paros}", m))
@@ -72,7 +72,7 @@ class DesignTest {
         // Senza date né luoghi valgono le parole del modello.
         val none = DesignMeta(now = at(2026, 1, 10))
         assertEquals("Perù → Bali, 12 giorni", DesignTexts.fill("{luogo|Perù} → {luogo2|Bali}, {giorni|12} giorni", none))
-        assertEquals("inverno", DesignTexts.fill("{stagione}", none))
+        assertEquals("invierno", DesignTexts.fill("{stagione}", none))
         assertEquals("Gennaio 2026", DesignTexts.fill("{Mese} {ANNO}", none))
         // Le scritte cambiate da te vincono; i mesi delle foto nell'album dell'anno.
         val d = Designs.byId("x-year")!!
@@ -95,15 +95,15 @@ class DesignTest {
         assertEquals("0,0", DesignCount.at("27,4", 0f))
         assertEquals("2:6", DesignCount.at("5:12", 0.5f))
         assertEquals("455 m", DesignCount.at("1.820 m", 0.25f))
-        assertEquals("Giro dei Colli", DesignCount.at("Giro dei Colli", 0.3f))
+        assertEquals("Vuelta de los Colli", DesignCount.at("Vuelta de los Colli", 0.3f))
     }
 
     @Test fun colorsHaveNames() {
-        assertEquals("Latte", ColorNames.name(0xFFCAC3B8.toInt()))
+        assertEquals("Leche", ColorNames.name(0xFFCAC3B8.toInt()))
         assertEquals("Salvia", ColorNames.name(0xFF8B9D9A.toInt()))
-        assertEquals("Caffè", ColorNames.name(0xFF372720.toInt()))
-        assertEquals("Blu", ColorNames.name(0xFF1D4ED8.toInt()))
-        assertEquals("Bianco", ColorNames.name(0xFFFAFAFA.toInt()))
+        assertEquals("Café", ColorNames.name(0xFF372720.toInt()))
+        assertEquals("Azul", ColorNames.name(0xFF1D4ED8.toInt()))
+        assertEquals("Blanco", ColorNames.name(0xFFFAFAFA.toInt()))
         assertEquals("#1D4ED8", ColorNames.hex(0xFF1D4ED8.toInt()))
         assertEquals(Calendar.AUGUST, DesignTexts.cal(at(2026, 8, 1)).get(Calendar.MONTH))
     }

@@ -37,8 +37,8 @@ fun ObjectPickScreen(vm: EditorViewModel) {
     BackHandler { vm.closeObjectPick() }
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro") { vm.closeObjectPick() }
-            Text("Tocca l'oggetto da oscurare", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás") { vm.closeObjectPick() }
+            Text("Toca el objeto que quieres ocultar", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         Box(Modifier.fillMaxWidth().weight(1f).padding(12.dp), contentAlignment = Alignment.Center) {
             Box(Modifier.fillMaxWidth().aspectRatio(bmp.width.toFloat() / bmp.height, matchHeightConstraintsFirst = bmp.height > bmp.width)) {
@@ -59,9 +59,9 @@ fun ObjectPickScreen(vm: EditorViewModel) {
             }
         }
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Hint(if (vm.objectPickBoxes.isEmpty()) "Non ho riconosciuto oggetti qui: tocca il punto, l'app lo copre con un riquadro e prova a seguirlo."
-                else "I riquadri bianchi sono gli oggetti che l'app sa seguire: tocca quello da oscurare (oppure un altro punto).")
-            PrimaryButton("Usa questo oggetto", Modifier.fillMaxWidth(), enabled = vm.redactSeed != null) { vm.closeObjectPick() }
+            Hint(if (vm.objectPickBoxes.isEmpty()) "No reconocí objetos aquí: toca el punto, la app lo cubre con un recuadro e intenta seguirlo."
+                else "Los recuadros blancos son los objetos que la app sabe seguir: toca el que quieres ocultar (o cualquier otro punto).")
+            PrimaryButton("Usar este objeto", Modifier.fillMaxWidth(), enabled = vm.redactSeed != null) { vm.closeObjectPick() }
         }
     }
 }

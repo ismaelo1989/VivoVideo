@@ -28,13 +28,13 @@ data class LicenseInfo(val code: String, val commercial: Boolean, val derivative
             val c = (code ?: "").lowercase().trim()
             return when {
                 c == "cc0" || c == "zero" -> LicenseInfo("CC0", commercial = true, derivatives = true, attribution = false)
-                c == "pdm" || c == "publicdomain" -> LicenseInfo("Pubblico dominio", commercial = true, derivatives = true, attribution = false)
+                c == "pdm" || c == "publicdomain" -> LicenseInfo("Dominio público", commercial = true, derivatives = true, attribution = false)
                 c.contains("sampling") -> LicenseInfo("CC Sampling+", commercial = !c.startsWith("nc"), derivatives = true, attribution = true)
                 c.startsWith("by") -> {
                     val v = version?.takeIf { it.isNotBlank() }?.let { " $it" } ?: ""
                     LicenseInfo("CC " + c.uppercase() + v, commercial = !c.contains("nc"), derivatives = !c.contains("nd"), attribution = true)
                 }
-                else -> LicenseInfo(if (c.isEmpty()) "Licenza sconosciuta" else c.uppercase(), commercial = false, derivatives = false, attribution = true)
+                else -> LicenseInfo(if (c.isEmpty()) "Licencia desconocida" else c.uppercase(), commercial = false, derivatives = false, attribution = true)
             }
         }
 
@@ -77,21 +77,21 @@ data class OnlineTrack(
 
 /** Parole pronte per cercare: etichetta italiana → parole per i servizi (in inglese, come i loro archivi). */
 val MUSIC_MOODS = listOf(
-    "Epica" to "epic", "Allegra" to "happy", "Rilassante" to "relaxing", "Cinematografica" to "cinematic",
-    "Emozionante" to "emotional", "Elettronica" to "electronic", "Rock" to "rock", "Acustica" to "acoustic",
-    "Pianoforte" to "piano", "Estate" to "summer", "Viaggio" to "travel", "Romantica" to "romantic",
-    "Hip hop" to "hiphop", "Lo-fi" to "lofi", "Corporate" to "corporate", "Natale" to "christmas",
+    "Épica" to "epic", "Allegra" to "happy", "Relajante" to "relaxing", "Cinematográfica" to "cinematic",
+    "Emocionante" to "emotional", "Electrónica" to "electronic", "Rock" to "rock", "Acústica" to "acoustic",
+    "Piano" to "piano", "Verano" to "summer", "Viaje" to "travel", "Romántica" to "romantic",
+    "Hip hop" to "hiphop", "Lo-fi" to "lofi", "Corporate" to "corporate", "Navidad" to "christmas",
 )
 val SFX_WORDS = listOf(
-    "Whoosh" to "whoosh", "Transizione" to "swoosh transition", "Applausi" to "applause", "Risata" to "laugh",
-    "Passi" to "footsteps", "Vento" to "wind", "Onde del mare" to "ocean waves", "Pioggia" to "rain", "Tuono" to "thunder",
-    "Uccelli" to "birds", "Folla" to "crowd", "Clic" to "click", "Notifica" to "notification", "Campanello" to "bell",
-    "Scatto foto" to "camera shutter", "Esplosione" to "explosion", "Pop" to "pop", "Battito" to "heartbeat",
+    "Whoosh" to "whoosh", "Transición" to "swoosh transition", "Aplausos" to "applause", "Risa" to "laugh",
+    "Pasos" to "footsteps", "Viento" to "wind", "Olas del mar" to "ocean waves", "Lluvia" to "rain", "Trueno" to "thunder",
+    "Pájaros" to "birds", "Multitud" to "crowd", "Clic" to "click", "Notificación" to "notification", "Campanilla" to "bell",
+    "Disparo de foto" to "camera shutter", "Explosión" to "explosion", "Pop" to "pop", "Beat" to "heartbeat",
 )
 
 object Library {
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
-    private const val UA = "VivoVideo/0.3 (Android; uso personale)"
+    private const val UA = "VivoVideo/0.3 (Android; uso personal)"
 
     private fun enc(s: String) = URLEncoder.encode(s, "UTF-8")
 
@@ -131,7 +131,7 @@ object Library {
             OnlineTrack(
                 source = LibrarySource.OPENVERSE,
                 id = o.s("id") ?: url.hashCode().toString(),
-                title = o.s("title")?.takeIf { it.isNotBlank() } ?: "Senza titolo",
+                title = o.s("title")?.takeIf { it.isNotBlank() } ?: "Sin título",
                 artist = o.s("creator") ?: "",
                 durationMs = o["duration"].num()?.toLong() ?: 0L,
                 previewUrl = url,
@@ -147,7 +147,7 @@ object Library {
         val root = json.parseToJsonElement(body) as? JsonObject ?: return emptyList()
         val headers = root["headers"] as? JsonObject
         val status = headers?.s("status")
-        if (status != null && status != "success") error(headers?.s("error_message")?.takeIf { it.isNotBlank() } ?: "Jamendo: richiesta rifiutata")
+        if (status != null && status != "success") error(headers?.s("error_message")?.takeIf { it.isNotBlank() } ?: "Jamendo: solicitud rechazada")
         val results = root["results"] as? JsonArray ?: return emptyList()
         return results.mapNotNull { e ->
             val o = e as? JsonObject ?: return@mapNotNull null
@@ -157,7 +157,7 @@ object Library {
             OnlineTrack(
                 source = LibrarySource.JAMENDO,
                 id = o.s("id") ?: return@mapNotNull null,
-                title = o.s("name") ?: "Senza titolo",
+                title = o.s("name") ?: "Sin título",
                 artist = o.s("artist_name") ?: "",
                 durationMs = ((o["duration"].num() ?: 0.0) * 1000).toLong(),
                 previewUrl = stream,
@@ -180,7 +180,7 @@ object Library {
             OnlineTrack(
                 source = LibrarySource.FREESOUND,
                 id = o.s("id") ?: return@mapNotNull null,
-                title = o.s("name")?.substringBeforeLast('.')?.takeIf { it.isNotBlank() } ?: "Effetto",
+                title = o.s("name")?.substringBeforeLast('.')?.takeIf { it.isNotBlank() } ?: "Efecto",
                 artist = o.s("username") ?: "",
                 durationMs = ((o["duration"].num() ?: 0.0) * 1000).toLong(),
                 previewUrl = mp3,
@@ -207,9 +207,9 @@ object Library {
         c.setRequestProperty("Accept", "application/json")
         try {
             val code = c.responseCode
-            if (code == 401 || code == 403) error("Codice del servizio non valido o non autorizzato ($code).")
-            if (code == 429) error("Troppe ricerche in poco tempo: riprova fra un minuto.")
-            if (code !in 200..299) error("Il servizio ha risposto con un errore ($code).")
+            if (code == 401 || code == 403) error("Código del servicio no válido o no autorizado ($code).")
+            if (code == 429) error("Demasiadas búsquedas en poco tiempo: vuelve a intentar en un minuto.")
+            if (code !in 200..299) error("El servicio respondió con un error ($code).")
             return c.inputStream.bufferedReader().use { it.readText() }
         } finally { c.disconnect() }
     }
@@ -231,8 +231,8 @@ object Library {
                 // Molti effetti non hanno la categoria "sound_effect": si riprova senza, con "sound effect" nella ricerca.
                 if (effects) parseOpenverse(get(openverseUrl(query, effects, commercialOnly, page).replace("&category=sound_effect", "").replace("?q=", "?q=sound+effect+"))) else emptyList()
             }
-            LibrarySource.JAMENDO -> parseJamendo(get(jamendoUrl(keys.jamendo ?: error("Manca il codice Jamendo."), query, commercialOnly, instrumental, page)))
-            LibrarySource.FREESOUND -> parseFreesound(get(freesoundUrl(keys.freesound ?: error("Manca la chiave Freesound."), query.ifBlank { if (effects) "whoosh" else "ambient music" }, effects, page)))
+            LibrarySource.JAMENDO -> parseJamendo(get(jamendoUrl(keys.jamendo ?: error("Falta el código de Jamendo."), query, commercialOnly, instrumental, page)))
+            LibrarySource.FREESOUND -> parseFreesound(get(freesoundUrl(keys.freesound ?: error("Falta la clave de Freesound."), query.ifBlank { if (effects) "whoosh" else "ambient music" }, effects, page)))
         }
         usable(list, commercialOnly)
     }
@@ -251,15 +251,15 @@ object Library {
             c.setRequestProperty("User-Agent", UA)
             try {
                 val code = c.responseCode
-                if (code in 300..399) { url = c.getHeaderField("Location") ?: error("Indirizzo del file mancante"); return@repeat }
-                if (code !in 200..299) error("Scaricamento non riuscito ($code).")
+                if (code in 300..399) { url = c.getHeaderField("Location") ?: error("Falta la dirección del archivo"); return@repeat }
+                if (code !in 200..299) error("No se pudo descargar ($code).")
                 c.inputStream.use { input -> tmp.outputStream().use { input.copyTo(it) } }
-                if (tmp.length() < 1024) error("Il file scaricato è vuoto.")
+                if (tmp.length() < 1024) error("El archivo descargado está vacío.")
                 tmp.renameTo(f)
                 return@withContext f
             } finally { c.disconnect() }
         }
-        error("Troppi rimandi nello scaricamento.")
+        error("Demasiadas redirecciones en la descarga.")
     }
 }
 
@@ -288,8 +288,8 @@ data class LibraryKeys(val jamendo: String?, val freesound: String?) {
 
 /** Messaggio comprensibile per un errore di rete. */
 fun friendlyError(e: Throwable, source: LibrarySource): String = when (e) {
-    is java.net.UnknownHostException -> "Nessuna connessione a internet."
-    is java.net.SocketTimeoutException -> "${source.label} non risponde (a volte è lento o sovraccarico). Riprova, prova una ricerca più precisa o un altro servizio."
-    is java.io.IOException -> "Collegamento con ${source.label} non riuscito: riprova fra poco."
+    is java.net.UnknownHostException -> "Sin conexión a internet."
+    is java.net.SocketTimeoutException -> "${source.label} no responde (a veces está lento o sobrecargado). Vuelve a intentar, prueba una búsqueda más precisa u otro servicio."
+    is java.io.IOException -> "No se pudo conectar con ${source.label}: vuelve a intentar en un momento."
     else -> e.message ?: e.javaClass.simpleName
 }

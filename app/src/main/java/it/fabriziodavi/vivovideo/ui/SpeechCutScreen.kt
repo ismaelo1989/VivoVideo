@@ -47,7 +47,7 @@ fun SpeechCutScreen(vm: EditorViewModel) {
     val busy = vm.busy
     BackHandler { if (busy != null) vm.cancelSubtitles() else { vm.closeSpeechCut() } }
     var model by remember { mutableStateOf(Whisper.defaultModel(ctx)) }
-    var lang by remember { mutableStateOf("it") }
+    var lang by remember { mutableStateOf("es") }
     val jump = vm.jumpMode
     // Jump cut: ritmo serrato di serie (0,4 s), come nei video parlati sui social.
     var minPause by remember { mutableStateOf(if (jump) 400_000L else 700_000L) }
@@ -64,16 +64,16 @@ fun SpeechCutScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro", enabled = busy == null) { vm.closeSpeechCut() }
-            Text(if (jump) "Jump cut" else "Taglia pause e ehm", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás", enabled = busy == null) { vm.closeSpeechCut() }
+            Text(if (jump) "Jump cut" else "Quitar pausas y «ehm»", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             if (jump) {
-                Hint("Per i video parlati: l'app toglie le pause (e, se vuoi, gli ehm) e a ogni taglio cambia l'inquadratura, normale e stretta a turno, centrata sul volto. Così il salto del taglio sembra voluto. Prima vedi il riepilogo, poi decidi; un solo Annulla toglie tutto.")
-                PanelLabel("Stile")
+                Hint("Para videos hablados: la app quita las pausas (y, si quieres, los «ehm») y en cada corte cambia el encuadre, normal y cerrado por turnos, centrado en el rostro. Así el salto del corte parece intencional. Primero ves el resumen, luego decides; un solo Deshacer quita todo.")
+                PanelLabel("Estilo")
                 JumpStyle.entries.forEach { st ->
                     val on = st == style
                     Column(
@@ -89,24 +89,24 @@ fun SpeechCutScreen(vm: EditorViewModel) {
                         Text(st.hint, style = MaterialTheme.typography.bodySmall)
                     }
                 }
-                if (style == JumpStyle.SOCIAL) ToggleRow("Whoosh sui lampi", whoosh, busy == null) { whoosh = it }
-                PanelLabel("Cambia inquadratura al massimo ogni")
-                LabeledSlider("Durata massima", null, if (maxHold >= JumpCuts.NO_HOLD_LIMIT) 41 else (maxHold / 500_000L).toInt(), busy == null, range = 2..41,
-                    format = { if (it >= 41) "senza limite" else String.format(java.util.Locale.ITALIAN, "%.1f s", it / 2f) }) { maxHold = if (it >= 41) JumpCuts.NO_HOLD_LIMIT else it * 500_000L }
-                Hint("Quanto può durare al massimo un'inquadratura (normale o stretta sul volto) quando parli senza pause, da 1 a 20 s (mezzo secondo alla volta), oppure tutto a destra «senza limite»: cambia solo ai tagli. A ogni taglio cambia comunque, quindi un pezzo può essere più corto.")
+                if (style == JumpStyle.SOCIAL) ToggleRow("Whoosh en los destellos", whoosh, busy == null) { whoosh = it }
+                PanelLabel("Cambiar encuadre como máximo cada")
+                LabeledSlider("Duración máxima", null, if (maxHold >= JumpCuts.NO_HOLD_LIMIT) 41 else (maxHold / 500_000L).toInt(), busy == null, range = 2..41,
+                    format = { if (it >= 41) "sin límite" else String.format(java.util.Locale.ITALIAN, "%.1f s", it / 2f) }) { maxHold = if (it >= 41) JumpCuts.NO_HOLD_LIMIT else it * 500_000L }
+                Hint("Cuánto puede durar como máximo un encuadre (normal o cerrado en el rostro) cuando hablas sin pausas, de 1 a 20 s (medio segundo a la vez), o todo a la derecha «sin límite»: cambia solo en los cortes. En cada corte cambia de todos modos, así que un trozo puede ser más corto.")
             } else {
-                Hint("L'app ascolta l'audio delle clip e toglie i silenzi lunghi, lasciando un attimo di respiro fra le frasi. Le foto, le clip mute, la musica e le voci fuori campo non si toccano. Prima vedi quanto si toglie, poi decidi.")
+                Hint("La app escucha el audio de los clips y quita los silencios largos, dejando un respiro entre las frases. Las fotos, los clips mudos, la música y las voces en off no se tocan. Primero ves cuánto se quita, luego decides.")
             }
-            PanelLabel("Pause più lunghe di")
-            PillRow(listOf(0L, 400_000L, 700_000L, 1_000_000L), minPause, { if (it == 0L) "Lasciale" else String.format(java.util.Locale.ITALIAN, "%.1f s", it / 1e6) }, busy == null) {
+            PanelLabel("Pausas más largas de")
+            PillRow(listOf(0L, 400_000L, 700_000L, 1_000_000L), minPause, { if (it == 0L) "Déjalas" else String.format(java.util.Locale.ITALIAN, "%.1f s", it / 1e6) }, busy == null) {
                 minPause = it; vm.speechPlan = null
             }
-            Hint("0,4 s: ritmo serrato da video social. 0,7 s: naturale. 1 s: toglie solo i silenzi davvero lunghi.")
-            ToggleRow("Togli anche ehm, eh, uhm, mmm", fillers, busy == null) { fillers = it; vm.speechPlan = null }
+            Hint("0,4 s: ritmo apretado de video para redes. 0,7 s: natural. 1 s: quita solo los silencios realmente largos.")
+            ToggleRow("Quitar también ehm, eh, uhm, mmm", fillers, busy == null) { fillers = it; vm.speechPlan = null }
             if (transcribe) {
                 Hint(
-                    if (fillers) "Per le parole di riempimento serve il riconoscimento vocale (sul telefono; internet solo per scaricare il modello la prima volta)."
-                    else "Per i sottotitoli dello stile Social serve il riconoscimento vocale (sul telefono; internet solo per scaricare il modello la prima volta).",
+                    if (fillers) "Para las muletillas hace falta el reconocimiento de voz (en el teléfono; internet solo para descargar el modelo la primera vez)."
+                    else "Para los subtítulos del estilo Social hace falta el reconocimiento de voz (en el teléfono; internet solo para descargar el modelo la primera vez).",
                 )
                 Whisper.Model.entries.filter { it != Whisper.Model.TINY }.forEach { m ->
                     val on = m == model
@@ -116,51 +116,51 @@ fun SpeechCutScreen(vm: EditorViewModel) {
                             .border(if (on) 2.dp else 0.dp, if (on) VV.Tally else Color.Transparent, RoundedCornerShape(12.dp))
                             .clickable(enabled = busy == null) { model = m; vm.speechPlan = null }.padding(12.dp),
                     ) {
-                        Text(m.label + if (ready) "  ·  pronto" else "  ·  ${m.sizeMb} MB da scaricare", style = MaterialTheme.typography.titleSmall, color = if (on) VV.Tally else VV.Text)
+                        Text(m.label + if (ready) "  ·  listo" else "  ·  ${m.sizeMb} MB por descargar", style = MaterialTheme.typography.titleSmall, color = if (on) VV.Tally else VV.Text)
                         Text(m.hint, style = MaterialTheme.typography.bodySmall)
                     }
                 }
-                Segmented(listOf("it", "en", "auto"), lang, { when (it) { "it" -> "Italiano"; "en" -> "Inglese"; else -> "Automatica" } }, busy == null) { lang = it; vm.speechPlan = null }
+                Segmented(listOf("es", "it", "en", "auto"), lang, { when (it) { "es" -> "Español"; "it" -> "Italiano"; "en" -> "Inglés"; else -> "Automática" } }, busy == null) { lang = it; vm.speechPlan = null }
             }
             if (plan != null) {
-                PanelLabel("Cosa si toglie")
+                PanelLabel("Qué se quita")
                 Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(VV.Raised).padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    if (plan.isEmpty) Text("Niente da togliere con queste impostazioni.", style = MaterialTheme.typography.bodyMedium)
+                    if (plan.isEmpty) Text("Nada que quitar con estos ajustes.", style = MaterialTheme.typography.bodyMedium)
                     else {
-                        if (minPause > 0) Text("${plan.pauses} pause · ${sec(plan.pauseUs)}", style = MaterialTheme.typography.bodyMedium)
-                        if (fillers) Text("${plan.fillers} ehm e simili · ${sec(plan.fillerUs)}", style = MaterialTheme.typography.bodyMedium)
+                        if (minPause > 0) Text("${plan.pauses} pausas · ${sec(plan.pauseUs)}", style = MaterialTheme.typography.bodyMedium)
+                        if (fillers) Text("${plan.fillers} «ehm» y similares · ${sec(plan.fillerUs)}", style = MaterialTheme.typography.bodyMedium)
                         // Con i jump cut la nuova durata sta nel riepilogo, qui sotto.
-                        if (!jump) Text("Il video passa da ${formatTime(total)} a ${formatTime(total - plan.totalUs)}", style = MaterialTheme.typography.titleSmall, color = VV.Tally)
+                        if (!jump) Text("El video pasa de ${formatTime(total)} a ${formatTime(total - plan.totalUs)}", style = MaterialTheme.typography.titleSmall, color = VV.Tally)
                     }
                 }
                 if (jump && summary != null) {
-                    PanelLabel("Riepilogo dei jump cut")
+                    PanelLabel("Resumen de los jump cuts")
                     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(VV.Raised).padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         val pct = kotlin.math.round((JumpCuts.ZOOM - 1) * 100).toInt()
-                        Text(count(summary.cuts, "taglio", "tagli") + " con cambio d'inquadratura", style = MaterialTheme.typography.bodyMedium)
-                        if (summary.reframes > 0) Text(count(summary.reframes, "cambio", "cambi") + " d'inquadratura nelle frasi lunghe, senza tagliare", style = MaterialTheme.typography.bodyMedium)
-                        Text(count(summary.zoomed, "pezzo stretto", "pezzi stretti") + " (+$pct%) sul volto", style = MaterialTheme.typography.bodyMedium)
-                        if (style == JumpStyle.DYNAMIC) Text("${summary.punches} punch-in sulle frasi più forti", style = MaterialTheme.typography.bodyMedium)
+                        Text(count(summary.cuts, "taglio", "tagli") + " con cambio de encuadre", style = MaterialTheme.typography.bodyMedium)
+                        if (summary.reframes > 0) Text(count(summary.reframes, "cambio", "cambi") + " de encuadre en las frases largas, sin cortar", style = MaterialTheme.typography.bodyMedium)
+                        Text(count(summary.zoomed, "trozo cerrado", "trozos cerrados") + " (+$pct%) en el rostro", style = MaterialTheme.typography.bodyMedium)
+                        if (style == JumpStyle.DYNAMIC) Text("${summary.punches} punch-in en las frases más fuertes", style = MaterialTheme.typography.bodyMedium)
                         if (style == JumpStyle.SOCIAL) {
                             Text(count(summary.flashes, "lampo", "lampi") + if (summary.whooshes > 0) " con whoosh" else "", style = MaterialTheme.typography.bodyMedium)
-                            Text(if (summary.subtitles > 0) count(summary.subtitles, "sottotitolo", "sottotitoli") + " parola per parola (sostituiscono quelli che ci sono)" else "Nessuna parola sentita: niente sottotitoli", style = MaterialTheme.typography.bodyMedium)
+                            Text(if (summary.subtitles > 0) count(summary.subtitles, "sottotitolo", "sottotitoli") + " palabra por palabra (sustituyen a los que hay)" else "Ninguna palabra oída: sin subtítulos", style = MaterialTheme.typography.bodyMedium)
                         }
-                        Text("Micro-dissolvenze dell'audio su ogni taglio, niente clic.", style = MaterialTheme.typography.bodySmall, color = VV.Dim)
-                        Text("Il video passa da ${formatTime(summary.beforeUs)} a ${formatTime(summary.afterUs)}", style = MaterialTheme.typography.titleSmall, color = VV.Tally)
+                        Text("Microfundidos del audio en cada corte, sin clics.", style = MaterialTheme.typography.bodySmall, color = VV.Dim)
+                        Text("El video pasa de ${formatTime(summary.beforeUs)} a ${formatTime(summary.afterUs)}", style = MaterialTheme.typography.titleSmall, color = VV.Tally)
                     }
-                    if (summary.cuts + summary.reframes == 0) Hint("Nessun taglio dentro una stessa ripresa: l'inquadratura non cambia. Prova pause più corte.")
+                    if (summary.cuts + summary.reframes == 0) Hint("Ningún corte dentro de una misma toma: el encuadre no cambia. Prueba con pausas más cortas.")
                 }
                 if (fillers && plan.fillerCuts.isNotEmpty()) {
-                    PanelLabel("Gli ehm trovati")
-                    Hint("Ascolta ognuno: ▶ com'è adesso, ✂ come sarà dopo il taglio. Togli la spunta a quelli da lasciare. Quelli «da controllare» o «da ascoltare» sono dubbi (forse una parola tenuta a lungo): di serie restano, metti la spunta se sono ehm.")
+                    PanelLabel("Los «ehm» encontrados")
+                    Hint("Escucha cada uno: ▶ como está ahora, ✂ como quedará después del corte. Quita la marca a los que quieras dejar. Los «por revisar» o «por escuchar» son dudas (quizá una palabra alargada): por defecto se quedan, marca los que sean «ehm».")
                     plan.fillerCuts.forEachIndexed { i, f ->
                         FillerRow(
                             at = f.span.startUs, lenUs = f.span.lengthUs,
                             label = when {
-                                f.doubtful && f.word == null -> "possibile ehm · da ascoltare"
-                                f.doubtful -> "«${f.word}»? da controllare"
+                                f.doubtful && f.word == null -> "posible «ehm» · por escuchar"
+                                f.doubtful -> "«${f.word}»? por revisar"
                                 f.word != null -> "«${f.word}»"
-                                else -> "suono di esitazione"
+                                else -> "sonido de duda"
                             },
                             on = f.on,
                             onToggle = { vm.toggleFiller(i) },
@@ -175,13 +175,13 @@ fun SpeechCutScreen(vm: EditorViewModel) {
             if (busy != null) {
                 Text(busy, style = MaterialTheme.typography.bodyMedium)
                 LinearProgressIndicator(Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)), color = VV.Tally, trackColor = VV.Raised2)
-                SecondaryButton("Annulla", Modifier.fillMaxWidth(), onClick = { vm.cancelSubtitles() })
+                SecondaryButton("Deshacer", Modifier.fillMaxWidth(), onClick = { vm.cancelSubtitles() })
             } else if (plan != null && !plan.isEmpty) {
-                if (jump) PrimaryButton("Fai i jump cut", Modifier.fillMaxWidth()) { vm.applyJumpCuts(style, whoosh, maxHold) }
+                if (jump) PrimaryButton("Hacer los jump cuts", Modifier.fillMaxWidth()) { vm.applyJumpCuts(style, whoosh, maxHold) }
                 else PrimaryButton("Taglia ${sec(plan.totalUs)}", Modifier.fillMaxWidth()) { vm.applySpeechCuts() }
-                SecondaryButton("Rifai l'analisi", Modifier.fillMaxWidth(), onClick = { vm.analyzeSpeech(model, lang, minPause, fillers, forSubtitles) })
+                SecondaryButton("Rehacer el análisis", Modifier.fillMaxWidth(), onClick = { vm.analyzeSpeech(model, lang, minPause, fillers, forSubtitles) })
             } else {
-                PrimaryButton("Analizza", Modifier.fillMaxWidth(), enabled = minPause > 0 || fillers) { vm.analyzeSpeech(model, lang, minPause, fillers, forSubtitles) }
+                PrimaryButton("Analizar", Modifier.fillMaxWidth(), enabled = minPause > 0 || fillers) { vm.analyzeSpeech(model, lang, minPause, fillers, forSubtitles) }
             }
         }
     }

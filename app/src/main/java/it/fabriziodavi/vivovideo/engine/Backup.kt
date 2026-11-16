@@ -150,7 +150,7 @@ object Backup {
                 }
             }
         }
-        val p0 = Project.fromJson(json ?: error("Questo file non è una copia di VivoVideo."))
+        val p0 = Project.fromJson(json ?: error("Este archivo no es una copia de VivoVideo."))
         var p = ProjectRefs.replace(p0) { r ->
             ProjectRefs.parseToken(r)?.let { (name, isPath) -> File(dir, name).let { f -> if (isPath) f.absolutePath else Uri.fromFile(f).toString() } }
         }

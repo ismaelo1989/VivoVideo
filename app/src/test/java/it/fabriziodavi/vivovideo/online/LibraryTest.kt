@@ -44,7 +44,7 @@ class LibraryTest {
         assertEquals("https://cdn.example/summer.mp3", t.downloadUrl)
         assertEquals("CC BY 4.0", t.license.code)
         assertTrue(t.license.commercial && t.license.derivatives && t.license.attribution)
-        assertEquals("Senza titolo", r[2].title)
+        assertEquals("Sin título", r[2].title)
         assertFalse(r[2].license.attribution)
         // "ND" non si può mettere sotto un video: sparisce sempre.
         assertEquals(listOf("a1b2", "d4"), Library.usable(r, commercialOnly = false).map { it.id })
@@ -110,7 +110,7 @@ class LibraryTest {
 
     @Test fun clearErrorMessages() {
         assertTrue(friendlyError(java.net.SocketTimeoutException("timeout"), LibrarySource.OPENVERSE).startsWith("Openverse non risponde"))
-        assertEquals("Nessuna connessione a internet.", friendlyError(java.net.UnknownHostException("x"), LibrarySource.JAMENDO))
+        assertEquals("Sin conexión a internet.", friendlyError(java.net.UnknownHostException("x"), LibrarySource.JAMENDO))
         assertEquals("Codice errato", friendlyError(IllegalStateException("Codice errato"), LibrarySource.JAMENDO))
     }
 }

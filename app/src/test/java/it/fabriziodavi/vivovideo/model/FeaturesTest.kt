@@ -22,7 +22,7 @@ class FeaturesTest {
 
     @Test fun everyFieldSurvivesSaveAndLoad() {
         val p = Project(
-            name = "Tutto",
+            name = "Todo",
             clips = listOf(
                 video("a").copy(
                     speed = ClipSpeed.RAMP, speedPoints = SpeedPreset.HERO.points, log = true, volume = 1.5f,

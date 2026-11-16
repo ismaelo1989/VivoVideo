@@ -51,20 +51,20 @@ fun TestPlanScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().padding(start = 4.dp, end = 12.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro") { vm.showTestPlan = false }
-            Text("Collaudo", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
-            PrimaryButton("Segnala un problema") { report = true }
+            IconBtn(VVIcons.Back, "Atrás") { vm.showTestPlan = false }
+            Text("Pruebas", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+            PrimaryButton("Reportar un problema") { report = true }
         }
         Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(
-                "Provati $done di ${TestPlan.items.size}" + if (ko > 0) " · $ko con problemi" else "",
+                "Probados $done de ${TestPlan.items.size}" + if (ko > 0) " · $ko con problemas" else "",
                 style = MaterialTheme.typography.labelLarge, color = if (ko > 0) VV.Danger else VV.Tally,
             )
             // Barra semplice (senza animazioni): quante prove sono fatte.
             Box(Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)).background(VV.Raised2)) {
                 Box(Modifier.fillMaxWidth(done.toFloat() / TestPlan.items.size).height(4.dp).background(VV.Tally))
             }
-            Hint("Fai le prove con i tuoi video veri. Se qualcosa non va, tocca Problema e scrivi due parole: poi \"Segnala un problema\" prepara un file da mandarmi (con l'esito del collaudo, i dettagli del telefono e del progetto aperto; niente video e niente chiavi dei servizi).")
+            Hint("Haz las pruebas con tus videos reales. Si algo no va bien, toca Problema y escribe dos palabras: luego \"Reportar un problema\" prepara un archivo para mandármelo (con el resultado de las pruebas, los detalles del teléfono y del proyecto abierto; sin videos ni claves de los servicios).")
         }
         LazyColumn(Modifier.weight(1f).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             val groups = TestPlan.items.groupBy { it.area }
@@ -80,10 +80,10 @@ fun TestPlanScreen(vm: EditorViewModel) {
                     ) {
                         Text(item.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, color = VV.Text)
                         Text("Come: " + item.how, style = MaterialTheme.typography.bodySmall, color = VV.Dim)
-                        Text("Deve succedere: " + item.expect, style = MaterialTheme.typography.bodySmall, color = VV.Text)
+                        Text("Debe ocurrir: " + item.expect, style = MaterialTheme.typography.bodySmall, color = VV.Text)
                         if (r.note.isNotBlank()) Text("Nota: " + r.note, style = MaterialTheme.typography.bodySmall, color = VV.Danger)
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 4.dp)) {
-                            SecondaryButton("Funziona", Modifier.weight(1f), selected = r.state == true, onClick = {
+                            SecondaryButton("Funciona", Modifier.weight(1f), selected = r.state == true, onClick = {
                                 store.set(item.id, if (r.state == true) null else true); tick++
                             })
                             SecondaryButton("Problema", Modifier.weight(1f), selected = r.state == false, onClick = { noteFor = item })
@@ -92,7 +92,7 @@ fun TestPlanScreen(vm: EditorViewModel) {
                 }
             }
             item(key = "fine") {
-                TextButton(onClick = { store.reset(); tick++ }, modifier = Modifier.padding(vertical = 12.dp)) { Text("Ricomincia il collaudo", color = VV.Dim) }
+                TextButton(onClick = { store.reset(); tick++ }, modifier = Modifier.padding(vertical = 12.dp)) { Text("Reiniciar las pruebas", color = VV.Dim) }
             }
         }
     }
@@ -105,7 +105,7 @@ fun TestPlanScreen(vm: EditorViewModel) {
             title = { Text(item.title, style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Cosa non va? (anche poche parole)", style = MaterialTheme.typography.bodyMedium)
+                    Text("¿Qué no va bien? (aunque sean pocas palabras)", style = MaterialTheme.typography.bodyMedium)
                     OutlinedTextField(
                         value = note, onValueChange = { note = it }, modifier = Modifier.fillMaxWidth(), minLines = 3,
                         colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = VV.Tally, unfocusedBorderColor = VV.Line, focusedTextColor = VV.Text, unfocusedTextColor = VV.Text),
@@ -113,14 +113,14 @@ fun TestPlanScreen(vm: EditorViewModel) {
                 }
             },
             confirmButton = {
-                TextButton(onClick = { store.set(item.id, false, note); tick++; noteFor = null }) { Text("Salva", color = VV.Tally) }
+                TextButton(onClick = { store.set(item.id, false, note); tick++; noteFor = null }) { Text("Guardar", color = VV.Tally) }
             },
             dismissButton = {
                 TextButton(onClick = {
                     store.set(item.id, false, note); tick++; noteFor = null
                     // Copia nella chat: funziona sempre (il file allegato a volte non passa).
-                    vm.copyReport("Collaudo · ${item.area} · ${item.title}: $note")
-                }) { Text("Salva e copia per la chat", color = VV.Danger) }
+                    vm.copyReport("Prueba · ${item.area} · ${item.title}: $note")
+                }) { Text("Guardar y copiar para el chat", color = VV.Danger) }
             },
         )
     }
@@ -134,23 +134,23 @@ fun ReportDialog(vm: EditorViewModel, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = VV.Raised,
-        title = { Text("Segnala un problema", style = MaterialTheme.typography.titleSmall) },
+        title = { Text("Reportar un problema", style = MaterialTheme.typography.titleSmall) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Cosa è successo? Cosa ti aspettavi?", style = MaterialTheme.typography.bodyMedium)
+                Text("¿Qué pasó? ¿Qué esperabas?", style = MaterialTheme.typography.bodyMedium)
                 OutlinedTextField(
                     value = note, onValueChange = { note = it }, modifier = Modifier.fillMaxWidth(), minLines = 3,
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = VV.Tally, unfocusedBorderColor = VV.Line, focusedTextColor = VV.Text, unfocusedTextColor = VV.Text),
                 )
-                Hint("Dentro ci sono versione, telefono, collaudo (con le tue note), il progetto aperto (senza video) e gli ultimi errori. Le chiavi dei servizi musicali vengono tolte.")
-                PrimaryButton("Copia per la chat", Modifier.fillMaxWidth()) { vm.copyReport(note); onDismiss() }
-                Hint("Poi apri la chat con Claude e incolla nel messaggio. È il modo più semplice.")
-                SecondaryButton("Salva in Download", Modifier.fillMaxWidth(), onClick = { vm.saveReportToDownloads(note); onDismiss() })
-                Hint("Versione completa, come file: nella chat lo alleghi con la graffetta → File → Download.")
-                SecondaryButton("Condividi il file", Modifier.fillMaxWidth(), onClick = { vm.shareReport(note); onDismiss() })
+                Hint("Dentro hay versión, teléfono, pruebas (con tus notas), el proyecto abierto (sin videos) y los últimos errores. Las claves de los servicios de música se quitan.")
+                PrimaryButton("Copiar para el chat", Modifier.fillMaxWidth()) { vm.copyReport(note); onDismiss() }
+                Hint("Luego abre el chat con Claude y pega en el mensaje. Es la forma más sencilla.")
+                SecondaryButton("Guardar en Descargas", Modifier.fillMaxWidth(), onClick = { vm.saveReportToDownloads(note); onDismiss() })
+                Hint("Versión completa, como archivo: en el chat lo adjuntas con el clip → Archivo → Descargas.")
+                SecondaryButton("Compartir el archivo", Modifier.fillMaxWidth(), onClick = { vm.shareReport(note); onDismiss() })
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Annulla", color = VV.Dim) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Deshacer", color = VV.Dim) } },
     )
 }

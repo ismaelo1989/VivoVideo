@@ -5,9 +5,9 @@ import kotlin.math.sqrt
 
 /** Stili dei jump cut pronti. */
 enum class JumpStyle(val label: String, val hint: String) {
-    CLEAN("Pulito", "Tolte pause (ed ehm), a ogni taglio l'inquadratura alterna normale e stretta sul volto."),
-    DYNAMIC("Dinamico", "Come Pulito, e sulle frasi dette con più forza l'inquadratura si stringe di più (punch-in)."),
-    SOCIAL("Social", "Come Pulito, con un lampo (e un whoosh) ogni tanto e i sottotitoli che compaiono parola per parola."),
+    CLEAN("Limpio", "Sin pausas (ni «ehm»), en cada corte el encuadre alterna entre normal y cerrado en el rostro."),
+    DYNAMIC("Dinámico", "Como Limpio, y en las frases dichas con más fuerza el encuadre se cierra más (punch-in)."),
+    SOCIAL("Social", "Como Limpio, con un destello (y un whoosh) de vez en cuando y los subtítulos que aparecen palabra por palabra."),
 }
 
 /**

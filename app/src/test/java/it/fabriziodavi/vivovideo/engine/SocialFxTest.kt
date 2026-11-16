@@ -56,6 +56,6 @@ class SocialFxTest {
     @Test fun viralThemeUsesSocialEffectsAndStickerOutlineExists() {
         assertTrue(AutoStyle.VIRALE.accents.any { it.type.category == FxCategory.SOCIAL })
         assertEquals(4, PersonMode.STICKER.ordinal)
-        assertEquals("Contorno sticker", PersonMode.STICKER.label)
+        assertEquals("Contorno de calcomanía", PersonMode.STICKER.label)
     }
 }

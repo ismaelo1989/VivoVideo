@@ -48,8 +48,8 @@ object Reverser {
 
     /** [onProgress] 0…1 (prima metà: copia; seconda: rovescio). */
     suspend fun reverse(ctx: Context, clip: Clip, onProgress: (Float) -> Unit): Result {
-        require(!clip.isPhoto) { "Le foto non hanno un verso." }
-        require(clip.trimmedUs <= MAX_US) { "Al contrario si possono mettere clip fino a 60 secondi: accorciala prima." }
+        require(!clip.isPhoto) { "Las fotos no tienen orientación." }
+        require(clip.trimmedUs <= MAX_US) { "Al revés se pueden poner clips de hasta 60 segundos: acórtalo antes." }
         val tmp = File(ctx.cacheDir, "contrario_${System.currentTimeMillis()}.mp4")
         val out = File(dir(ctx), "contrario_${System.currentTimeMillis()}.mp4")
         try {
@@ -121,7 +121,7 @@ object Reverser {
         // Tempi di tutti i fotogrammi (e quali si decodificano da soli).
         val ex = MediaExtractor().apply { setDataSource(src.absolutePath) }
         val vt = trackOf(ex, "video/")
-        check(vt >= 0) { "Nel video non c'è la traccia video." }
+        check(vt >= 0) { "El video no tiene pista de video." }
         val vFormat = ex.getTrackFormat(vt)
         ex.selectTrack(vt)
         val times = ArrayList<Long>()
@@ -131,7 +131,7 @@ object Reverser {
             times += t
             ex.advance()
         }
-        check(times.size >= 2) { "Video troppo corto." }
+        check(times.size >= 2) { "Video demasiado corto." }
         times.sort()
         val w = vFormat.getInteger(MediaFormat.KEY_WIDTH)
         val h = vFormat.getInteger(MediaFormat.KEY_HEIGHT)
@@ -233,7 +233,7 @@ object Reverser {
             enc.signalEndOfInputStream()
             var wait = 0
             while (!encDone && wait++ < 500) drainEncoder(10_000)
-            check(started && encodedFrames > 0) { "L'encoder non ha prodotto fotogrammi." }
+            check(started && encodedFrames > 0) { "El codificador no produjo fotogramas." }
         } finally {
             runCatching { dec.stop() }; dec.release()
             runCatching { enc.stop() }; enc.release()
@@ -338,6 +338,6 @@ object Reverser {
                 }
             }
         } finally { runCatching { enc.stop() }; enc.release() }
-        return (outFormat ?: error("AAC senza formato")) to samples
+        return (outFormat ?: error("AAC sin formato")) to samples
     }
 }

@@ -465,7 +465,7 @@ object CollageRenderer {
     /** Salva il collage come immagine (JPEG, lato corto 2160 pixel) nella galleria, in Immagini/VivoVideo. */
     fun saveImage(ctx: Context, spec: CollageSpec, caption: Typeface?): Uri {
         DesignFonts.init(ctx)
-        val t = CollageTemplates.byId(spec.templateId, spec.aspect) ?: error("modello non trovato")
+        val t = CollageTemplates.byId(spec.templateId, spec.aspect) ?: error("modelo no encontrado")
         val (w, h) = spec.aspect.size(2160)
         val photos = spec.items.indices.map { i -> load(ctx, spec.items[i], neededSide(t, spec, i, w, h), 0) }
         val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
@@ -479,7 +479,7 @@ object CollageRenderer {
                 put(MediaStore.Images.Media.IS_PENDING, 1)
             }
             val cr = ctx.contentResolver
-            val uri = cr.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values) ?: error("galleria non disponibile")
+            val uri = cr.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values) ?: error("galería no disponible")
             try {
                 cr.openOutputStream(uri)!!.use { bmp.compress(Bitmap.CompressFormat.JPEG, 95, it) }
                 values.clear(); values.put(MediaStore.Images.Media.IS_PENDING, 0)
@@ -502,16 +502,16 @@ object CollageRenderer {
         onStep: (String, Float) -> Unit = { _, _ -> },
     ): Triple<Uri, Int, Int> {
         DesignFonts.init(ctx)
-        val t = CollageTemplates.byId(spec.templateId, spec.aspect) ?: error("modello non trovato")
+        val t = CollageTemplates.byId(spec.templateId, spec.aspect) ?: error("modelo no encontrado")
         val (w, h, dpi) = fmt.pixels(shop)
         val m = if (shop) 0 else (PrintFormat.HOME_MARGIN_MM / 25.4f * dpi).toInt()
         val iw = w - 2 * m; val ih = h - 2 * m
         // Foto grandi quanto serve, ma non oltre 3600 pixel (la memoria del telefono non è infinita).
         val photos = spec.items.indices.map { i ->
-            onStep("Carico le foto in alta qualità (${i + 1} di ${spec.items.size})…", 0.6f * i / spec.items.size.coerceAtLeast(1))
+            onStep("Cargando las fotos en alta calidad (${i + 1} de ${spec.items.size})…", 0.6f * i / spec.items.size.coerceAtLeast(1))
             load(ctx, spec.items[i], neededSide(t, spec, i, iw, ih).coerceAtMost(3600), 0)
         }
-        onStep("Disegno il foglio ${fmt.label} (${w}×$h pixel)…", 0.65f)
+        onStep("Dibujando la hoja ${fmt.label} (${w}×$h píxeles)…", 0.65f)
         val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         try {
             val c = Canvas(bmp)
@@ -521,7 +521,7 @@ object CollageRenderer {
             draw(c, iw, ih, t, spec, spec.durationUs, true, { i, _ -> photos.getOrNull(i) }, caption)
             val name = "VivoVideo_Stampa_${fmt.label.replace("×", "x").replace(" ", "").replace(".", "")}_" +
                 SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ITALY).format(Date()) + ".jpg"
-            onStep("Salvo il file per la stampa…", 0.85f)
+            onStep("Guardando el archivo para imprimir…", 0.85f)
             val tmp = File(ctx.cacheDir, name)
             tmp.outputStream().use { bmp.compress(Bitmap.CompressFormat.JPEG, 95, it) }
             // La risoluzione nel file: il negozio stampa alla misura giusta senza chiedere.
@@ -549,7 +549,7 @@ object CollageRenderer {
             put(MediaStore.Images.Media.IS_PENDING, 1)
         }
         val cr = ctx.contentResolver
-        val uri = cr.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values) ?: error("galleria non disponibile")
+        val uri = cr.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values) ?: error("galería no disponible")
         try {
             cr.openOutputStream(uri)!!.use(write)
             values.clear(); values.put(MediaStore.Images.Media.IS_PENDING, 0)
@@ -582,7 +582,7 @@ object CollageRenderer {
      */
     fun renderVideo(ctx: Context, spec: CollageSpec, out: File, caption: Typeface?, onProgress: (Float) -> Unit): Pair<Int, Int> {
         DesignFonts.init(ctx)
-        val t = CollageTemplates.byId(spec.templateId, spec.aspect) ?: error("modello non trovato")
+        val t = CollageTemplates.byId(spec.templateId, spec.aspect) ?: error("modelo no encontrado")
         val (w, h) = videoSize(spec)
         val frameUs = 1_000_000L / FPS
         val total = (spec.durationUs / frameUs).toInt().coerceAtLeast(1)
@@ -652,7 +652,7 @@ object CollageRenderer {
             enc.signalEndOfInputStream()
             var guard = 0
             while (!done && guard++ < 600) drain(10_000)
-            check(started && written > 0) { "il codificatore non ha prodotto fotogrammi" }
+            check(started && written > 0) { "el codificador no produjo fotogramas" }
         } finally {
             runCatching { enc.stop() }; enc.release()
             surface.release()

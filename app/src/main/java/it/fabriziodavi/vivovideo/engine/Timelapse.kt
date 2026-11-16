@@ -34,9 +34,9 @@ object Timelapse {
     suspend fun render(
         ctx: Context, clip: Clip, speed: Int, trails: TimelapseTrails, ambient: Boolean, onProgress: (Float) -> Unit,
     ): Reverser.Result = withContext(Dispatchers.Default) {
-        require(!clip.isPhoto) { "Il time-lapse è per i video." }
+        require(!clip.isPhoto) { "El time-lapse es para videos." }
         val plan = TimelapsePlan(clip.trimmedUs, speed, clip.fps, trails)
-        check(plan.outFrames >= 2) { "Clip troppo corta per un time-lapse a $speed×: allungala o scegli meno velocità." }
+        check(plan.outFrames >= 2) { "Clip demasiado corto para un time-lapse a $speed×: alárgalo o elige menos velocidad." }
         val out = File(dir(ctx), "timelapse_${System.currentTimeMillis()}.mp4")
         val side = minOf(MAX_SIDE, maxOf(clip.width, clip.height).takeIf { it > 0 } ?: MAX_SIDE)
         var acc: Bitmap? = null
@@ -133,11 +133,11 @@ object Timelapse {
             if (group >= 0) emit()
             // Se il video finisce prima, l'ultimo fotogramma si tiene fino alla durata prevista.
             while (acc != null && emitted < plan.outFrames) emit()
-            val e = enc ?: error("Nessun fotogramma letto dal video.")
+            val e = enc ?: error("No se leyó ningún fotograma del video.")
             e.signalEndOfInputStream()
             var guard = 0
             while (!done && guard++ < 600) drain(10_000)
-            check(started && written > 0) { "L'encoder non ha prodotto fotogrammi." }
+            check(started && written > 0) { "El codificador no produjo fotogramas." }
         } catch (t: Throwable) {
             out.delete(); throw t
         } finally {

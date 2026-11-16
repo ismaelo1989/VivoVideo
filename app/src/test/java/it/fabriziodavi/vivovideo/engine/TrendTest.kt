@@ -117,7 +117,7 @@ class TrendTest {
 
     @Test fun velocityEditCutsHardOnBeatsAndBlacksOutOnTheDrop() {
         val vids = (0 until 60).map { Clip(id = "v$it", uri = "content://v/$it", sourceDurationUs = 20_000_000, trimEndUs = 20_000_000, width = 1080, height = 1920, fps = 120f) }
-        val p = AutoEdit.build("Velocity", vids, song(), AutoOptions(style = AutoStyle.ENERGICO, targetUs = 60_000_000, title = "Estate", subtitle = "Agosto 2026"))
+        val p = AutoEdit.build("Velocity", vids, song(), AutoOptions(style = AutoStyle.ENERGICO, targetUs = 60_000_000, title = "Verano", subtitle = "Agosto 2026"))
         val cuts = p.clips.dropLast(1)
         val hard = cuts.count { it.transitionOut == null }
         assertTrue("stacchi netti $hard su ${cuts.size}", hard >= cuts.size / 4)
@@ -133,7 +133,7 @@ class TrendTest {
         starts.drop(9).forEach { t -> assertTrue("taglio a $t fuori battito", t % 500_000L < 20_000 || t % 500_000L > 480_000) }
         assertTrue(abs(p.durationUs - 60_000_000L) <= 20_000)
         // Titolo grande e pulito, sottotitolo minimal.
-        val title = p.texts.first { it.text == "Estate" }
+        val title = p.texts.first { it.text == "Verano" }
         assertEquals(TextPreset.TITOLONE, TextPreset.matching(title))
         val sub = p.texts.first { it.text == "Agosto 2026" }
         assertTrue(sub.upper && sub.size < 0.04f && sub.gradientTo == null)
@@ -145,9 +145,9 @@ class TrendTest {
         assertTrue((st.fx + st.accents + st.beatFx + st.dropFx).none { it.type in datedFx || it.type == FxType.VHS })
         assertTrue(st.cutShare >= 0.5f && st.grade.saturation < 0f)
         val vids = (0 until 30).map { Clip(id = "v$it", uri = "content://v/$it", sourceDurationUs = 20_000_000, trimEndUs = 20_000_000, width = 1080, height = 1920, fps = 60f) }
-        val p = AutoEdit.build("Grunge", vids, song(), AutoOptions(style = st, targetUs = 40_000_000, title = "Notte"))
+        val p = AutoEdit.build("Grunge", vids, song(), AutoOptions(style = st, targetUs = 40_000_000, title = "Noche"))
         assertTrue(p.clips.all { c -> c.fx.any { it.type == FxType.GRAIN } })
-        assertEquals(TextPreset.STAMPA, TextPreset.matching(p.texts.first { it.text == "Notte" }))
+        assertEquals(TextPreset.STAMPA, TextPreset.matching(p.texts.first { it.text == "Noche" }))
     }
 
     @Test fun retroThemeKeepsItsVhsHits() {

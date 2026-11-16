@@ -33,9 +33,9 @@ class PrintDialogUiTest {
         for (a in CollageAspect.entries) {
             aspect = a; got = null
             compose.waitForIdle()
-            compose.onNodeWithText("Pronto da stampare").assertIsDisplayed()
-            compose.onNodeWithText("A casa").performClick()
-            compose.onNodeWithText("Salva per la stampa").performClick()
+            compose.onNodeWithText("Listo para imprimir").assertIsDisplayed()
+            compose.onNodeWithText("En casa").performClick()
+            compose.onNodeWithText("Guardar para imprimir").performClick()
             assertEquals("aspetto $a", false, got?.second)
         }
     }

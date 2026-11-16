@@ -12,10 +12,10 @@ class GuideIndexTest {
         val (title, _, sections) = GuideIndex.parse(md)
         assertEquals("Guida di VivoVideo", title)
         assertTrue(sections.size >= 25)
-        assertTrue(sections.first().title.startsWith("Novità"))
+        assertTrue(sections.first().title.startsWith("Novedades"))
         // Ogni argomento sta in un gruppo vero (se se ne aggiunge uno nuovo, va messo nei gruppi).
         sections.forEach { s ->
-            assertTrue("${s.title} senza gruppo", GuideIndex.groupOf(s.title) != "Altro")
+            assertTrue("${s.title} senza gruppo", GuideIndex.groupOf(s.title) != "Otro")
             assertTrue("${s.title} vuoto", s.lines.isNotEmpty())
         }
         assertEquals(sections.size, GuideIndex.grouped(sections).sumOf { it.second.size })
@@ -23,12 +23,12 @@ class GuideIndexTest {
 
     @Test fun searchFindsWordsIgnoringAccentsAndCase() {
         val (_, _, sections) = GuideIndex.parse(md)
-        val plates = GuideIndex.search(sections, "Targhe")
+        val plates = GuideIndex.search(sections, "Placas")
         assertTrue(plates.isNotEmpty())
         assertTrue(sections[plates.first().index].title.startsWith("Privacy")) // titolo giusto per primo
         assertTrue(plates.first().snippet.isNotBlank() && !plates.first().snippet.contains("**"))
         // Senza accento si trova lo stesso.
-        assertTrue(GuideIndex.search(sections, "velocita").any { sections[it.index].title.startsWith("Velocità") })
+        assertTrue(GuideIndex.search(sections, "velocita").any { sections[it.index].title.startsWith("Velocidad") })
         // Più parole: devono esserci tutte.
         assertTrue(GuideIndex.search(sections, "zoom tutorial").all { h -> GuideIndex.fold(sections[h.index].lines.joinToString(" ")).let { "zoom" in it } })
         assertTrue(GuideIndex.search(sections, "x").isEmpty())

@@ -116,7 +116,7 @@ object Redactor {
             val d = Detectors(r.faces, r.plates, seed != null, stream = !clip.isPhoto)
             try {
                 if (clip.isPhoto) {
-                    val bmp = decodePhotoThumb(Uri.parse(clip.uri).path ?: error("Foto non leggibile."), 1280) ?: error("Foto non leggibile.")
+                    val bmp = decodePhotoThumb(Uri.parse(clip.uri).path ?: error("Foto ilegible."), 1280) ?: error("Foto ilegible.")
                     val img = InputImage.fromBitmap(bmp, 0)
                     val boxes = d.faces(img, bmp.width, bmp.height) + d.plates(img, bmp.width, bmp.height) +
                         (seed?.let { s -> Redact.followObject(listOf(d.objects(img, bmp.width, bmp.height)), 0, s).firstOrNull()?.let { listOf(it) } }.orEmpty())
@@ -142,7 +142,7 @@ object Redactor {
                     frames += boxes
                     onProgress(((t - from).toFloat() / (to - from).coerceAtLeast(1)).coerceIn(0f, 1f))
                 }
-                check(frames.isNotEmpty()) { "Non sono riuscito a leggere i fotogrammi del video." }
+                check(frames.isNotEmpty()) { "No pude leer los fotogramas del video." }
                 if (seed != null) {
                     val seedFrame = ((seedSrcUs - from) * RATE / 1_000_000L).toInt()
                     Redact.followObject(objFrames, seedFrame, seed).forEachIndexed { i, b -> if (b != null && i < frames.size) frames[i].add(0, b) }

@@ -89,7 +89,7 @@ class DuckingTest {
 
     @Test fun previewGainsNeedVoiceMusicAndDucking() {
         val clip = Clip(id = "a", uri = "content://v/a", sourceDurationUs = 4_000_000, trimEndUs = 4_000_000)
-        val song = MusicTrack(uri = "content://m/s", name = "Brano", sourceDurationUs = 10_000_000)
+        val song = MusicTrack(uri = "content://m/s", name = "Canción", sourceDurationUs = 10_000_000)
         val voice = MusicTrack(uri = "file:///data/voice/voce_1.wav", name = "Voce 1", sourceDurationUs = 1_000_000, startUs = 1_000_000, lengthUs = 1_000_000, dialog = true)
         val p = Project(name = "d", clips = listOf(clip), music = listOf(song, voice), duck = true)
         assertNull(DuckPreview.key(p.copy(duck = false)))

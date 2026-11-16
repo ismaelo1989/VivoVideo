@@ -309,7 +309,7 @@ fun Timeline(
                         .background(VV.Raised)
                         .clickable(onClick = onAdd),
                     contentAlignment = Alignment.Center,
-                ) { Icon(VVIcons.Add, "Aggiungi video e foto", tint = VV.Text) }
+                ) { Icon(VVIcons.Add, "Agregar videos y fotos", tint = VV.Text) }
                 Spacer(Modifier.width(half))
             }
             if (trimDraft == null && project.clips.size > 1) {
@@ -393,7 +393,7 @@ fun Timeline(
                             ) {
                                 Icon(VVIcons.Music, null, tint = VV.Music, modifier = Modifier.size(12.dp))
                                 Spacer(Modifier.width(4.dp))
-                                Text("Aggiungi musica", color = VV.Dim, fontSize = 10.sp, fontFamily = Plex)
+                                Text("Agregar música", color = VV.Dim, fontSize = 10.sp, fontFamily = Plex)
                             }
                         }
                         lane.forEach { t ->
@@ -491,7 +491,7 @@ private fun CutButton(modifier: Modifier, has: Boolean, onClick: () -> Unit) {
                 drawPath(bow, VV.TallyInk)
             }
         } else {
-            Icon(VVIcons.Add, "Transizione", tint = VV.Text, modifier = Modifier.size(14.dp))
+            Icon(VVIcons.Add, "Transición", tint = VV.Text, modifier = Modifier.size(14.dp))
         }
     }
 }
@@ -533,8 +533,8 @@ private fun ClipBox(
             if (clip.log) Badge("LOG")
             if (clip.reversed != null) Badge("◀")
             if (clip.stab != null) Badge("STAB")
-            if (clip.freeze) Badge("FERMO")
-            if (clip.reframe != null && clip.fill) Badge("SEGUE")
+            if (clip.freeze) Badge("CONGELADO")
+            if (clip.reframe != null && clip.fill) Badge("SIGUE")
             if (clip.person != null) Badge("PERSONA")
         }
         // Punti velocità (pallini in basso) nella loro posizione sul video finale.
@@ -586,7 +586,7 @@ private fun ClipBox(
                     .background(if (selected) VV.Tally else Color.Black.copy(alpha = 0.45f))
                     .border(1.dp, VV.Text, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center,
-            ) { if (selected) Icon(VVIcons.Check, "Scelta", tint = VV.TallyInk, modifier = Modifier.size(12.dp)) }
+            ) { if (selected) Icon(VVIcons.Check, "Elección", tint = VV.TallyInk, modifier = Modifier.size(12.dp)) }
         } else if (selected) {
             Box(Modifier.fillMaxSize().border(2.dp, VV.Tally, shape))
             TrimHandle(Modifier.align(Alignment.CenterStart), left = true, clip, pxPerUs, onTrimDrag, onTrimEnd)

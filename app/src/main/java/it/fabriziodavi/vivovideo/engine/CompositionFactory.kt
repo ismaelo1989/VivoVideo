@@ -37,14 +37,14 @@ import it.fabriziodavi.vivovideo.model.TransitionType
 import java.io.File
 
 enum class OutputSize(val label: String, val shortSide: Int?) {
-    ORIGINAL("Originale", null),
+    ORIGINAL("Original", null),
     P2160("4K", 2160),
     P1080("1080p", 1080),
     P720("720p", 720),
 }
 
 enum class OutputFps(val label: String, val max: Int?) {
-    ORIGINAL("Originali", null),
+    ORIGINAL("Originales", null),
     F60("60", 60),
     F30("30", 30),
 }
@@ -70,10 +70,10 @@ data class ExportOptions(
 
 /** Preimpostazioni pronte per dove finirà il video. */
 enum class ExportPreset(val label: String, val hint: String, val options: ExportOptions) {
-    YOUTUBE_4K("YouTube 4K", "4K, fino a 60 fps, H.265", ExportOptions(OutputSize.P2160, OutputFps.F60, OutputCodec.H265)),
-    YOUTUBE_HD("YouTube 1080p", "1080p, fino a 60 fps, H.264", ExportOptions(OutputSize.P1080, OutputFps.F60, OutputCodec.H264)),
-    REELS("Reels e TikTok", "1080p, 30 fps, H.264 (meglio in verticale)", ExportOptions(OutputSize.P1080, OutputFps.F30, OutputCodec.H264)),
-    WHATSAPP("WhatsApp", "720p, 30 fps, leggero", ExportOptions(OutputSize.P720, OutputFps.F30, OutputCodec.H264, maxBitrate = 3_000_000));
+    YOUTUBE_4K("YouTube 4K", "4K, hasta 60 fps, H.265", ExportOptions(OutputSize.P2160, OutputFps.F60, OutputCodec.H265)),
+    YOUTUBE_HD("YouTube 1080p", "1080p, hasta 60 fps, H.264", ExportOptions(OutputSize.P1080, OutputFps.F60, OutputCodec.H264)),
+    REELS("Reels y TikTok", "1080p, 30 fps, H.264 (mejor en vertical)", ExportOptions(OutputSize.P1080, OutputFps.F30, OutputCodec.H264)),
+    WHATSAPP("WhatsApp", "720p, 30 fps, ligero", ExportOptions(OutputSize.P720, OutputFps.F30, OutputCodec.H264, maxBitrate = 3_000_000));
 
     /** Vale se le opzioni scelte sono proprio queste (il resto, come il volume, non conta). */
     fun matches(o: ExportOptions) = o.size == options.size && o.fps == options.fps && o.maxBitrate == options.maxBitrate &&
@@ -111,7 +111,7 @@ object ExportEstimate {
     /** "circa 85 MB" / "circa 1,2 GB". */
     fun label(bytes: Long): String {
         val mb = bytes / 1_000_000.0
-        return if (mb >= 1000) "circa " + String.format(java.util.Locale.ITALY, "%.1f GB", mb / 1000) else "circa ${maxOf(1, mb.toInt())} MB"
+        return if (mb >= 1000) "circa " + String.format(java.util.Locale.ITALY, "%.1f GB", mb / 1000) else "aprox. ${maxOf(1, mb.toInt())} MB"
     }
 }
 
@@ -149,7 +149,7 @@ class CompositionFactory(private val context: Context) {
     private var gainNow = 1f
 
     private val builtInLog by lazy {
-        CubeLut.fromAsset(context, CubeLut.BUILT_IN_LOG, "vivo LOG → normale")
+        CubeLut.fromAsset(context, CubeLut.BUILT_IN_LOG, "vivo LOG → normal")
     }
     private var customLutCache: Pair<String, CubeLut>? = null
 

@@ -229,20 +229,20 @@ data class DBarcode(override val box: DBox, val color: Long, override val rot: F
 data class DPalette(override val box: DBox, val count: Int, val color: Long, override val rot: Float = 0f) : DEl
 
 enum class DesignFamily(val label: String, val hint: String) {
-    WOW("Effetto wow", "La persona che esce dalla foto, la doppia esposizione, oro con i brillantini, olografico, polaroid 3D"),
-    EVENTS("Eventi", "Matrimoni, compleanni, feste, lauree, nascite, convegni: sposi da rivista, save the date, cabina foto, usa e getta, anni con le foto, disco, pass VIP, badge, relatore"),
-    ACTION("Azione", "Sport d'azione: MTB, bici, corsa, sci, surf. Pettorale, mappa, velocità, fango, action cam, record, sequenza, skipass"),
-    PAPER("Carta", "Carta strappata con la fibra bianca, lettere ritagliate, retino, la persona ritagliata come un adesivo"),
-    TREND("Tendenze", "I formati più usati del 2026: nota del telefono, cromo Y2K, luce calda, allora e adesso, finestre retrò, dump del mese"),
-    MAGAZINE("Rivista", "Scritte grandi come una copertina: la persona può passare davanti al titolo"),
-    BENTO("Bento", "Riquadri con numeri grandi, date e luoghi presi dalle foto"),
-    SCRAP("Ritagliato", "Carta strappata, nastro adesivo, scritte a mano e adesivi"),
-    POSTER("Poster", "Colore pieno, duotono, bianco e nero con un tocco di colore, vetro"),
-    THEMES("Temi", "Sport, matrimonio, viaggi, città di notte, cucina"),
-    GRID("Griglie", "Griglie moderne: mosaico con il titolo al centro, bacheca, persona che esce dalla casella, parole fra le foto"),
-    SHAPES("Forme", "Archi, cuore, bolle, fiore e forme morbide, con la persona che sporge e i colori pieni"),
-    POLAROID("Polaroid", "Pila di polaroid col muro, polaroid appese con le lucine, instax olografiche, polaroid gigante"),
-    EDITORIAL("Editoriale", "Riviste d'arte: tanto bianco, corsivi enormi, indice 01 02 03, copertina minimal, doppia pagina"),
+    WOW("Efecto wow", "La persona que sale de la foto, la doble exposición, oro con brillitos, holográfico, polaroid 3D"),
+    EVENTS("Eventi", "Bodas, cumpleaños, fiestas, graduaciones, nacimientos, congresos: novios de revista, save the date, cabina de fotos, desechable, años con fotos, disco, pase VIP, gafete, ponente"),
+    ACTION("Azione", "Deportes de acción: MTB, bici, running, esquí, surf. Número de competidor, mapa, velocidad, lodo, action cam, récord, secuencia, pase de esquí"),
+    PAPER("Carta", "Papel rasgado con fibra blanca, letras recortadas, trama, la persona recortada como una calcomanía"),
+    TREND("Tendenze", "Los formatos más usados de 2026: nota del teléfono, cromo Y2K, luz cálida, antes y ahora, ventanas retro, dump del mes"),
+    MAGAZINE("Rivista", "Textos grandes como una portada: la persona puede pasar delante del título"),
+    BENTO("Bento", "Recuadros con números grandes, fechas y lugares tomados de las fotos"),
+    SCRAP("Ritagliato", "Papel rasgado, cinta adhesiva, textos a mano y calcomanías"),
+    POSTER("Poster", "Color sólido, duotono, blanco y negro con un toque de color, cristal"),
+    THEMES("Temi", "Deporte, boda, viajes, ciudad de noche, cocina"),
+    GRID("Griglie", "Cuadrículas modernas: mosaico con el título al centro, tablero, persona que sale de su casilla, palabras entre las fotos"),
+    SHAPES("Forme", "Arcos, corazón, burbujas, flor y formas suaves, con la persona que sobresale y colores sólidos"),
+    POLAROID("Polaroid", "Pila de polaroids con pared, polaroids colgadas con lucecitas, instax holográficas, polaroid gigante"),
+    EDITORIAL("Editoriale", "Revistas de arte: mucho blanco, cursivas enormes, índice 01 02 03, portada minimal, doble página"),
 }
 
 data class Design(
@@ -278,7 +278,7 @@ data class Design(
     /** Scritte a lettere ritagliate e timbri (si cambiano come le altre scritte). */
     val extraTexts: List<Triple<String, String, String>> get() = els.mapNotNull { e ->
         when (e) { is DRansom -> Triple(e.id, e.label, e.text); is DStamp -> Triple(e.id, e.label, e.text); is DCalendar -> Triple(e.id, e.label, e.text)
-            is DPhoto -> e.word?.let { Triple(e.wordId, "Parola (la foto dentro)", it) }; else -> null }
+            is DPhoto -> e.word?.let { Triple(e.wordId, "Palabra (la foto adentro)", it) }; else -> null }
     }
     val words: List<DPhotoWord> get() = els.filterIsInstance<DPhotoWord>()
 }
@@ -393,10 +393,10 @@ data class DesignMeta(val dates: List<Long> = emptyList(), val places: List<Stri
  * {stagione} estate · {foto} 9 · {luogo} il posto della prima foto · {luogoN} quello della foto N · {luoghi} tutti, separati da " · ".
  */
 object DesignTexts {
-    private val months = listOf("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre")
-    private val days = listOf("domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato")
+    private val months = listOf("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+    private val days = listOf("domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado")
     private val roman = listOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII")
-    val monthShort = listOf("Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic")
+    val monthShort = listOf("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
 
     fun cal(ms: Long): Calendar = Calendar.getInstance(Locale.ITALY).apply { timeInMillis = ms }
 
@@ -406,10 +406,10 @@ object DesignTexts {
     fun season(month0: Int, day: Int): String {
         val md = (month0 + 1) * 100 + day
         return when {
-            md >= 1221 || md < 321 -> "inverno"
+            md >= 1221 || md < 321 -> "invierno"
             md < 621 -> "primavera"
-            md < 923 -> "estate"
-            else -> "autunno"
+            md < 923 -> "verano"
+            else -> "otoño"
         }
     }
 
@@ -544,7 +544,7 @@ enum class PrintFormat(val label: String, val wMm: Float, val hMm: Float) {
     P10x15("10×15", 100f, 150f), P13x18("13×18", 130f, 180f), P15x20("15×20", 150f, 200f), P20x30("20×30", 200f, 300f),
     P30x45("30×45", 300f, 450f), P50x70("50×70", 500f, 700f), A4("A4", 210f, 297f), A3("A3", 297f, 420f),
     S15("15×15", 150f, 150f), S20("20×20", 200f, 200f), S30("30×30", 300f, 300f),
-    L15x10("15×10", 150f, 100f), L18x13("18×13", 180f, 130f), L30x20("30×20", 300f, 200f), A4L("A4 orizz.", 297f, 210f);
+    L15x10("15×10", 150f, 100f), L18x13("18×13", 180f, 130f), L30x20("30×20", 300f, 200f), A4L("A4 horiz.", 297f, 210f);
 
     val orient: DOrient get() = when { wMm < hMm -> DOrient.PORTRAIT; wMm == hMm -> DOrient.SQUARE; else -> DOrient.LANDSCAPE }
 

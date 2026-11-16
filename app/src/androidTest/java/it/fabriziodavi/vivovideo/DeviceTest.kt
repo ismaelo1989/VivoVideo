@@ -317,8 +317,8 @@ class DeviceTest {
             music = listOf(MusicTrack(uri = music.toString(), name = "musica", sourceDurationUs = 30_000_000, fadeInUs = 1_000_000, fadeOutUs = 2_000_000,
                 beatsUs = (0 until 60).map { it * 500_000L }, bpm = 120f)),
             texts = listOf(
-                TextItem(text = "Titolo", startUs = 0, durationUs = 3_000_000, look = TextLook.NEON, animIn = TextAnim.WORDS, endPose = Transform(scale = 1.2f)),
-                TextItem(text = "Didascalia", startUs = 4_000_000, durationUs = 4_000_000, look = TextLook.RIQUADRO, animIn = TextAnim.TYPE, gradientTo = Color.CYAN),
+                TextItem(text = "Título", startUs = 0, durationUs = 3_000_000, look = TextLook.NEON, animIn = TextAnim.WORDS, endPose = Transform(scale = 1.2f)),
+                TextItem(text = "Pie de foto", startUs = 4_000_000, durationUs = 4_000_000, look = TextLook.RIQUADRO, animIn = TextAnim.TYPE, gradientTo = Color.CYAN),
             ),
             layers = listOf(
                 Layer(uri = logo.toString(), name = "logo", width = 300, height = 300, startUs = 1_000_000, durationUs = 5_000_000,
@@ -573,7 +573,7 @@ class DeviceTest {
             val ms = r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong()
             assertTrue("durata ${ms} ms invece di ${project.durationUs / 1000}", abs(ms * 1000 - project.durationUs) < 250_000)
             assertTrue("niente audio", r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_AUDIO) == "yes")
-            assertTrue("niente video", r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO) == "yes")
+            assertTrue("sin video", r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO) == "yes")
             assertTrue("solo note su sovrapposizioni mancanti", !s.details.contains("Attenzione") || !multi)
             lastDetails = s.details
         } finally { r.release() }

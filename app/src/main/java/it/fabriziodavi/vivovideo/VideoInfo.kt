@@ -155,7 +155,7 @@ fun describeEncoders(): String {
         }
         val hw = encoders.firstOrNull { it.isHardwareAccelerated } ?: encoders.firstOrNull()
         if (hw == null) {
-            lines += "${codecLabel(mime)}: nessun encoder"
+            lines += "${codecLabel(mime)}: sin codificador"
             continue
         }
         val caps: MediaCodecInfo.VideoCapabilities? =
@@ -189,7 +189,7 @@ fun readAudioInfo(context: Context, uri: Uri): Pair<String, Long> {
         context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
             if (c.moveToFirst()) c.getString(0) else null
         }
-    }.getOrNull()?.substringBeforeLast('.')?.takeIf { it.isNotBlank() } ?: "Musica"
+    }.getOrNull()?.substringBeforeLast('.')?.takeIf { it.isNotBlank() } ?: "Música"
     val r = MediaMetadataRetriever()
     var durUs = try {
         r.setDataSource(context, uri)

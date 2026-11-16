@@ -75,30 +75,30 @@ data class CollageCell(
 
 @Serializable
 enum class CollageFamily(val label: String, val hint: String) {
-    GRID("Griglie", "Tutte le griglie, con lo spazio fra le foto che scegli tu"),
-    HERO("Grande e piccole", "Una foto grande e le altre piccole"),
-    DIAGONAL("Tagli diagonali", "Foto separate da tagli obliqui, dinamiche"),
-    SHAPES("Forme", "Archi, cerchi, cuore, esagoni e forme morbide su un fondo colorato"),
-    POLAROID("Polaroid", "Photo dump: polaroid sparse sulla carta, con il nastro adesivo"),
-    FILM("Rullino", "Le foto su una pellicola che scorre"),
-    EDITORIAL("Editoriale", "Margini ampi, bianco caldo, grana della pellicola e una scritta"),
+    GRID("Cuadrículas", "Todas las cuadrículas, con el espacio entre fotos que tú eliges"),
+    HERO("Una grande y varias pequeñas", "Una foto grande y las demás pequeñas"),
+    DIAGONAL("Cortes diagonales", "Fotos separadas por cortes oblicuos, dinámicas"),
+    SHAPES("Formas", "Arcos, círculos, corazón, hexágonos y formas suaves sobre un fondo de color"),
+    POLAROID("Polaroid", "Photo dump: polaroids esparcidas sobre papel, con cinta adhesiva"),
+    FILM("Rollo", "Las fotos en una película que se desplaza"),
+    EDITORIAL("Editorial", "Márgenes amplios, blanco cálido, grano de película y un texto"),
 }
 
 /** Sfondo. [color2] = sfumatura verso il basso; [paper] = carta con la grana; [blur] = la prima foto sfocata. */
 @Serializable
 enum class CollageBg(val label: String, val color: Long, val color2: Long? = null, val paper: Boolean = false, val blur: Boolean = false) {
-    CLOUD("Bianco caldo", 0xFFF0EEE9),
-    PAPER("Carta", 0xFFEDE4D3, paper = true),
-    BLACK("Nero", 0xFF111111),
-    TERRACOTTA("Terracotta", 0xFFC4704F),
+    CLOUD("Blanco cálido", 0xFFF0EEE9),
+    PAPER("Papel", 0xFFEDE4D3, paper = true),
+    BLACK("Negro", 0xFF111111),
+    TERRACOTTA("Terracota", 0xFFC4704F),
     SAGE("Salvia", 0xFF9CAF88),
     BURGUNDY("Bordeaux", 0xFF6D1A36),
-    EMERALD("Smeraldo", 0xFF046A4A),
-    BUTTER("Burro", 0xFFF6E7A8),
+    EMERALD("Esmeralda", 0xFF046A4A),
+    BUTTER("Mantequilla", 0xFFF6E7A8),
     LAVENDER("Lavanda", 0xFFB9A7D9),
-    BLUE_WASH("Blu cielo", 0xFF1F3A68, 0xFF9CC0E6),
-    SUNSET("Tramonto", 0xFFFF7A59, 0xFFFFC371),
-    BLUR("Foto sfocata", 0xFF222222, blur = true),
+    BLUE_WASH("Azul cielo", 0xFF1F3A68, 0xFF9CC0E6),
+    SUNSET("Atardecer", 0xFFFF7A59, 0xFFFFC371),
+    BLUR("Foto desenfocada", 0xFF222222, blur = true),
     ;
 
     /** Colore chiaro: sopra vanno scritte scure. */
@@ -112,13 +112,13 @@ enum class CollageBg(val label: String, val color: Long, val color2: Long? = nul
 /** Come entrano e si muovono le foto nel video. */
 @Serializable
 enum class CollageMotion(val label: String, val hint: String) {
-    CASCADE("Una dopo l'altra", "Le foto spuntano a turno con un piccolo rimbalzo"),
-    SLIDE("Scivolano dentro", "Ogni foto entra dal bordo più vicino"),
-    WIPE("Si scoprono", "Ogni foto si scopre come una tendina"),
-    DROP("Cadono sul tavolo", "Le foto cadono una sull'altra, ruotando, come polaroid lanciate"),
-    ZOOM("Dal primo piano", "Si parte con la prima foto a tutto schermo e si allarga sulla griglia"),
-    SCROLL("Scorre", "Il collage scorre lento, come un rullino"),
-    STILL("Ferma", "Tutto fermo (solo lo zoom lento dentro le foto, se acceso)"),
+    CASCADE("Una tras otra", "Las fotos aparecen por turnos con un pequeño rebote"),
+    SLIDE("Se deslizan hacia adentro", "Cada foto entra por el borde más cercano"),
+    WIPE("Se descubren", "Cada foto se descubre como una cortina"),
+    DROP("Caen sobre la mesa", "Las fotos caen una sobre otra, girando, como polaroids lanzadas"),
+    ZOOM("Desde el primer plano", "Empieza con la primera foto a pantalla completa y se abre sobre la cuadrícula"),
+    SCROLL("Se desplaza", "El collage se desplaza lento, como un rollo"),
+    STILL("Detener", "Todo quieto (solo el zoom lento dentro de las fotos, si está activado)"),
 }
 
 /** Elementi decorativi del modello. */
@@ -405,7 +405,7 @@ object CollageTemplates {
         for (n in 1..9) for (c in compositions(n)) for (vertical in listOf(false, true)) {
             val name = if (c.all { it == c[0] } && c.size > 1) "${if (vertical) c[0] else c.size}×${if (vertical) c.size else c[0]}"
                 else c.joinToString("+")
-            out += CollageTemplate("g-${if (vertical) "c" else "r"}-${c.joinToString("")}", CollageFamily.GRID, if (n == 1) "Foto intera" else name,
+            out += CollageTemplate("g-${if (vertical) "c" else "r"}-${c.joinToString("")}", CollageFamily.GRID, if (n == 1) "Foto completa" else name,
                 bands(c, vertical = vertical), spaced = true, style = style, motion = CollageMotion.CASCADE)
         }
     }
@@ -419,16 +419,16 @@ object CollageTemplates {
         fun split(k: Int) = if (k <= 4) listOf(k) else listOf((k + 1) / 2, k / 2)
         for (n in 2..9) {
             val rest = split(n - 1)
-            add("h-top-$n", "Grande sopra", bands(listOf(1) + rest, listOf(1.7f) + rest.map { 1f }))
-            add("h-bottom-$n", "Grande sotto", bands(rest + 1, rest.map { 1f } + 1.7f).let { cs -> cs.takeLast(1) + cs.dropLast(1) })
-            add("h-left-$n", "Grande a sinistra", bands(listOf(1) + rest, listOf(1.7f) + rest.map { 1f }, vertical = true))
-            add("h-right-$n", "Grande a destra", bands(rest + 1, rest.map { 1f } + 1.7f, vertical = true).let { cs -> cs.takeLast(1) + cs.dropLast(1) })
+            add("h-top-$n", "Grande arriba", bands(listOf(1) + rest, listOf(1.7f) + rest.map { 1f }))
+            add("h-bottom-$n", "Grande abajo", bands(rest + 1, rest.map { 1f } + 1.7f).let { cs -> cs.takeLast(1) + cs.dropLast(1) })
+            add("h-left-$n", "Grande a la izquierda", bands(listOf(1) + rest, listOf(1.7f) + rest.map { 1f }, vertical = true))
+            add("h-right-$n", "Grande a la derecha", bands(rest + 1, rest.map { 1f } + 1.7f, vertical = true).let { cs -> cs.takeLast(1) + cs.dropLast(1) })
         }
         // Grande in mezzo, fra due file.
         for (n in listOf(3, 5, 7, 9)) {
             val k = (n - 1) / 2
             val cs = bands(listOf(k, 1, k), listOf(1f, 2f, 1f))
-            add("h-mid-$n", "Grande in mezzo", listOf(cs[k]) + cs.take(k) + cs.drop(k + 1), CollageMotion.ZOOM)
+            add("h-mid-$n", "Grande en medio", listOf(cs[k]) + cs.take(k) + cs.drop(k + 1), CollageMotion.ZOOM)
         }
         // Cornice a L: grande in un angolo, le piccole lungo due lati.
         fun lShape(g: Int, big: Int, corner: Int): List<CollageCell> {
@@ -441,8 +441,8 @@ object CollageTemplates {
         }
         for ((g, big) in listOf(3 to 2, 4 to 3)) {
             val n = g * g - big * big + 1
-            add("h-l-$n", "Grande nell'angolo", lShape(g, big, 0), CollageMotion.ZOOM)
-            add("h-l2-$n", "Grande nell'angolo (destra)", lShape(g, big, 1), CollageMotion.ZOOM)
+            add("h-l-$n", "Grande en la esquina", lShape(g, big, 0), CollageMotion.ZOOM)
+            add("h-l2-$n", "Grande en la esquina (derecha)", lShape(g, big, 1), CollageMotion.ZOOM)
         }
         // Mosaico 4×4: grande 2×2 al centro sopra, attorno le altre.
         val u = 0.25f
@@ -467,11 +467,11 @@ object CollageTemplates {
             CollageGeometry.bounds(c.poly.map { Pt(it.y, it.x) }.reversed())
         }
         for (n in 2..4) {
-            out += CollageTemplate("d-v-$n", CollageFamily.DIAGONAL, "Colonne oblique", vBands(n, false), true, style, CollageMotion.WIPE)
-            if (n >= 3) out += CollageTemplate("d-vz-$n", CollageFamily.DIAGONAL, "Lampo", vBands(n, true), true, style, CollageMotion.WIPE)
+            out += CollageTemplate("d-v-$n", CollageFamily.DIAGONAL, "Columnas oblicuas", vBands(n, false), true, style, CollageMotion.WIPE)
+            if (n >= 3) out += CollageTemplate("d-vz-$n", CollageFamily.DIAGONAL, "Destello", vBands(n, true), true, style, CollageMotion.WIPE)
         }
         for (n in 2..5) {
-            out += CollageTemplate("d-h-$n", CollageFamily.DIAGONAL, "Fasce oblique", hBands(n, false), true, style, CollageMotion.SLIDE)
+            out += CollageTemplate("d-h-$n", CollageFamily.DIAGONAL, "Franjas oblicuas", hBands(n, false), true, style, CollageMotion.SLIDE)
             if (n >= 3) out += CollageTemplate("d-hz-$n", CollageFamily.DIAGONAL, "Zigzag", hBands(n, true), true, style, CollageMotion.SLIDE)
         }
         // Croce obliqua: quattro foto.
@@ -481,7 +481,7 @@ object CollageTemplates {
             listOf(Pt(0f, 0f), t, x, l), listOf(t, Pt(1f, 0f), r, x),
             listOf(l, x, b, Pt(0f, 1f)), listOf(x, r, Pt(1f, 1f), b),
         ).map { CollageGeometry.bounds(it) }
-        out += CollageTemplate("d-x-4", CollageFamily.DIAGONAL, "Croce obliqua", cross, true, style, CollageMotion.WIPE)
+        out += CollageTemplate("d-x-4", CollageFamily.DIAGONAL, "Cruz oblicua", cross, true, style, CollageMotion.WIPE)
         // Grande obliqua in alto e due sotto.
         val y0 = 0.62f
         val tri = listOf(
@@ -489,7 +489,7 @@ object CollageTemplates {
             listOf(Pt(0f, y0 + 0.1f), Pt(0.5f, y0), Pt(0.5f, 1f), Pt(0f, 1f)),
             listOf(Pt(0.5f, y0), Pt(1f, y0 - 0.1f), Pt(1f, 1f), Pt(0.5f, 1f)),
         ).map { CollageGeometry.bounds(it) }
-        out += CollageTemplate("d-hero-3", CollageFamily.DIAGONAL, "Grande obliqua", tri, true, style, CollageMotion.SLIDE)
+        out += CollageTemplate("d-hero-3", CollageFamily.DIAGONAL, "Grande oblicua", tri, true, style, CollageMotion.SLIDE)
     }
 
     /** Un quadrato di lato [s] (frazione del lato corto) centrato in ([cx],[cy]), in frazioni del quadro. */
@@ -515,18 +515,18 @@ object CollageTemplates {
             return (0 until n).map { i -> CollageCell(0.5f - total / 2 + i * (w + g), cy - h / 2, w, h, shape = CellShape.ARCH) }
         }
         for (n in 1..4) {
-            add("s-arch-$n", if (n == 1) "Arco" else "Archi", if (n % 2 == 0) CollageBg.TERRACOTTA else CollageBg.SAGE,
+            add("s-arch-$n", if (n == 1) "Arco" else "Arcos", if (n % 2 == 0) CollageBg.TERRACOTTA else CollageBg.SAGE,
                 archRow(n, 0.5f, 0.82f, if (n == 1) 1.35f else 1.6f), if (n == 1) CollageMotion.STILL else CollageMotion.SLIDE)
         }
         for (n in listOf(4, 6)) {
             val perRow = if (wide) n / 2 else 2
             val rows = n / perRow
             val cells = (0 until rows).flatMap { r -> archRow(perRow, 0.5f + (r - (rows - 1) / 2f) * (0.92f / rows), 0.92f / rows - 0.04f, 1.45f) }
-            add("s-arches-$n", "Archi in fila", CollageBg.BURGUNDY, cells, CollageMotion.WIPE)
+            add("s-arches-$n", "Arcos en fila", CollageBg.BURGUNDY, cells, CollageMotion.WIPE)
         }
         // Cerchi.
-        add("s-circle-1", "Cerchio", CollageBg.BUTTER, listOf(sq(0.5f, 0.5f, 0.82f, a, CellShape.CIRCLE)), CollageMotion.STILL)
-        add("s-circle-2", "Due cerchi", CollageBg.LAVENDER, if (tall) listOf(sq(0.42f, 0.33f, 0.68f, a, CellShape.CIRCLE), sq(0.6f, 0.67f, 0.62f, a, CellShape.CIRCLE))
+        add("s-circle-1", "Círculo", CollageBg.BUTTER, listOf(sq(0.5f, 0.5f, 0.82f, a, CellShape.CIRCLE)), CollageMotion.STILL)
+        add("s-circle-2", "Dos círculos", CollageBg.LAVENDER, if (tall) listOf(sq(0.42f, 0.33f, 0.68f, a, CellShape.CIRCLE), sq(0.6f, 0.67f, 0.62f, a, CellShape.CIRCLE))
             else listOf(sq(0.36f, 0.45f, 0.62f, a, CellShape.CIRCLE), sq(0.64f, 0.57f, 0.56f, a, CellShape.CIRCLE)))
         // Bolle: una grande e le altre attorno, a zigzag lungo il lato lungo.
         for (n in 3..6) {
@@ -541,11 +541,11 @@ object CollageTemplates {
                 val across = 0.5f + side * (if (i == 0) 0.06f else 0.2f)
                 cells += if (tall || !wide) sq(across, along, s, a, CellShape.CIRCLE) else sq(along, across, s, a, CellShape.CIRCLE)
             }
-            add("s-bubbles-$n", "Bolle", if (n % 2 == 0) CollageBg.EMERALD else CollageBg.BLUE_WASH, cells)
+            add("s-bubbles-$n", "Burbujas", if (n % 2 == 0) CollageBg.EMERALD else CollageBg.BLUE_WASH, cells)
         }
         // Cuore.
-        add("s-heart-1", "Cuore", CollageBg.BUTTER, listOf(sq(0.5f, 0.5f, 0.86f, a, CellShape.HEART)), CollageMotion.STILL)
-        add("s-heart-3", "Cuore e cerchi", CollageBg.LAVENDER, listOf(
+        add("s-heart-1", "Corazón", CollageBg.BUTTER, listOf(sq(0.5f, 0.5f, 0.86f, a, CellShape.HEART)), CollageMotion.STILL)
+        add("s-heart-3", "Corazón y círculos", CollageBg.LAVENDER, listOf(
             sq(0.5f, if (tall) 0.42f else 0.5f, 0.7f, a, CellShape.HEART),
             sq(if (tall) 0.27f else 0.16f, if (tall) 0.78f else 0.78f, 0.3f, a, CellShape.CIRCLE),
             sq(if (tall) 0.73f else 0.84f, if (tall) 0.8f else 0.24f, 0.26f, a, CellShape.CIRCLE),
@@ -566,13 +566,13 @@ object CollageTemplates {
                 val oy = (py - my) * unit * (if (a < 1) a else 1f)
                 sq(0.5f + ox, 0.5f + oy, unit * 0.98f, a, CellShape.HEXAGON, 1.1547f)
             }
-            add("s-hex-$n", "Alveare", if (n % 2 == 0) CollageBg.BLACK else CollageBg.BUTTER, cells)
+            add("s-hex-$n", "Panal", if (n % 2 == 0) CollageBg.BLACK else CollageBg.BUTTER, cells)
         }
         // Forme morbide.
-        add("s-blob-1", "Forma morbida", CollageBg.SUNSET, listOf(sq(0.5f, 0.5f, 0.84f, a, CellShape.BLOB)), CollageMotion.STILL)
-        add("s-blob-2", "Due forme morbide", CollageBg.SAGE, if (tall) listOf(sq(0.4f, 0.32f, 0.7f, a, CellShape.BLOB), sq(0.6f, 0.68f, 0.66f, a, CellShape.BLOB, rot = 40f))
+        add("s-blob-1", "Forma suave", CollageBg.SUNSET, listOf(sq(0.5f, 0.5f, 0.84f, a, CellShape.BLOB)), CollageMotion.STILL)
+        add("s-blob-2", "Dos formas suaves", CollageBg.SAGE, if (tall) listOf(sq(0.4f, 0.32f, 0.7f, a, CellShape.BLOB), sq(0.6f, 0.68f, 0.66f, a, CellShape.BLOB, rot = 40f))
             else listOf(sq(0.33f, 0.5f, 0.66f, a, CellShape.BLOB), sq(0.67f, 0.5f, 0.6f, a, CellShape.BLOB, rot = 40f)))
-        add("s-blob-3", "Tre forme morbide", CollageBg.TERRACOTTA, if (tall) listOf(
+        add("s-blob-3", "Tres formas suaves", CollageBg.TERRACOTTA, if (tall) listOf(
             sq(0.38f, 0.22f, 0.56f, a, CellShape.BLOB), sq(0.64f, 0.5f, 0.56f, a, CellShape.BLOB, rot = 70f), sq(0.38f, 0.78f, 0.56f, a, CellShape.BLOB, rot = 140f),
         ) else listOf(sq(0.22f, 0.45f, 0.5f, a, CellShape.BLOB), sq(0.5f, 0.56f, 0.5f, a, CellShape.BLOB, rot = 70f), sq(0.78f, 0.45f, 0.5f, a, CellShape.BLOB, rot = 140f)))
     }
@@ -628,7 +628,7 @@ object CollageTemplates {
                 if (a < 0.9f) sq(0.5f + (if (i % 2 == 0) -0.12f else 0.12f), 0.08f + 0.84f * f, min(0.55f, 0.84f / n / a / 1.3f * 0.95f), a, CellShape.RECT, rot = (r.next() - 0.5f) * 12f, frame = CellFrame.TAPE)
                 else sq(0.08f + 0.84f * f, 0.5f + (if (i % 2 == 0) -0.04f else 0.04f), min(0.55f, 0.84f / n * a / 1.15f * 0.95f), a, CellShape.RECT, rot = (r.next() - 0.5f) * 12f, frame = CellFrame.TAPE)
             }
-            add("p-line-$n", "Appese col nastro", cells, CollageMotion.SLIDE, CollageBg.CLOUD)
+            add("p-line-$n", "Colgadas con cinta", cells, CollageMotion.SLIDE, CollageBg.CLOUD)
         }
         // Griglia ordinata di polaroid, appena storte.
         for (n in listOf(4, 6, 9)) {
@@ -640,7 +640,7 @@ object CollageTemplates {
                 sq(0.5f + (i % cols - (cols - 1) / 2f) * (0.92f / cols), 0.48f + (i / cols - (rows - 1) / 2f) * (0.86f / rows), s, a, CellShape.RECT,
                     rot = (r.next() - 0.5f) * 6f, frame = CellFrame.POLAROID)
             }
-            add("p-grid-$n", "Bacheca", cells, CollageMotion.CASCADE, CollageBg.SAGE)
+            add("p-grid-$n", "Tablero", cells, CollageMotion.CASCADE, CollageBg.SAGE)
         }
     }
 
@@ -651,19 +651,19 @@ object CollageTemplates {
                 // Pellicola verticale al centro: [n] fotogrammi che riempiono l'altezza (e si ripetono quando scorre).
                 val w = if (a < 1) 0.62f else 0.5f
                 val cells = (0 until n).map { i -> rect(0.5f - w / 2, i.toFloat() / n, w, 1f / n) }
-                out += CollageTemplate("f-v-$n", CollageFamily.FILM, "Rullino", cells, true, style, CollageMotion.SCROLL, CollageDecor.FILM_V)
+                out += CollageTemplate("f-v-$n", CollageFamily.FILM, "Rollo", cells, true, style, CollageMotion.SCROLL, CollageDecor.FILM_V)
             }
             if (a >= 0.9f) {
                 val h = if (a > 1) 0.56f else 0.42f
                 val cells = (0 until n).map { i -> rect(i.toFloat() / n, 0.5f - h / 2, 1f / n, h) }
-                out += CollageTemplate("f-h-$n", CollageFamily.FILM, "Rullino orizzontale", cells, true, style, CollageMotion.SCROLL, CollageDecor.FILM_H)
+                out += CollageTemplate("f-h-$n", CollageFamily.FILM, "Rollo horizontal", cells, true, style, CollageMotion.SCROLL, CollageDecor.FILM_H)
             }
         }
         if (a < 1) for (k in listOf(3, 4)) {
             // Due pellicole affiancate.
             val w = 0.4f
             val cells = (0 until 2 * k).map { i -> rect(if (i < k) 0.06f else 0.54f, (i % k).toFloat() / k, w, 1f / k) }
-            out += CollageTemplate("f-v2-${2 * k}", CollageFamily.FILM, "Due rullini", cells, true, style.copy(bg = CollageBg.BLACK), CollageMotion.SCROLL, CollageDecor.FILM_V)
+            out += CollageTemplate("f-v2-${2 * k}", CollageFamily.FILM, "Dos rollos", cells, true, style.copy(bg = CollageBg.BLACK), CollageMotion.SCROLL, CollageDecor.FILM_V)
         }
     }
 
@@ -674,18 +674,18 @@ object CollageTemplates {
         }
         // Coordinate pensate per il verticale; in orizzontale le foto si dispongono di lato.
         val tall = a < 1
-        add("e-frame-1", "Cornice", listOf(if (tall) rect(0.1f, 0.08f, 0.8f, 0.72f) else rect(0.08f, 0.1f, 0.84f, 0.68f)), CollageMotion.STILL, if (tall) 0.88f else 0.88f)
-        add("e-stagger-2", "Sfalsate", if (tall) listOf(rect(0.07f, 0.06f, 0.6f, 0.42f), rect(0.33f, 0.44f, 0.6f, 0.42f))
+        add("e-frame-1", "Marco", listOf(if (tall) rect(0.1f, 0.08f, 0.8f, 0.72f) else rect(0.08f, 0.1f, 0.84f, 0.68f)), CollageMotion.STILL, if (tall) 0.88f else 0.88f)
+        add("e-stagger-2", "Desfasadas", if (tall) listOf(rect(0.07f, 0.06f, 0.6f, 0.42f), rect(0.33f, 0.44f, 0.6f, 0.42f))
             else listOf(rect(0.06f, 0.08f, 0.44f, 0.62f), rect(0.5f, 0.24f, 0.44f, 0.62f)), CollageMotion.SLIDE, if (tall) 0.93f else 0.93f)
-        add("e-stagger-3", "Scala", if (tall) listOf(rect(0.07f, 0.05f, 0.52f, 0.3f), rect(0.41f, 0.31f, 0.52f, 0.3f), rect(0.07f, 0.57f, 0.52f, 0.3f))
+        add("e-stagger-3", "Escala", if (tall) listOf(rect(0.07f, 0.05f, 0.52f, 0.3f), rect(0.41f, 0.31f, 0.52f, 0.3f), rect(0.07f, 0.57f, 0.52f, 0.3f))
             else listOf(rect(0.04f, 0.08f, 0.3f, 0.56f), rect(0.35f, 0.26f, 0.3f, 0.56f), rect(0.66f, 0.08f, 0.3f, 0.56f)), CollageMotion.SLIDE, if (tall) 0.93f else 0.92f)
-        add("e-pair-2", "Coppia", if (tall) listOf(rect(0.08f, 0.2f, 0.4f, 0.5f), rect(0.52f, 0.2f, 0.4f, 0.5f))
+        add("e-pair-2", "Pareja", if (tall) listOf(rect(0.08f, 0.2f, 0.4f, 0.5f), rect(0.52f, 0.2f, 0.4f, 0.5f))
             else listOf(rect(0.1f, 0.12f, 0.38f, 0.66f), rect(0.52f, 0.12f, 0.38f, 0.66f)), CollageMotion.WIPE, 0.84f)
-        add("e-big-3", "Copertina", if (tall) listOf(rect(0.08f, 0.06f, 0.84f, 0.5f), rect(0.08f, 0.59f, 0.405f, 0.24f), rect(0.515f, 0.59f, 0.405f, 0.24f))
+        add("e-big-3", "Portada", if (tall) listOf(rect(0.08f, 0.06f, 0.84f, 0.5f), rect(0.08f, 0.59f, 0.405f, 0.24f), rect(0.515f, 0.59f, 0.405f, 0.24f))
             else listOf(rect(0.05f, 0.08f, 0.56f, 0.72f), rect(0.64f, 0.08f, 0.31f, 0.35f), rect(0.64f, 0.45f, 0.31f, 0.35f)), CollageMotion.SLIDE, 0.91f)
-        add("e-contact-4", "Provini", if (tall) listOf(rect(0.1f, 0.1f, 0.38f, 0.3f), rect(0.52f, 0.1f, 0.38f, 0.3f), rect(0.1f, 0.44f, 0.38f, 0.3f), rect(0.52f, 0.44f, 0.38f, 0.3f))
+        add("e-contact-4", "Hojas de contacto", if (tall) listOf(rect(0.1f, 0.1f, 0.38f, 0.3f), rect(0.52f, 0.1f, 0.38f, 0.3f), rect(0.1f, 0.44f, 0.38f, 0.3f), rect(0.52f, 0.44f, 0.38f, 0.3f))
             else listOf(rect(0.12f, 0.08f, 0.36f, 0.34f), rect(0.52f, 0.08f, 0.36f, 0.34f), rect(0.12f, 0.46f, 0.36f, 0.34f), rect(0.52f, 0.46f, 0.36f, 0.34f)), CollageMotion.CASCADE, 0.86f)
-        add("e-strip-3", "Striscia", if (tall) listOf(rect(0.18f, 0.06f, 0.64f, 0.25f), rect(0.18f, 0.33f, 0.64f, 0.25f), rect(0.18f, 0.6f, 0.64f, 0.25f))
+        add("e-strip-3", "Tira", if (tall) listOf(rect(0.18f, 0.06f, 0.64f, 0.25f), rect(0.18f, 0.33f, 0.64f, 0.25f), rect(0.18f, 0.6f, 0.64f, 0.25f))
             else listOf(rect(0.06f, 0.16f, 0.28f, 0.6f), rect(0.36f, 0.16f, 0.28f, 0.6f), rect(0.66f, 0.16f, 0.28f, 0.6f)), CollageMotion.WIPE, 0.92f)
     }
 }

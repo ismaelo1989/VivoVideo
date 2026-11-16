@@ -19,34 +19,34 @@ import kotlin.math.sqrt
 /** Cosa si può mostrare. */
 @Serializable
 enum class TeleWidget(val label: String, val hint: String) {
-    SPEED("Velocità", "Contagiri con lancetta luminosa e scie quando vai forte"),
-    HEART("Battito", "Cuore che batte al tuo ritmo, zone di frequenza"),
-    POWER("Potenza", "Watt con le zone (FTP)"),
-    CADENCE("Cadenza", "Pedalate al minuto, la pedivella gira a tempo"),
-    GRADE("Pendenza", "Percentuale e salita disegnata"),
-    ALTITUDE("Altimetria", "Profilo del giro, con il punto in cui sei"),
-    MAP("Mappa", "Il percorso che si disegna mentre pedali"),
-    DISTANCE("Distanza", "Chilometri fatti e barra del giro"),
-    TIME("Ora e tempo", "Ora del giorno e tempo trascorso"),
-    TEMP("Temperatura", "Gradi dal sensore"),
+    SPEED("Velocidad", "Tacómetro con aguja luminosa y estelas cuando vas fuerte"),
+    HEART("Beat", "Corazón que late a tu ritmo, zonas de frecuencia"),
+    POWER("Potencia", "Watts con las zonas (FTP)"),
+    CADENCE("Cadencia", "Pedaladas por minuto, la biela gira al compás"),
+    GRADE("Pendiente", "Porcentaje y subida dibujada"),
+    ALTITUDE("Altimetría", "Perfil del recorrido, con el punto donde estás"),
+    MAP("Mapa", "El recorrido que se dibuja mientras pedaleas"),
+    DISTANCE("Distancia", "Kilómetros recorridos y barra del recorrido"),
+    TIME("Hora y tiempo", "Hora del día y tiempo transcurrido"),
+    TEMP("Temperatura", "Grados del sensor"),
 }
 
 /** Stile grafico di tutti gli indicatori. */
 @Serializable
 enum class TeleStyle(val label: String, val hint: String) {
-    GLASS("Vetro liquido", "Pannelli trasparenti con riflessi, puliti e attuali"),
-    HUD("Visore", "Linee sottili e tacche, come il casco di un pilota del futuro"),
-    RACE("Gara", "Numeri inclinati e pieni, barre a LED come in TV"),
-    NEON("Neon", "Contorni che si illuminano nel colore scelto"),
-    MINIMAL("Essenziale", "Solo i numeri, grandi, con un'ombra"),
+    GLASS("Cristal líquido", "Paneles transparentes con reflejos, limpios y actuales"),
+    HUD("Visor", "Líneas finas y marcas, como el casco de un piloto del futuro"),
+    RACE("Carrera", "Números inclinados y llenos, barras LED como en la TV"),
+    NEON("Neon", "Contornos que se iluminan en el color elegido"),
+    MINIMAL("Esencial", "Solo los números, grandes, con una sombra"),
 }
 
 /** Dove sta un indicatore nel quadro. */
 @Serializable
 enum class TeleSlot(val label: String, val col: Int, val row: Int) {
-    TOP_LEFT("In alto a sinistra", 0, 0), TOP("In alto al centro", 1, 0), TOP_RIGHT("In alto a destra", 2, 0),
-    LEFT("A sinistra", 0, 1), RIGHT("A destra", 2, 1),
-    BOTTOM_LEFT("In basso a sinistra", 0, 2), BOTTOM("In basso al centro", 1, 2), BOTTOM_RIGHT("In basso a destra", 2, 2),
+    TOP_LEFT("Arriba a la izquierda", 0, 0), TOP("Arriba al centro", 1, 0), TOP_RIGHT("Arriba a la derecha", 2, 0),
+    LEFT("A la izquierda", 0, 1), RIGHT("A la derecha", 2, 1),
+    BOTTOM_LEFT("Abajo a la izquierda", 0, 2), BOTTOM("Abajo al centro", 1, 2), BOTTOM_RIGHT("Abajo a la derecha", 2, 2),
 }
 
 @Serializable
@@ -54,12 +54,12 @@ data class TeleItem(val widget: TeleWidget, val slot: TeleSlot, val scale: Float
 
 /** Schemi pronti: un tocco e gli indicatori vanno al loro posto. */
 enum class TeleLayout(val label: String, val items: List<TeleItem>) {
-    ACTION("Azione", listOf(
+    ACTION("Acción", listOf(
         TeleItem(TeleWidget.SPEED, TeleSlot.BOTTOM_LEFT, 1.15f), TeleItem(TeleWidget.HEART, TeleSlot.BOTTOM_RIGHT),
         TeleItem(TeleWidget.POWER, TeleSlot.BOTTOM_RIGHT), TeleItem(TeleWidget.MAP, TeleSlot.TOP_RIGHT),
         TeleItem(TeleWidget.GRADE, TeleSlot.TOP_LEFT),
     )),
-    CLIMB("Salita", listOf(
+    CLIMB("Subida", listOf(
         TeleItem(TeleWidget.GRADE, TeleSlot.TOP_LEFT, 1.15f), TeleItem(TeleWidget.ALTITUDE, TeleSlot.BOTTOM, 1.1f),
         TeleItem(TeleWidget.POWER, TeleSlot.TOP_RIGHT), TeleItem(TeleWidget.HEART, TeleSlot.TOP_RIGHT),
     )),
@@ -69,7 +69,7 @@ enum class TeleLayout(val label: String, val items: List<TeleItem>) {
         TeleItem(TeleWidget.MAP, TeleSlot.TOP_RIGHT), TeleItem(TeleWidget.ALTITUDE, TeleSlot.TOP_LEFT),
         TeleItem(TeleWidget.GRADE, TeleSlot.LEFT), TeleItem(TeleWidget.DISTANCE, TeleSlot.TOP),
     )),
-    CLEAN("Pulito", listOf(TeleItem(TeleWidget.SPEED, TeleSlot.BOTTOM, 1.2f))),
+    CLEAN("Limpio", listOf(TeleItem(TeleWidget.SPEED, TeleSlot.BOTTOM, 1.2f))),
 }
 
 /** Impostazioni dei dati sportivi del progetto (il file è una copia interna dell'app). */
@@ -551,8 +551,8 @@ object TeleZones {
     fun power(w: Float, ftp: Int): Int = when (w / ftp.coerceAtLeast(1)) {
         in 0f..0.55f -> 1; in 0.55f..0.75f -> 2; in 0.75f..0.9f -> 3; in 0.9f..1.05f -> 4; else -> 5
     }
-    val heartNames = listOf("", "Recupero", "Fondo", "Medio", "Soglia", "Massimo")
-    val powerNames = listOf("", "Recupero", "Fondo", "Tempo", "Soglia", "VO2max")
+    val heartNames = listOf("", "Recuperación", "Fondo", "Medio", "Umbral", "Máximo")
+    val powerNames = listOf("", "Recuperación", "Fondo", "Tiempo", "Umbral", "VO2max")
     /** Colori delle zone, dal blu al rosso. */
     val colors = listOf(0xFF9AA4B2.toInt(), 0xFF4DA3FF.toInt(), 0xFF2EE59D.toInt(), 0xFFFFD43D.toInt(), 0xFFFF8A3D.toInt(), 0xFFFF3D5A.toInt())
 }

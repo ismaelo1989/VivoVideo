@@ -93,7 +93,7 @@ class MomentsTest {
         val start = Moments.bestStarts(scan, 3_000_000, 1).first()
         assertTrue("$start", start >= 6_000_000)
         val why = Moments.describe(scan, start, 3_000_000)
-        assertTrue(why, "più nitido" in why && "camera ferma" in why && "volti sorridenti" in why)
+        assertTrue(why, "más nítido" in why && "cámara quieta" in why && "rostros sonrientes" in why)
         // Raffica: la seconda foto ha il volto a fuoco e gli occhi aperti; la terza non è stata analizzata.
         val a = s(0, 300f, faces = 1, smile = 0.5f).copy(faceSharp = 40f, eyes = 0.1f)
         val b = s(0, 300f, faces = 1, smile = 0.5f).copy(faceSharp = 400f, eyes = 1f)

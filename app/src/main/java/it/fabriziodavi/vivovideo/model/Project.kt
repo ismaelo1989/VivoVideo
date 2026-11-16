@@ -23,67 +23,67 @@ enum class ClipSpeed(val label: String) {
 @Serializable
 enum class TransitionType(val label: String) {
     /** Dissolvenza incrociata vera: le due clip si sovrappongono (usa i fotogrammi oltre il taglio). */
-    CROSSFADE("Incrociata"),
-    FADE_BLACK("Nero"),
+    CROSSFADE("Cruzada"),
+    FADE_BLACK("Negro"),
     FLASH("Flash"),
     ZOOM("Zoom"),
-    BLUR("Sfocatura"),
-    WHIP("Scorrimento"),
-    SPIN("Rotazione"),
+    BLUR("Desenfoque"),
+    WHIP("Desplazamiento"),
+    SPIN("Rotación"),
     // Effetti "wow"
     GLITCH("Glitch"),
     PRISM("Prisma"),
-    LEAK("Luce"),
-    IRIS("Cerchio"),
+    LEAK("Luz"),
+    IRIS("Círculo"),
     PIXELATE("Pixel"),
-    SHAKE("Scossa"),
+    SHAKE("Sacudida"),
     // Premium 2026
     PUNCH("Zoom punch"),
-    SWIRL("Vortice"),
-    LIQUID("Liquido"),
-    BURN("Pellicola bruciata"),
+    SWIRL("Remolino"),
+    LIQUID("Líquido"),
+    BURN("Película quemada"),
     CUBE("Cubo 3D"),
-    LUMA("Luce che dissolve"),
-    RGB("Schiaffo RGB"),
-    SLIDE_UP("Scorrimento verticale"),
-    TEAR("Strappo"),
-    BURST("Esplosione di luce"),
+    LUMA("Luz que disuelve"),
+    RGB("Bofetada RGB"),
+    SLIDE_UP("Desplazamiento vertical"),
+    TEAR("Rasgado"),
+    BURST("Explosión de luz"),
     LENS("Lente"),
-    STRIPES("Strisce"),
-    SHUTTER("Otturatore"),
+    STRIPES("Tiras"),
+    SHUTTER("Obturador"),
     // Sport e momenti dinamici
-    SPEEDZOOM("Scatto di velocità"),
-    SMASH("Sfondamento"),
-    SQUASH("Schiacciata"),
+    SPEEDZOOM("Disparo de velocidad"),
+    SMASH("Irrupción"),
+    SQUASH("Aplastada"),
     // Romantico e nostalgico
-    HEART("Cuore"),
-    BOKEHFADE("Dissolvenza bokeh"),
-    FILMSLIP("Salto di pellicola"),
-    REWIND("Riavvolgimento VHS"),
+    HEART("Corazón"),
+    BOKEHFADE("Fundido bokeh"),
+    FILMSLIP("Salto de película"),
+    REWIND("Rebobinado VHS"),
     // Tendenze 2026: stacchi secchi da velocity edit, niente forme 3D.
     BLACKOUT("Blackout"),
-    EXPOSE("Flash esposizione"),
-    CAMSHAKE("Scossa camera"),
-    SNAPZOOM("Zoom secco"),
+    EXPOSE("Flash de exposición"),
+    CAMSHAKE("Sacudida de cámara"),
+    SNAPZOOM("Zoom seco"),
     // Tendenze 2026, morbide (documentari, viaggi, natura): niente onde né lampi.
-    SOFTZOOM("Zoom morbido"),
-    DRIFT("Scivolata"),
+    SOFTZOOM("Zoom suave"),
+    DRIFT("Deslizamiento"),
     // Dal video "12 Essential Transitions" scelto dall'utente (29/10/2026): tendine moderne, scalini, sovrapposizione,
     // taglio invisibile e passaggio con maschera. Tutte a due clip (compositore) tranne il taglio invisibile.
-    WIPE("Tendina"),
-    WIPE_DIAG("Tendina diagonale"),
-    CLOCK("Orologio"),
-    STEPS("Scalini"),
-    OVERLAY("Sovrapposizione"),
-    INVISIBLE("Taglio invisibile"),
-    MASK_PASS("Passaggio con maschera"),
+    WIPE("Cortina"),
+    WIPE_DIAG("Cortina diagonal"),
+    CLOCK("Reloj"),
+    STEPS("Escalones"),
+    OVERLAY("Superposición"),
+    INVISIBLE("Corte invisible"),
+    MASK_PASS("Paso con máscara"),
     // Azione 2026 (01/11/2026, sport ed eventi): a due clip, brevi e secche, tutte e due le clip in movimento.
-    IMPACT("Frame d'impatto"),
+    IMPACT("Frame de impacto"),
     SWIPE("Swipe"),
-    SLICES("Tagli a fette"),
-    TILES("Tessere"),
-    BLADE("Lama di luce"),
-    STROBE("Strobo"),
+    SLICES("Cortes en rebanadas"),
+    TILES("Mosaico"),
+    BLADE("Hoja de luz"),
+    STROBE("Estrobo"),
     // 2027 (08/11/2026): i pixel della clip prima si sciolgono trascinati dal movimento della nuova.
     DATAMOSH("Datamosh");
 
@@ -113,21 +113,21 @@ enum class TransitionType(val label: String) {
 
     /** Spiegazione per il pannello delle transizioni (null = quella di serie). */
     val hint: String? get() = when (this) {
-        CROSSFADE -> "Incrociata: le due clip si sovrappongono usando i fotogrammi prima e dopo il taglio, senza cambiare la durata del video."
-        WIPE -> "Tendina: la clip successiva entra da sinistra con un bordo morbido e un filo di luce. Usa i fotogrammi oltre il taglio, come l'incrociata: se mancano, l'app accorcia un poco le clip vicino al taglio."
-        WIPE_DIAG -> "Tendina diagonale: la clip successiva entra dall'angolo in alto a sinistra, con un bordo morbido."
-        CLOCK -> "Orologio: la clip successiva si scopre come la lancetta di un orologio, dal centro."
-        STEPS -> "Scalini: la clip successiva scende a gradini, una colonna dopo l'altra."
-        OVERLAY -> "Sovrapposizione: le due clip si fondono e le luci si accendono nel passaggio, come una doppia esposizione."
-        INVISIBLE -> "Taglio invisibile: una scia di movimento veloce nasconde il taglio, come se la camera girasse da una ripresa all'altra. Meglio corta (0,3–0,5 s) e su riprese che si muovono."
-        IMPACT -> "Frame d'impatto: sul colpo, pochi fotogrammi a inchiostro (bianco e nero, alternati in negativo) con linee di velocità e uno scatto di zoom, come nei manga e nelle edit sportive. Brevissima: 0,3–0,4 s, sul battito."
-        SWIPE -> "Swipe: la clip nuova spinge via la vecchia con un piccolo rimbalzo e la scia di movimento; nei video verticali sale dal basso, come quando scorri un feed."
-        SLICES -> "Tagli a fette: la clip nuova arriva a strisce, da lati alternati e sfalsate, con un filo di luce sul bordo."
-        TILES -> "Tessere: la clip nuova si compone a tessere che scoppiano in ordine casuale."
-        BLADE -> "Lama di luce: un taglio diagonale velocissimo con una scia calda sul filo."
-        STROBE -> "Strobo: le due clip si alternano tre volte a ritmo serrato, con un colpo di luce e di zoom a ogni scambio. Da mettere su un drop o su un colpo forte."
-        DATAMOSH -> "Datamosh: dopo il taglio l'immagine di prima resta e si scioglie, trascinata dal movimento della clip nuova, a blocchi come un video rotto; poi la clip nuova emerge a tasselli. Più la clip nuova si muove, più l'effetto è forte. Parte sul taglio: 1–2 s."
-        MASK_PASS -> "Passaggio con maschera: dopo il taglio la persona della clip prima resta davanti mentre dietro arriva già la clip successiva, poi svanisce. Serve lo scontorno della persona sulla clip prima del taglio (Effetti → Persona)."
+        CROSSFADE -> "Cruzada: los dos clips se superponen usando los fotogramas de antes y después del corte, sin cambiar la duración del video."
+        WIPE -> "Cortina: el clip siguiente entra por la izquierda con un borde suave y un hilo de luz. Usa los fotogramas más allá del corte, como la cruzada: si faltan, la app acorta un poco los clips cerca del corte."
+        WIPE_DIAG -> "Cortina diagonal: el clip siguiente entra desde la esquina superior izquierda, con un borde suave."
+        CLOCK -> "Reloj: el clip siguiente se descubre como la manecilla de un reloj, desde el centro."
+        STEPS -> "Escalones: el clip siguiente baja en escalones, una columna tras otra."
+        OVERLAY -> "Superposición: los dos clips se funden y las luces se encienden en el paso, como una doble exposición."
+        INVISIBLE -> "Corte invisible: una estela de movimiento rápido esconde el corte, como si la cámara girara de una toma a otra. Mejor corto (0,3–0,5 s) y en tomas con movimiento."
+        IMPACT -> "Frame de impacto: en el golpe, pocos fotogramas de tinta (blanco y negro, alternados en negativo) con líneas de velocidad y un disparo de zoom, como en el manga y en los edits deportivos. Brevísima: 0,3–0,4 s, en el beat."
+        SWIPE -> "Swipe: el clip nuevo empuja al anterior con un pequeño rebote y la estela de movimiento; en los videos verticales sube desde abajo, como cuando recorres un feed."
+        SLICES -> "Cortes en rebanadas: el clip nuevo llega en tiras, desde lados alternados y desfasadas, con un hilo de luz en el borde."
+        TILES -> "Mosaico: el clip nuevo se arma en teselas que estallan en orden aleatorio."
+        BLADE -> "Hoja de luz: un corte diagonal velocísimo con una estela cálida en el filo."
+        STROBE -> "Estrobo: los dos clips se alternan tres veces a ritmo apretado, con un golpe de luz y de zoom en cada cambio. Para poner en un drop o en un golpe fuerte."
+        DATAMOSH -> "Datamosh: después del corte la imagen de antes se queda y se deshace, arrastrada por el movimiento del clip nuevo, en bloques como un video roto; luego el clip nuevo emerge en teselas. Cuanto más se mueve el clip nuevo, más fuerte es el efecto. Empieza en el corte: 1–2 s."
+        MASK_PASS -> "Paso con máscara: después del corte la persona del clip anterior se queda delante mientras detrás ya llega el clip siguiente, y luego se desvanece. Hace falta el recorte de la persona en el clip anterior al corte (Efectos → Persona)."
         else -> null
     }
 
@@ -163,7 +163,7 @@ data class TransitionSpec(val type: TransitionType, val durationUs: Long = 500_0
 /** Andamento fra un keyframe e il successivo. */
 @Serializable
 enum class Easing(val label: String) {
-    SMOOTH("Morbido"), LINEAR("Lineare"), EASE_IN("Accelera"), EASE_OUT("Rallenta"), HOLD("Scatto");
+    SMOOTH("Suave"), LINEAR("Lineal"), EASE_IN("Acelerar"), EASE_OUT("Ralentizar"), HOLD("Disparo");
 
     fun apply(u: Float): Float = when (this) {
         LINEAR -> u
@@ -233,13 +233,13 @@ object SpeedLimits {
 
 /** Curve pronte, come negli editor professionali. */
 enum class SpeedPreset(val label: String, val points: List<SpeedPoint>) {
-    FLAT("Piatta 1×", listOf(SpeedPoint(0f, 1f), SpeedPoint(1f, 1f))),
-    VALLEY("Rallenty centrale", listOf(SpeedPoint(0f, 2f), SpeedPoint(0.5f, 0.35f), SpeedPoint(1f, 2f))),
-    HERO("Eroe", listOf(SpeedPoint(0f, 1f), SpeedPoint(0.38f, 1f), SpeedPoint(0.5f, 0.25f), SpeedPoint(0.62f, 1f), SpeedPoint(1f, 1f))),
-    BULLET("Proiettile", listOf(SpeedPoint(0f, 3f), SpeedPoint(0.42f, 0.3f), SpeedPoint(0.58f, 0.3f), SpeedPoint(1f, 3f))),
-    MONTAGE("Montaggio", listOf(SpeedPoint(0f, 0.5f), SpeedPoint(0.3f, 3f), SpeedPoint(0.7f, 3f), SpeedPoint(1f, 0.5f))),
-    FLASH_IN("Entrata lampo", listOf(SpeedPoint(0f, 4f), SpeedPoint(0.3f, 1f), SpeedPoint(1f, 1f))),
-    SLOW_END("Rallenty finale", listOf(SpeedPoint(0f, 1f), SpeedPoint(0.6f, 1f), SpeedPoint(1f, 0.25f))),
+    FLAT("Plana 1×", listOf(SpeedPoint(0f, 1f), SpeedPoint(1f, 1f))),
+    VALLEY("Cámara lenta central", listOf(SpeedPoint(0f, 2f), SpeedPoint(0.5f, 0.35f), SpeedPoint(1f, 2f))),
+    HERO("Héroe", listOf(SpeedPoint(0f, 1f), SpeedPoint(0.38f, 1f), SpeedPoint(0.5f, 0.25f), SpeedPoint(0.62f, 1f), SpeedPoint(1f, 1f))),
+    BULLET("Bala", listOf(SpeedPoint(0f, 3f), SpeedPoint(0.42f, 0.3f), SpeedPoint(0.58f, 0.3f), SpeedPoint(1f, 3f))),
+    MONTAGE("Montaje", listOf(SpeedPoint(0f, 0.5f), SpeedPoint(0.3f, 3f), SpeedPoint(0.7f, 3f), SpeedPoint(1f, 0.5f))),
+    FLASH_IN("Entrada relámpago", listOf(SpeedPoint(0f, 4f), SpeedPoint(0.3f, 1f), SpeedPoint(1f, 1f))),
+    SLOW_END("Cámara lenta final", listOf(SpeedPoint(0f, 1f), SpeedPoint(0.6f, 1f), SpeedPoint(1f, 0.25f))),
 }
 
 @Serializable
@@ -342,97 +342,97 @@ data class ColorSettings(
 )
 
 /** Categorie degli effetti (per il pannello). */
-enum class FxCategory(val label: String) { SOCIAL("Social"), TREND("Di tendenza"), WOW("Wow"), BEAT("A ritmo"), COLOR("Colore"), STYLE("Stile"), OPTICS("Ottica"), SHAPE("Forma"), MOTION("Movimento") }
+enum class FxCategory(val label: String) { SOCIAL("Social"), TREND("De moda"), WOW("Wow"), BEAT("Al ritmo"), COLOR("Color"), STYLE("Estilo"), OPTICS("Óptica"), SHAPE("Forma"), MOTION("Movimiento") }
 
 /** Effetti video per clip; [toggle] = acceso/spento senza intensità. L'ordine non conta (salvati per nome). */
 enum class FxType(val label: String, val category: FxCategory, val toggle: Boolean = false, val defaultAmount: Float = 0.6f) {
     // Colore
-    BW("Bianco e nero", FxCategory.COLOR, defaultAmount = 1f),
-    SEPIA("Seppia", FxCategory.COLOR, defaultAmount = 0.8f),
-    VIVID("Colori vivaci", FxCategory.COLOR, defaultAmount = 0.5f),
-    DUOTONE("Bicromia", FxCategory.COLOR, defaultAmount = 0.8f),
-    HUE("Arcobaleno", FxCategory.COLOR, defaultAmount = 0.5f),
+    BW("Blanco y negro", FxCategory.COLOR, defaultAmount = 1f),
+    SEPIA("Sepia", FxCategory.COLOR, defaultAmount = 0.8f),
+    VIVID("Colores vivos", FxCategory.COLOR, defaultAmount = 0.5f),
+    DUOTONE("Bicromía", FxCategory.COLOR, defaultAmount = 0.8f),
+    HUE("Arcoíris", FxCategory.COLOR, defaultAmount = 0.5f),
     POSTERIZE("Poster", FxCategory.COLOR, defaultAmount = 0.5f),
     INVERT("Negativo", FxCategory.COLOR, toggle = true, defaultAmount = 1f),
     // Stile
-    FILM("Pellicola", FxCategory.STYLE),
-    OLDFILM("Vecchio film", FxCategory.STYLE, defaultAmount = 0.7f),
+    FILM("Película", FxCategory.STYLE),
+    OLDFILM("Película antigua", FxCategory.STYLE, defaultAmount = 0.7f),
     VHS("VHS", FxCategory.STYLE),
     GLITCH("Glitch", FxCategory.STYLE, defaultAmount = 0.5f),
-    CARTOON("Fumetto", FxCategory.STYLE, defaultAmount = 0.6f),
-    HALFTONE("Retino", FxCategory.STYLE, defaultAmount = 0.5f),
+    CARTOON("Cómic", FxCategory.STYLE, defaultAmount = 0.6f),
+    HALFTONE("Trama", FxCategory.STYLE, defaultAmount = 0.5f),
     PIXEL("Pixel", FxCategory.STYLE, defaultAmount = 0.4f),
-    LIGHTLEAK("Luce calda", FxCategory.STYLE, defaultAmount = 0.6f),
-    GLOW("Bagliore", FxCategory.STYLE),
+    LIGHTLEAK("Luz cálida", FxCategory.STYLE, defaultAmount = 0.6f),
+    GLOW("Resplandor", FxCategory.STYLE),
     // Ottica
-    BLUR("Sfocatura", FxCategory.OPTICS, defaultAmount = 0.4f),
-    ZOOMBLUR("Sfocatura zoom", FxCategory.OPTICS, defaultAmount = 0.4f),
+    BLUR("Desenfoque", FxCategory.OPTICS, defaultAmount = 0.4f),
+    ZOOMBLUR("Desenfoque de zoom", FxCategory.OPTICS, defaultAmount = 0.4f),
     TILTSHIFT("Miniatura", FxCategory.OPTICS, defaultAmount = 0.6f),
-    VIGNETTE("Vignettatura", FxCategory.OPTICS),
-    FISHEYE("Grandangolo", FxCategory.OPTICS, defaultAmount = 0.5f),
-    CHROMA("Aberrazione", FxCategory.OPTICS, defaultAmount = 0.4f),
-    WAVE("Onde", FxCategory.OPTICS, defaultAmount = 0.4f),
+    VIGNETTE("Viñeteado", FxCategory.OPTICS),
+    FISHEYE("Gran angular", FxCategory.OPTICS, defaultAmount = 0.5f),
+    CHROMA("Aberración", FxCategory.OPTICS, defaultAmount = 0.4f),
+    WAVE("Olas", FxCategory.OPTICS, defaultAmount = 0.4f),
     // Forma
-    MIRROR("Specchio", FxCategory.SHAPE, toggle = true, defaultAmount = 1f),
+    MIRROR("Espejo", FxCategory.SHAPE, toggle = true, defaultAmount = 1f),
     KALEIDO("Caleidoscopio", FxCategory.SHAPE, defaultAmount = 0.5f),
-    GRID("Moltiplica", FxCategory.SHAPE, defaultAmount = 0.3f),
+    GRID("Multiplicar", FxCategory.SHAPE, defaultAmount = 0.3f),
     // Movimento
-    SHAKE("Scossa", FxCategory.MOTION, defaultAmount = 0.5f),
-    PULSE("Pulsa a ritmo", FxCategory.MOTION),
-    STROBE("Lampi a ritmo", FxCategory.MOTION, defaultAmount = 0.5f),
+    SHAKE("Sacudida", FxCategory.MOTION, defaultAmount = 0.5f),
+    PULSE("Pulsa al ritmo", FxCategory.MOTION),
+    STROBE("Destellos al ritmo", FxCategory.MOTION, defaultAmount = 0.5f),
     // Wow
-    HIT("Colpo a ritmo", FxCategory.WOW, defaultAmount = 0.7f),
-    CINEMATIC("Cinematografico", FxCategory.WOW, defaultAmount = 0.8f),
-    NEON("Contorni neon", FxCategory.WOW, defaultAmount = 0.8f),
-    RAYS("Raggi di luce", FxCategory.WOW, defaultAmount = 0.6f),
-    BOKEH("Luci bokeh", FxCategory.WOW, defaultAmount = 0.6f),
-    SPARKLE("Polvere d'oro", FxCategory.WOW, defaultAmount = 0.6f),
+    HIT("Golpe al ritmo", FxCategory.WOW, defaultAmount = 0.7f),
+    CINEMATIC("Cinematográfico", FxCategory.WOW, defaultAmount = 0.8f),
+    NEON("Contornos neón", FxCategory.WOW, defaultAmount = 0.8f),
+    RAYS("Rayos de luz", FxCategory.WOW, defaultAmount = 0.6f),
+    BOKEH("Luces bokeh", FxCategory.WOW, defaultAmount = 0.6f),
+    SPARKLE("Polvo dorado", FxCategory.WOW, defaultAmount = 0.6f),
     PRISM("Prisma", FxCategory.WOW, defaultAmount = 0.5f),
-    SPEEDLINES("Linee di velocità", FxCategory.WOW, defaultAmount = 0.6f),
+    SPEEDLINES("Líneas de velocidad", FxCategory.WOW, defaultAmount = 0.6f),
     // Premium 2026 (shader a parte: WowFxEffect)
-    DREAMY("Sogno", FxCategory.WOW, defaultAmount = 0.6f),
-    FILM35("Pellicola 35 mm", FxCategory.WOW, defaultAmount = 0.7f),
+    DREAMY("Sueño", FxCategory.WOW, defaultAmount = 0.6f),
+    FILM35("Película de 35 mm", FxCategory.WOW, defaultAmount = 0.7f),
     DUOPOP("Duotono pop", FxCategory.WOW, defaultAmount = 0.8f),
-    SWEEP("Lampo di luce", FxCategory.WOW, defaultAmount = 0.7f),
-    SPLIT3("Tre schermi", FxCategory.WOW, toggle = true, defaultAmount = 1f),
-    HOLO("Olografico", FxCategory.WOW, defaultAmount = 0.6f),
-    ZOOMBEAT("Zoom a ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
-    SHAKEBEAT("Scossa a ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
-    RGBBEAT("RGB a ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
-    FLARE("Bagliore anamorfico", FxCategory.WOW, defaultAmount = 0.6f),
-    DUST("Polvere di pellicola", FxCategory.WOW, defaultAmount = 0.6f),
-    LETTERBOX("Bande cinema", FxCategory.WOW, toggle = true, defaultAmount = 1f),
-    IMPACT("Impatto a ritmo", FxCategory.BEAT, defaultAmount = 0.7f),
-    PROMIST("Luce soffusa", FxCategory.WOW, defaultAmount = 0.6f),
-    PETALS("Petali", FxCategory.WOW, defaultAmount = 0.6f),
-    HEARTS("Cuori di luce", FxCategory.WOW, defaultAmount = 0.5f),
+    SWEEP("Destello de luz", FxCategory.WOW, defaultAmount = 0.7f),
+    SPLIT3("Tres pantallas", FxCategory.WOW, toggle = true, defaultAmount = 1f),
+    HOLO("Holográfico", FxCategory.WOW, defaultAmount = 0.6f),
+    ZOOMBEAT("Zoom al ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
+    SHAKEBEAT("Sacudida al ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
+    RGBBEAT("RGB al ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
+    FLARE("Destello anamórfico", FxCategory.WOW, defaultAmount = 0.6f),
+    DUST("Polvo de película", FxCategory.WOW, defaultAmount = 0.6f),
+    LETTERBOX("Barras de cine", FxCategory.WOW, toggle = true, defaultAmount = 1f),
+    IMPACT("Impacto al ritmo", FxCategory.BEAT, defaultAmount = 0.7f),
+    PROMIST("Luz suave", FxCategory.WOW, defaultAmount = 0.6f),
+    PETALS("Pétalos", FxCategory.WOW, defaultAmount = 0.6f),
+    HEARTS("Corazones de luz", FxCategory.WOW, defaultAmount = 0.5f),
     SUPER8("Super 8", FxCategory.WOW, defaultAmount = 0.8f),
-    FILMFRAME("Bordo pellicola", FxCategory.WOW, toggle = true, defaultAmount = 1f),
-    PROJECTOR("Proiettore", FxCategory.WOW, defaultAmount = 0.6f),
-    GLOWBEAT("Bagliore a ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
+    FILMFRAME("Borde de película", FxCategory.WOW, toggle = true, defaultAmount = 1f),
+    PROJECTOR("Proyector", FxCategory.WOW, defaultAmount = 0.6f),
+    GLOWBEAT("Resplandor al ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
     // Natura e viaggi
-    HAZE("Foschia", FxCategory.WOW, defaultAmount = 0.5f),
-    WATER("Riflessi d'acqua", FxCategory.WOW, defaultAmount = 0.5f),
-    SKYGRAD("Cielo drammatico", FxCategory.WOW, defaultAmount = 0.6f),
-    SNOW("Neve", FxCategory.WOW, defaultAmount = 0.6f),
-    LEAVES("Foglie d'autunno", FxCategory.WOW, defaultAmount = 0.6f),
+    HAZE("Bruma", FxCategory.WOW, defaultAmount = 0.5f),
+    WATER("Reflejos de agua", FxCategory.WOW, defaultAmount = 0.5f),
+    SKYGRAD("Cielo dramático", FxCategory.WOW, defaultAmount = 0.6f),
+    SNOW("Nieve", FxCategory.WOW, defaultAmount = 0.6f),
+    LEAVES("Hojas de otoño", FxCategory.WOW, defaultAmount = 0.6f),
     // Tendenze 2026 (velocity edit, look da social): lampi brevi, scatti puliti, pellicola moderna, fotocamera digitale.
-    FLASHBEAT("Flash a ritmo", FxCategory.BEAT, defaultAmount = 0.7f),
-    BWBEAT("B/N a ritmo", FxCategory.BEAT, defaultAmount = 1f),
-    BOUNCE("Rimbalzo a ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
-    HALATION("Pellicola moderna", FxCategory.TREND, defaultAmount = 0.6f),
-    DIGICAM("Fotocamera digitale", FxCategory.TREND, defaultAmount = 0.7f),
-    GRAIN("Grana fine", FxCategory.TREND, defaultAmount = 0.5f),
-    MUTED("Toni smorzati", FxCategory.TREND, defaultAmount = 0.7f),
+    FLASHBEAT("Flash al ritmo", FxCategory.BEAT, defaultAmount = 0.7f),
+    BWBEAT("B/N al ritmo", FxCategory.BEAT, defaultAmount = 1f),
+    BOUNCE("Rebote al ritmo", FxCategory.BEAT, defaultAmount = 0.6f),
+    HALATION("Película moderna", FxCategory.TREND, defaultAmount = 0.6f),
+    DIGICAM("Cámara digital", FxCategory.TREND, defaultAmount = 0.7f),
+    GRAIN("Grano fino", FxCategory.TREND, defaultAmount = 0.5f),
+    MUTED("Tonos apagados", FxCategory.TREND, defaultAmount = 0.7f),
     // Social 2026 (01/11/2026): per reel e stories, quasi tutti a tempo di musica (shader a parte: SocialFxEffect).
-    STEPZOOM("Zoom a scatti", FxCategory.SOCIAL, defaultAmount = 0.8f),
-    ECHOBEAT("Eco a ritmo", FxCategory.SOCIAL, defaultAmount = 0.8f),
-    QUADBEAT("Griglia a ritmo", FxCategory.SOCIAL, toggle = true, defaultAmount = 1f),
-    SLICEGLITCH("Glitch a fette", FxCategory.SOCIAL, defaultAmount = 0.7f),
-    MELT("Colata di pixel", FxCategory.SOCIAL, defaultAmount = 0.6f),
-    HYPER("Iper-saturo", FxCategory.SOCIAL, defaultAmount = 0.6f),
+    STEPZOOM("Zoom entrecortado", FxCategory.SOCIAL, defaultAmount = 0.8f),
+    ECHOBEAT("Eco al ritmo", FxCategory.SOCIAL, defaultAmount = 0.8f),
+    QUADBEAT("Cuadrícula al ritmo", FxCategory.SOCIAL, toggle = true, defaultAmount = 1f),
+    SLICEGLITCH("Glitch en rebanadas", FxCategory.SOCIAL, defaultAmount = 0.7f),
+    MELT("Lluvia de píxeles", FxCategory.SOCIAL, defaultAmount = 0.6f),
+    HYPER("Hipersaturado", FxCategory.SOCIAL, defaultAmount = 0.6f),
     AURA("Aura", FxCategory.SOCIAL, defaultAmount = 0.6f),
-    THERMAL("Termocamera", FxCategory.SOCIAL, defaultAmount = 1f),
+    THERMAL("Cámara térmica", FxCategory.SOCIAL, defaultAmount = 1f),
     CHROME("Cromo Y2K", FxCategory.SOCIAL, defaultAmount = 0.9f);
 
     /** Effetti che seguono i battiti della musica. */
@@ -451,7 +451,7 @@ enum class FxType(val label: String, val category: FxCategory, val toggle: Boole
 }
 
 /** Colore delle dissolvenze in entrata/uscita della clip. */
-enum class FadeColor(val label: String) { BLACK("Nero"), WHITE("Bianco") }
+enum class FadeColor(val label: String) { BLACK("Negro"), WHITE("Blanco") }
 
 @Serializable
 data class ClipFx(
@@ -464,9 +464,9 @@ data class ClipFx(
 
 /** Movimenti pronti per foto (e video), come gli stili di diapositiva di ProShow. */
 enum class MotionStyle(val label: String) {
-    NONE("Fermo"), ZOOM_IN("Zoom avanti"), ZOOM_OUT("Zoom indietro"),
-    PAN_RIGHT("Verso destra"), PAN_LEFT("Verso sinistra"), PAN_DOWN("Verso il basso"), PAN_UP("Verso l'alto"),
-    DIAGONAL("Diagonale"), TILT("Inclinazione");
+    NONE("Fijo"), ZOOM_IN("Acercar"), ZOOM_OUT("Alejar"),
+    PAN_RIGHT("Hacia la derecha"), PAN_LEFT("Hacia la izquierda"), PAN_DOWN("Hacia abajo"), PAN_UP("Hacia arriba"),
+    DIAGONAL("Diagonal"), TILT("Inclinación");
 
     /** Keyframe di inizio e fine per una clip di [durationUs] (tempo del video originale). */
     fun keyframes(durationUs: Long): List<Keyframe> {
@@ -496,35 +496,35 @@ enum class MotionStyle(val label: String) {
 }
 
 enum class TextFont(val label: String) {
-    MODERNO("Moderno"), TITOLO("Titolo"), IMPATTO("Impatto"), POSTER("Poster"),
-    ELEGANTE("Elegante"), CORSIVO("Corsivo"), PENNARELLO("Pennarello"), MACCHINA("Macchina"),
+    MODERNO("Moderno"), TITOLO("Título"), IMPATTO("Impacto"), POSTER("Poster"),
+    ELEGANTE("Elegante"), CORSIVO("Cursiva"), PENNARELLO("Plumón"), MACCHINA("Máquina"),
 }
 
-enum class TextLook(val label: String) { SEMPLICE("Semplice"), CONTORNO("Contorno"), OMBRA("Ombra"), RIQUADRO("Riquadro"), NEON("Neon") }
+enum class TextLook(val label: String) { SEMPLICE("Sencillo"), CONTORNO("Contorno"), OMBRA("Sombra"), RIQUADRO("Recuadro"), NEON("Neon") }
 
 enum class TextAnim(val label: String, val inOnly: Boolean = false, val letters: Boolean = false) {
-    NONE("Nessuna"), FADE("Dissolvenza"), POP("Pop"), SLIDE("Scorri"), ZOOM("Zoom"),
-    TYPE("Macchina da scrivere", inOnly = true), WORDS("Parola per parola", inOnly = true),
+    NONE("Ninguna"), FADE("Fundido"), POP("Pop"), SLIDE("Desplaza"), ZOOM("Zoom"),
+    TYPE("Máquina de escribir", inOnly = true), WORDS("Palabra por palabra", inOnly = true),
     // Effetti "wow": lettera per lettera, glitch e luccichio.
-    DROP("Lettere cadono", letters = true),
-    RISE("Lettere sfumate", letters = true),
-    WAVE("Onda", letters = true),
+    DROP("Letras que caen", letters = true),
+    RISE("Letras difuminadas", letters = true),
+    WAVE("Ola", letters = true),
     GLITCH("Glitch"),
-    SHINE("Luccichio", inOnly = true),
+    SHINE("Destello", inOnly = true),
     // Premium 2026
-    BOUNCE("Rimbalzo", letters = true),
-    FLIP("Ribalta 3D", letters = true),
-    SPIN("Vortice", letters = true),
-    SCATTER("Esplosione", letters = true),
-    BLUR("Messa a fuoco"),
-    FLICKER("Neon tremolante", inOnly = true),
+    BOUNCE("Rebote", letters = true),
+    FLIP("Giro 3D", letters = true),
+    SPIN("Remolino", letters = true),
+    SCATTER("Explosión", letters = true),
+    BLUR("Enfoque"),
+    FLICKER("Neón parpadeante", inOnly = true),
 }
 
 /** Testo sovrapposto al video, dal tempo [startUs] della timeline per [durationUs]. */
 @Serializable
 data class TextItem(
     val id: String = UUID.randomUUID().toString(),
-    val text: String = "Testo",
+    val text: String = "Texto",
     val startUs: Long = 0,
     val durationUs: Long = 3_000_000,
     /** Centro del testo rispetto al centro del video, in frazioni del quadro (-0,5…0,5; y verso il basso). */
@@ -573,15 +573,15 @@ data class TextItem(
     }
 }
 
-enum class LayerBorder(val label: String) { NONE("Nessuno"), WHITE("Bianco"), BLACK("Nero") }
+enum class LayerBorder(val label: String) { NONE("Ninguno"), WHITE("Blanco"), BLACK("Negro") }
 
 /** Forma (maschera) dell'immagine. */
 enum class LayerMask(val label: String) {
-    NONE("Rettangolo"), ROUNDED("Arrotondata"), CIRCLE("Cerchio"), HEART("Cuore"), STAR("Stella"), SOFT("Sfumata"),
+    NONE("Rectángulo"), ROUNDED("Redondeada"), CIRCLE("Círculo"), HEART("Corazón"), STAR("Estrella"), SOFT("Difuminada"),
 }
 
 /** Scontorno: colore di sfondo da rendere trasparente. */
-enum class KeyColor(val label: String) { NONE("Nessuno"), GREEN("Verde"), BLUE("Blu"), WHITE("Bianco"), BLACK("Nero") }
+enum class KeyColor(val label: String) { NONE("Ninguno"), GREEN("Verde"), BLUE("Azul"), WHITE("Blanco"), BLACK("Negro") }
 
 /**
  * Livello immagine (foto, logo, adesivo PNG con trasparenza) sopra al video.
@@ -591,7 +591,7 @@ enum class KeyColor(val label: String) { NONE("Nessuno"), GREEN("Verde"), BLUE("
 data class Layer(
     val id: String = UUID.randomUUID().toString(),
     val uri: String,
-    val name: String = "Immagine",
+    val name: String = "Imagen",
     val width: Int,
     val height: Int,
     val startUs: Long = 0,
@@ -654,13 +654,13 @@ data class SlideshowOptions(
 
 /** Stili di titolo pronti: un tocco imposta carattere, colore, effetto, posizione, animazioni e movimento. */
 enum class TextPreset(val label: String) {
-    CINEMA("Cinema"), DIDASCALIA("Didascalia"), POP("Pop"), ELEGANTE("Elegante"), NEON("Neon"),
-    IMPATTO("Impatto"), FIRMA("Firma"), DIARIO("Diario"),
-    GLITCH("Glitch"), ONDA("Onda"), ORO("Oro"), CASCATA("Cascata"),
-    CINEMA26("Cinema 2026"), SOGNO("Sogno"), TITOLO3D("Titolo 3D"), FESTA("Festa"), INSEGNA("Insegna"), ESPLOSIONE("Esplosione"),
-    AMORE("Amore"), DATA("Data videocamera"), TAPPA("Tappa di viaggio"), STAMPA("Stampa"), PASSO("Passo"),
+    CINEMA("Cinema"), DIDASCALIA("Pie de foto"), POP("Pop"), ELEGANTE("Elegante"), NEON("Neon"),
+    IMPATTO("Impacto"), FIRMA("Firma"), DIARIO("Diario"),
+    GLITCH("Glitch"), ONDA("Ola"), ORO("Oro"), CASCATA("Cascada"),
+    CINEMA26("Cine 2026"), SOGNO("Sueño"), TITOLO3D("Título 3D"), FESTA("Fiesta"), INSEGNA("Letrero"), ESPLOSIONE("Explosión"),
+    AMORE("Amor"), DATA("Fecha de videocámara"), TAPPA("Etapa de viaje"), STAMPA("Imprimir"), PASSO("Paso"),
     // Tendenze 2026: bold senza grazie, bianco, niente sfumature né scritte storte, animazioni sobrie.
-    PULITO("Pulito"), ETICHETTA("Etichetta"), TITOLONE("Titolone"), MINIMAL("Minimal"), SOCIAL("Social");
+    PULITO("Limpio"), ETICHETTA("Etiqueta"), TITOLONE("Titular"), MINIMAL("Minimal"), SOCIAL("Social");
 
     /** Stili di tendenza (2026): in testa alla lista. */
     val trend: Boolean get() = ordinal >= PULITO.ordinal
@@ -1469,7 +1469,7 @@ class SpeedCurve(val segEndUs: LongArray, val speeds: FloatArray, val durationUs
 }
 
 /** Come una foto o un video sta nel quadro. */
-enum class FrameMode(val label: String) { FILL("Riempi"), FIT("Adatta"), BLUR("Sfondo sfocato") }
+enum class FrameMode(val label: String) { FILL("Llenar"), FIT("Ajustar"), BLUR("Fondo desenfocado") }
 
 val Clip.frameMode: FrameMode get() = when { blurBg -> FrameMode.BLUR; fill -> FrameMode.FILL; else -> FrameMode.FIT }
 fun Clip.withMode(m: FrameMode): Clip = copy(fill = m == FrameMode.FILL, blurBg = m == FrameMode.BLUR)
@@ -1487,8 +1487,8 @@ val Clip.orientation: Orientation get() = orientationOf(width, height)
 
 /** Formato del video finito. AUTO = come la prima clip (com'era prima). */
 enum class VideoFormat(val label: String, val short: String, val aspect: Float?) {
-    AUTO("Automatico", "Auto", null), VERTICAL("Verticale 9:16", "9:16", 9f / 16f),
-    HORIZONTAL("Orizzontale 16:9", "16:9", 16f / 9f), SQUARE("Quadrato 1:1", "1:1", 1f);
+    AUTO("Automático", "Auto", null), VERTICAL("Vertical 9:16", "9:16", 9f / 16f),
+    HORIZONTAL("Horizontal 16:9", "16:9", 16f / 9f), SQUARE("Cuadrado 1:1", "1:1", 1f);
 
     companion object {
         /** Il formato adatto a un insieme di clip: l'orientamento più frequente. */

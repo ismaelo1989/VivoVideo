@@ -9,7 +9,7 @@ import kotlin.math.roundToInt
 
 /** Scie del time-lapse: quanti fotogrammi dell'originale si mescolano in ognuno del risultato. */
 @Serializable
-enum class TimelapseTrails(val label: String, val samples: Int) { NONE("Nessuna", 1), LIGHT("Leggere", 3), LONG("Lunghe", 8) }
+enum class TimelapseTrails(val label: String, val samples: Int) { NONE("Ninguna", 1), LIGHT("Leer", 3), LONG("Largas", 8) }
 
 /**
  * Conti del time-lapse: [speed] volte più veloce, 30 fotogrammi al secondo. Ogni fotogramma del risultato copre

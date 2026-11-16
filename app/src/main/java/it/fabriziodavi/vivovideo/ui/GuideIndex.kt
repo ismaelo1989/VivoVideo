@@ -14,18 +14,18 @@ data class GuideHit(val index: Int, val count: Int, val snippet: String)
  */
 object GuideIndex {
     private val GROUPS: List<Pair<String, List<String>>> = listOf(
-        "Per iniziare" to listOf("Novità", "Primi passi", "Selezionare", "Tagliare e ordinare", "Progetto"),
-        "Creare un video" to listOf("Video automatico", "Slideshow automatico", "Fare un tutorial", "Intervista doppia", "Collage"),
-        "Montare" to listOf("Fermo immagine", "Velocità", "Inquadra", "Keyframe", "Foto", "Transizioni", "Effetti", "Colore",
-            "Funzioni intelligenti", "Privacy", "Livelli", "Dati della pedalata"),
-        "Audio" to listOf("Musica", "Taglio a ritmo", "Voce fuori campo", "Mixer", "Audio delle clip", "Jump cut"),
-        "Testi" to listOf("Testo", "Sottotitoli", "Titoli di coda", "Font"),
-        "Esportare e aiuto" to listOf("Esportare", "Collaudo", "Se qualcosa va storto", "Come provare"),
+        "Para empezar" to listOf("Novedades", "Primeros pasos", "Seleccionar", "Cortar y ordenar", "Proyecto"),
+        "Crear un video" to listOf("Video automático", "Presentación automática", "Hacer un tutorial", "Entrevista doble", "Collage"),
+        "Montar" to listOf("Imagen congelada", "Velocidad", "Encuadre", "Keyframe", "Foto", "Transiciones", "Efectos", "Color",
+            "Funciones inteligentes", "Privacy", "Capas", "Datos del recorrido en bici"),
+        "Audio" to listOf("Música", "Corte al ritmo", "Voz en off", "Mezclador", "Audio de los clips", "Jump cut"),
+        "Textos" to listOf("Texto", "Subtítulos", "Créditos finales", "Font"),
+        "Exportar y ayuda" to listOf("Exportar", "Pruebas", "Si algo sale mal", "Cómo probar"),
     )
 
     /** Titolo della guida (riga "# "), righe prima del primo argomento, argomenti. */
     fun parse(md: String): Triple<String, List<String>, List<GuideSection>> {
-        var title = "Guida"
+        var title = "Guía"
         val intro = mutableListOf<String>()
         val sections = mutableListOf<GuideSection>()
         var cur: Pair<String, MutableList<String>>? = null
@@ -45,11 +45,11 @@ object GuideIndex {
 
     /** Gruppo di un argomento. */
     fun groupOf(title: String): String =
-        GROUPS.firstOrNull { (_, starts) -> starts.any { title.startsWith(it, ignoreCase = true) } }?.first ?: "Altro"
+        GROUPS.firstOrNull { (_, starts) -> starts.any { title.startsWith(it, ignoreCase = true) } }?.first ?: "Otro"
 
     /** Argomenti divisi per gruppo, nell'ordine dei gruppi (indici nella lista originale). */
     fun grouped(sections: List<GuideSection>): List<Pair<String, List<Int>>> {
-        val names = GROUPS.map { it.first } + "Altro"
+        val names = GROUPS.map { it.first } + "Otro"
         return names.map { g -> g to sections.indices.filter { groupOf(sections[it].title) == g } }.filter { it.second.isNotEmpty() }
     }
 
@@ -75,21 +75,21 @@ object GuideIndex {
 
     /** Argomento da aprire per uno strumento dell'editor (null = indice). */
     fun topicFor(tool: Tool?): String? = when (tool) {
-        Tool.SPLIT -> "Tagliare e ordinare"
-        Tool.SPEED -> "Velocità"
+        Tool.SPLIT -> "Cortar y ordenar"
+        Tool.SPEED -> "Velocidad"
         Tool.DURATION -> "Foto"
-        Tool.FRAME, Tool.FORMAT -> "Inquadra"
+        Tool.FRAME, Tool.FORMAT -> "Encuadre"
         Tool.KEYFRAME -> "Keyframe"
-        Tool.TRANSITION -> "Transizioni"
-        Tool.SLIDESHOW -> "Slideshow automatico"
-        Tool.SPORT -> "Dati della pedalata"
-        Tool.MORE -> "Fermo immagine"
-        Tool.MUSIC -> "Musica"
-        Tool.TEXT -> "Testo"
-        Tool.LAYER -> "Livelli"
-        Tool.EFFECTS -> "Effetti"
-        Tool.COLOR -> "Colore"
-        Tool.EXPORT -> "Esportare"
+        Tool.TRANSITION -> "Transiciones"
+        Tool.SLIDESHOW -> "Presentación automática"
+        Tool.SPORT -> "Datos del recorrido en bici"
+        Tool.MORE -> "Imagen congelada"
+        Tool.MUSIC -> "Música"
+        Tool.TEXT -> "Texto"
+        Tool.LAYER -> "Capas"
+        Tool.EFFECTS -> "Efectos"
+        Tool.COLOR -> "Color"
+        Tool.EXPORT -> "Exportar"
         null -> null
     }
 

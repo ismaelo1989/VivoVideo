@@ -28,7 +28,7 @@ class CreditsTest {
         assertEquals(10_000_000L, roll.startUs); assertEquals(8_000_000L, roll.durationUs)
         assertTrue(roll.roll && roll.animIn == TextAnim.NONE)
         // Rifatti: niente doppioni; tolti: si torna al video di prima.
-        val again = q.withCredits("Fine", 6_000_000, onBlack = true, black = black)
+        val again = q.withCredits("Fin", 6_000_000, onBlack = true, black = black)
         assertEquals(1, again.texts.count { it.roll }); assertEquals(1, again.clips.count { it.id == Credits.BLACK_ID })
         val none = again.withoutCredits()
         assertNull(none.creditsRoll); assertEquals(10_000_000L, none.durationUs)
@@ -36,11 +36,11 @@ class CreditsTest {
 
     @Test fun overTheLastScenesKeepsTheLength() {
         val p = Project(name = "x", clips = listOf(video("a"), video("b")))
-        val q = p.withCredits("Fine", 8_000_000, onBlack = false, black = null)
+        val q = p.withCredits("Fin", 8_000_000, onBlack = false, black = null)
         assertEquals(10_000_000L, q.durationUs)
         assertEquals(2_000_000L, q.creditsRoll!!.startUs)
         // Più lunghi del video: durano quanto il video.
-        assertEquals(10_000_000L, p.withCredits("Fine", 30_000_000, onBlack = false, black = null).creditsRoll!!.durationUs)
+        assertEquals(10_000_000L, p.withCredits("Fin", 30_000_000, onBlack = false, black = null).creditsRoll!!.durationUs)
     }
 
     @Test fun rollMovesAtConstantSpeed() {

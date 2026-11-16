@@ -87,16 +87,16 @@ fun dateRangeLabel(firstMs: Long, lastMs: Long): String {
 
 /** I temi del video automatico divisi per gruppo (nel passo "Stile"). */
 internal val STYLE_GROUPS: List<Pair<String, List<AutoStyle>>> = listOf(
-    "Dinamici" to listOf(AutoStyle.ENERGICO, AutoStyle.VIRALE, AutoStyle.AZIONE, AutoStyle.ESTREMO, AutoStyle.BLOCKBUSTER, AutoStyle.NEON, AutoStyle.ESTATE),
-    "Viaggi e natura" to listOf(AutoStyle.VIAGGIO, AutoStyle.DIARIO, AutoStyle.MARE, AutoStyle.MONTAGNA, AutoStyle.NATURA),
-    "Emozioni" to listOf(AutoStyle.CINEMA, AutoStyle.ELEGANTE, AutoStyle.ROMANTICO, AutoStyle.MATRIMONIO, AutoStyle.SOGNO, AutoStyle.RICORDI),
-    "Rétro" to listOf(AutoStyle.SUPER8, AutoStyle.ANNI90, AutoStyle.GRUNGE),
+    "Dinámicos" to listOf(AutoStyle.ENERGICO, AutoStyle.VIRALE, AutoStyle.AZIONE, AutoStyle.ESTREMO, AutoStyle.BLOCKBUSTER, AutoStyle.NEON, AutoStyle.ESTATE),
+    "Viajes y naturaleza" to listOf(AutoStyle.VIAGGIO, AutoStyle.DIARIO, AutoStyle.MARE, AutoStyle.MONTAGNA, AutoStyle.NATURA),
+    "Emociones" to listOf(AutoStyle.CINEMA, AutoStyle.ELEGANTE, AutoStyle.ROMANTICO, AutoStyle.MATRIMONIO, AutoStyle.SOGNO, AutoStyle.RICORDI),
+    "Retro" to listOf(AutoStyle.SUPER8, AutoStyle.ANNI90, AutoStyle.GRUNGE),
 )
 
 /** Da dove prendere foto e video: scelti uno per uno o album interi. */
-private enum class Source(val label: String) { ITEMS("Foto e video"), ALBUMS("Album interi") }
+private enum class Source(val label: String) { ITEMS("Fotos y videos"), ALBUMS("Álbumes completos") }
 
-private val STEPS = listOf("Cosa usare", "Stile", "Musica e dettagli")
+private val STEPS = listOf("Qué usar", "Estilo", "Música y detalles")
 
 /**
  * Video automatico in tre passi: 1) foto e video (scelti uno per uno o album interi), 2) stile, 3) musica, durata e titolo.
@@ -146,7 +146,7 @@ fun AutoScreen(vm: EditorViewModel) {
     val musicName = remember(musicUri) {
         musicUri?.let { u ->
             runCatching { ctx.contentResolver.query(u, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c -> if (c.moveToFirst()) c.getString(0) else null } }
-                .getOrNull() ?: "Brano scelto"
+                .getOrNull() ?: "Canción elegida"
         }
     }
     // Elementi degli album scelti (servono per contare e per il periodo del sottotitolo).
@@ -166,8 +166,8 @@ fun AutoScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro", enabled = busy == null) { if (step > 0) step-- else vm.showAuto = false }
-            Text("Video automatico", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás", enabled = busy == null) { if (step > 0) step-- else vm.showAuto = false }
+            Text("Video automático", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         StepBar(step) { if (it < step && busy == null) step = it }
         if (busy != null) {
@@ -182,19 +182,19 @@ fun AutoScreen(vm: EditorViewModel) {
                     Segmented(Source.entries, source, { it.label }) { source = it }
                     when {
                         !any -> {
-                            Hint("Per vedere foto e album serve il permesso di leggere foto e video.")
-                            PrimaryButton("Consenti l'accesso alla galleria", Modifier.fillMaxWidth()) { permLauncher.launch(Gallery.permissions) }
-                            SecondaryButton("Apri le impostazioni dell'app", Modifier.fillMaxWidth(), onClick = {
+                            Hint("Para ver fotos y álbumes hace falta el permiso para leer fotos y videos.")
+                            PrimaryButton("Permitir el acceso a la galería", Modifier.fillMaxWidth()) { permLauncher.launch(Gallery.permissions) }
+                            SecondaryButton("Abrir los ajustes de la app", Modifier.fillMaxWidth(), onClick = {
                                 runCatching { ctx.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + ctx.packageName))) }
                             })
                         }
                         source == Source.ITEMS -> {
-                            if (!full) Hint("Hai dato accesso solo ad alcune foto: si vedono solo quelle.")
+                            if (!full) Hint("Diste acceso solo a algunas fotos: solo se ven esas.")
                             val list = gallery
-                            if (list == null) Hint("Lettura della galleria…") else {
-                                if (!albums.isNullOrEmpty()) PillRow(listOf<Album?>(null) + albums!!, filterAlbum, { it?.name ?: "Tutte" }) { filterAlbum = it }
+                            if (list == null) Hint("Leyendo la galería…") else {
+                                if (!albums.isNullOrEmpty()) PillRow(listOf<Album?>(null) + albums!!, filterAlbum, { it?.name ?: "Todas" }) { filterAlbum = it }
                                 val shown = filterAlbum?.let { a -> list.filter { it.albumId == a.id } } ?: list
-                                if (shown.isEmpty()) Hint("Nessuna foto o video.")
+                                if (shown.isEmpty()) Hint("Ninguna foto o video.")
                                 MediaGrid(shown, picked, { item ->
                                     val u = item.uri.toString()
                                     picked = if (u in picked) picked - u else picked + u
@@ -202,14 +202,14 @@ fun AutoScreen(vm: EditorViewModel) {
                             }
                         }
                         else -> Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Hint("L'app prende le foto e i video migliori lungo tutto il periodo degli album scelti.")
+                            Hint("La app toma las mejores fotos y videos de todo el periodo de los álbumes elegidos.")
                             if (!full) {
-                                Hint("Hai dato accesso solo ad alcune foto: si vedono solo quelle. Per gli album interi scegli \"Consenti tutto\".")
-                                SecondaryButton("Consenti l'accesso a tutto", Modifier.fillMaxWidth(), onClick = { permLauncher.launch(Gallery.permissions) })
+                                Hint("Diste acceso solo a algunas fotos: solo se ven esas. Para los álbumes completos elige \"Permitir todo\".")
+                                SecondaryButton("Permitir el acceso a todo", Modifier.fillMaxWidth(), onClick = { permLauncher.launch(Gallery.permissions) })
                             }
                             when {
-                                albums == null -> Hint("Lettura degli album…")
-                                albums!!.isEmpty() -> Hint("Nessun album con foto o video.")
+                                albums == null -> Hint("Leyendo los álbumes…")
+                                albums!!.isEmpty() -> Hint("Ningún álbum con fotos o videos.")
                                 else -> albums!!.chunked(3).forEach { row ->
                                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                         row.forEach { a ->
@@ -243,59 +243,59 @@ fun AutoScreen(vm: EditorViewModel) {
                     Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    PanelLabel("Musica")
+                    PanelLabel("Música")
                     if (musicUri == null) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            PrimaryButton("Libreria online", Modifier.weight(1f)) { vm.openLibrary(effects = false, forAuto = true) }
-                            SecondaryButton("Dal telefono", Modifier.weight(1f), onClick = { musicPicker.launch(arrayOf("audio/*")) })
+                            PrimaryButton("Biblioteca en línea", Modifier.weight(1f)) { vm.openLibrary(effects = false, forAuto = true) }
+                            SecondaryButton("Del teléfono", Modifier.weight(1f), onClick = { musicPicker.launch(arrayOf("audio/*")) })
                         }
-                        Hint("Con la musica i tagli cadono sui battiti e l'audio dei video si spegne. Senza, restano i suoni originali.")
+                        Hint("Con la música los cortes caen en los beats y el audio de los videos se apaga. Sin ella, se quedan los sonidos originales.")
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(VVIcons.Music, null, tint = VV.Music, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
                             Text(musicName ?: "", style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-                            IconBtn(VVIcons.Close, "Togli il brano") { musicUri = null; if (duration == FIT_MUSIC) duration = 60_000_000L }
+                            IconBtn(VVIcons.Close, "Quitar la canción") { musicUri = null; if (duration == FIT_MUSIC) duration = 60_000_000L }
                         }
                     }
-                    PanelLabel("Durata")
+                    PanelLabel("Duración")
                     val options = (if (musicUri != null) listOf(FIT_MUSIC) else emptyList()) + DURATIONS
                     PillRow(options, duration, { d ->
-                        when (d) { FIT_MUSIC -> "Come il brano"; 0L -> "Tutto"; else -> if (d < 60_000_000L) "${d / 1_000_000} s" else "${d / 60_000_000} min" }
+                        when (d) { FIT_MUSIC -> "Como la canción"; 0L -> "Todo"; else -> if (d < 60_000_000L) "${d / 1_000_000} s" else "${d / 60_000_000} min" }
                     }) { duration = it }
-                    if (source == Source.ITEMS && duration != 0L) Hint("Con \"Tutto\" entrano tutte le foto e i video scelti; con una durata fissa, se sono troppi, l'app ne usa una parte lungo tutto il periodo.")
-                    PanelLabel("Titolo")
+                    if (source == Source.ITEMS && duration != 0L) Hint("Con \"Todo\" entran todas las fotos y videos elegidos; con una duración fija, si son demasiados, la app usa una parte de todo el periodo.")
+                    PanelLabel("Título")
                     OutlinedTextField(
                         value = title,
                         onValueChange = { title = it; titleTouched = true },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        placeholder = { Text("Titolo del video (facoltativo)", color = VV.Faint) },
+                        placeholder = { Text("Título del video (opcional)", color = VV.Faint) },
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = VV.Tally, unfocusedBorderColor = VV.Line, cursorColor = VV.Tally,
                             focusedTextColor = VV.Text, unfocusedTextColor = VV.Text,
                         ),
                     )
-                    if (subtitle.isNotEmpty() && title.isNotBlank()) Hint("Sotto il titolo: $subtitle")
+                    if (subtitle.isNotEmpty() && title.isNotBlank()) Hint("Debajo del título: $subtitle")
                     // Le scelte meno usate restano chiuse finché non servono.
                     Row(
                         Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).clickable { more = !more }.padding(vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(if (more) "Meno opzioni" else "Altre opzioni: formato e regia", style = MaterialTheme.typography.labelLarge, color = VV.Tally, modifier = Modifier.weight(1f))
+                        Text(if (more) "Menos opciones" else "Más opciones: formato y dirección", style = MaterialTheme.typography.labelLarge, color = VV.Tally, modifier = Modifier.weight(1f))
                         Text(if (more) "▲" else "▼", color = VV.Tally)
                     }
                     if (more) {
                         PanelLabel("Formato")
-                        PillRow(VideoFormat.entries, format, { if (it == VideoFormat.AUTO) "Automatico" else it.label }) { format = it }
+                        PillRow(VideoFormat.entries, format, { if (it == VideoFormat.AUTO) "Automático" else it.label }) { format = it }
                         Hint(
-                            if (format == VideoFormat.AUTO) "Automatico: verticale o orizzontale secondo le foto e i video più numerosi. Le foto nell'altro verso si vedono intere sullo sfondo sfocato."
-                            else "Le foto e i video nell'altro verso avranno lo sfondo sfocato invece delle bande nere."
+                            if (format == VideoFormat.AUTO) "Automático: vertical u horizontal según las fotos y videos más numerosos. Las fotos en la otra orientación se ven completas sobre el fondo desenfocado."
+                            else "Las fotos y videos en la otra orientación tendrán el fondo desenfocado en lugar de las barras negras."
                         )
-                        ToggleRow("Regia intelligente", smart) { smart = it }
+                        ToggleRow("Dirección inteligente", smart) { smart = it }
                         Hint(
-                            if (smart) "L'app guarda ogni video e sceglie il tratto migliore: nitido, ben illuminato, con volti e sorrisi. Ci vuole un po' di più (la seconda volta è subito pronto)."
-                            else "Dai video si prende un tratto centrale, senza analizzarli: più veloce."
+                            if (smart) "La app mira cada video y elige el mejor tramo: nítido, bien iluminado, con rostros y sonrisas. Tarda un poco más (la segunda vez queda listo al instante)."
+                            else "De los videos se toma un tramo central, sin analizarlos: más rápido."
                         )
                     }
                     Spacer(Modifier.height(4.dp))
@@ -307,18 +307,18 @@ fun AutoScreen(vm: EditorViewModel) {
             if (chosen.isNotEmpty()) {
                 val v = chosen.count { it.isVideo }
                 Text(
-                    "${chosen.size - v} foto, $v video" + (if (subtitle.isNotEmpty()) " · $subtitle" else "") + if (step > 0) " · ${style.label}" else "",
+                    "${chosen.size - v} fotos, $v videos" + (if (subtitle.isNotEmpty()) " · $subtitle" else "") + if (step > 0) " · ${style.label}" else "",
                     style = MaterialTheme.typography.labelLarge, color = VV.Tally,
                 )
             }
             val ready = chosen.isNotEmpty() && busy == null
             when (step) {
                 0 -> PrimaryButton(
-                    if (chosen.isEmpty()) (if (source == Source.ITEMS) "Scegli foto e video" else "Scegli almeno un album") else "Avanti: stile",
+                    if (chosen.isEmpty()) (if (source == Source.ITEMS) "Elegir fotos y videos" else "Elige al menos un álbum") else "Siguiente: estilo",
                     Modifier.fillMaxWidth(), enabled = ready,
                 ) { step = 1 }
-                1 -> PrimaryButton("Avanti: musica e dettagli", Modifier.fillMaxWidth(), enabled = ready) { step = 2 }
-                else -> PrimaryButton("Crea il video", Modifier.fillMaxWidth(), enabled = ready) {
+                1 -> PrimaryButton("Siguiente: música y detalles", Modifier.fillMaxWidth(), enabled = ready) { step = 2 }
+                else -> PrimaryButton("Crear el video", Modifier.fillMaxWidth(), enabled = ready) {
                     val handPicked = source == Source.ITEMS
                     scope.launch {
                         val all = if (handPicked) chosen else withContext(Dispatchers.IO) { Gallery.items(ctx, selected) }
@@ -379,11 +379,11 @@ internal fun AlbumCard(a: Album, on: Boolean, modifier: Modifier, onClick: () ->
                 Box(
                     Modifier.align(Alignment.TopEnd).padding(6.dp).size(24.dp).clip(CircleShape).background(VV.Tally),
                     contentAlignment = Alignment.Center,
-                ) { Icon(VVIcons.Check, "Scelto", tint = VV.TallyInk, modifier = Modifier.size(16.dp)) }
+                ) { Icon(VVIcons.Check, "Elegido", tint = VV.TallyInk, modifier = Modifier.size(16.dp)) }
             }
         }
         Text(a.name, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis, color = if (on) VV.Tally else VV.Text,
             modifier = Modifier.padding(top = 4.dp))
-        Text("${a.count}" + if (a.videos > 0) " · ${a.videos} video" else "", style = MaterialTheme.typography.bodySmall)
+        Text("${a.count}" + if (a.videos > 0) " · ${a.videos} videos" else "", style = MaterialTheme.typography.bodySmall)
     }
 }

@@ -9,11 +9,11 @@ import androidx.media3.effect.RgbFilter
 
 /** Filtri colore della prova tecnica. Girano tutti sulla GPU. */
 enum class Look(val label: String) {
-    NONE("Nessuno"),
-    VIVID("Vivido"),
+    NONE("Ninguno"),
+    VIVID("Vívido"),
     CINEMA("Cinema"),
-    WARM("Caldo"),
-    COOL("Freddo"),
+    WARM("Cálido"),
+    COOL("Frío"),
     MONO("B/N");
 
     fun effects(): List<Effect> = when (this) {

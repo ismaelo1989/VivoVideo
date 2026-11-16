@@ -78,10 +78,10 @@ object Gallery {
             uri, arrayOf(MediaStore.MediaColumns.BUCKET_ID, MediaStore.MediaColumns.BUCKET_DISPLAY_NAME),
             "(${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?)",
             arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(), MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()), null,
-        )?.use { c -> while (c.moveToNext()) { val b = c.getString(0) ?: continue; names.getOrPut(b) { c.getString(1) ?: "Senza nome" } } }
+        )?.use { c -> while (c.moveToNext()) { val b = c.getString(0) ?: continue; names.getOrPut(b) { c.getString(1) ?: "Sin nombre" } } }
         return items(ctx).groupBy { it.albumId }.map { (id, list) ->
             val latest = list.maxBy { it.dateMs }
-            Album(id, names[id] ?: "Senza nome", list.size, list.count { it.isVideo }, latest.uri, latest.dateMs)
+            Album(id, names[id] ?: "Sin nombre", list.size, list.count { it.isVideo }, latest.uri, latest.dateMs)
         }.sortedByDescending { it.latestMs }
     }
 

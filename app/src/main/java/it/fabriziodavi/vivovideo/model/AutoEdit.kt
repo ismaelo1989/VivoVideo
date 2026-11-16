@@ -58,7 +58,7 @@ enum class AutoStyle(
     val introFx: ClipFx = ClipFx(FxType.FLASHBEAT, 0.6f),
 ) {
     CINEMA(
-        "Cinema", "Solenne: look da film, messa a fuoco del titolo, dissolvenze e pellicola moderna, blackout sui colpi, rallenty sui momenti calmi.",
+        "Cinema", "Solemne: look de cine, enfoque del título, fundidos y película moderna, blackout en los golpes, cámara lenta en los momentos calmados.",
         photoUs = 3_500_000, videoUs = 4_000_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.CROSSFADE, TransitionType.BLUR, TransitionType.CROSSFADE, TransitionType.SOFTZOOM),
         transitionUs = 1_000_000,
@@ -73,7 +73,7 @@ enum class AutoStyle(
         minSceneUs = 2_400_000,
     ),
     ENERGICO(
-        "Energico", "Velocity edit: tagli netti sul battito, accelerazioni, blackout e flash brevi sui colpi, rimbalzi e B/N a scatti.",
+        "Enérgico", "Velocity edit: cortes secos al ritmo, aceleraciones, blackout y flashes breves en los golpes, rebotes y B/N entrecortado.",
         photoUs = 1_500_000, videoUs = 1_800_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SNAPZOOM, TransitionType.SLIDE_UP, TransitionType.CAMSHAKE, TransitionType.SWIPE, TransitionType.SLICES),
         transitionUs = 250_000,
@@ -88,7 +88,7 @@ enum class AutoStyle(
         cutShare = 0.55f,
     ),
     VIRALE(
-        "Reel virale", "Da social 2026: intro che sale, tagli netti, velocity, B/N a scatti, look da fotocamera digitale e didascalie parola per parola.",
+        "Reel viral", "Redes 2026: intro que sube, cortes secos, velocity, B/N entrecortado, look de cámara digital y subtítulos palabra por palabra.",
         photoUs = 1_200_000, videoUs = 1_500_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SLIDE_UP, TransitionType.SNAPZOOM, TransitionType.SWIPE),
         transitionUs = 220_000,
@@ -103,7 +103,7 @@ enum class AutoStyle(
         cutShare = 0.6f,
     ),
     RICORDI(
-        "Ricordi", "Nostalgico: pellicola 35 mm, luce calda, sfocature morbide, passaggi lenti e delicati.",
+        "Recuerdos", "Nostálgico: película de 35 mm, luz cálida, desenfoques suaves, pasos lentos y delicados.",
         photoUs = 3_000_000, videoUs = 3_000_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.CROSSFADE, TransitionType.SOFTZOOM, TransitionType.DRIFT, TransitionType.BLUR),
         transitionUs = 900_000,
@@ -116,7 +116,7 @@ enum class AutoStyle(
         minSceneUs = 2_600_000, shorterOnEnergy = false,
     ),
     SOGNO(
-        "Sogno", "Morbido e luminoso: alone di luce, riflessi iridescenti, dissolvenze di luce, titolo che va a fuoco.",
+        "Sueño", "Suave y luminoso: halo de luz, reflejos iridiscentes, fundidos de luz, título que se enfoca.",
         photoUs = 3_200_000, videoUs = 3_400_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.LUMA, TransitionType.SOFTZOOM, TransitionType.LEAK),
         transitionUs = 1_000_000,
@@ -130,7 +130,7 @@ enum class AutoStyle(
         minSceneUs = 3_000_000, shorterOnEnergy = false,
     ),
     ELEGANTE(
-        "Elegante", "Luminoso e raffinato: colori puliti, luci bokeh e polvere d'oro, dissolvenze morbide, titolo dorato.",
+        "Elegante", "Luminoso y refinado: colores limpios, luces bokeh y polvo dorado, fundidos suaves, título dorado.",
         photoUs = 3_000_000, videoUs = 3_200_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.CROSSFADE, TransitionType.BLUR, TransitionType.LEAK, TransitionType.IRIS),
         transitionUs = 800_000,
@@ -144,7 +144,7 @@ enum class AutoStyle(
         minSceneUs = 2_600_000, shorterOnEnergy = false,
     ),
     VIAGGIO(
-        "Viaggio", "Travel reel: swipe e zoom secchi, tagli sul battito, colori naturali, fotocamera digitale e pellicola moderna, velocity sui panorami.",
+        "Viaje", "Travel reel: swipes y zooms secos, cortes al ritmo, colores naturales, cámara digital y película moderna, velocity en los paisajes.",
         photoUs = 2_200_000, videoUs = 2_600_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SLIDE_UP, TransitionType.SNAPZOOM, TransitionType.CROSSFADE),
         transitionUs = 400_000,
@@ -160,7 +160,7 @@ enum class AutoStyle(
         cutShare = 0.4f,
     ),
     BLOCKBUSTER(
-        "Blockbuster", "Trailer da cinema: intro a raffica, teal & orange, bande cinema, bagliori anamorfici, blackout e flash sui colpi, momento eroe sul drop.",
+        "Blockbuster", "Tráiler de cine: intro en ráfaga, teal & orange, barras de cine, destellos anamórficos, blackout y flashes en los golpes, momento héroe en el drop.",
         photoUs = 2_000_000, videoUs = 2_400_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.SNAPZOOM, TransitionType.WHIP, TransitionType.CROSSFADE, TransitionType.BLADE),
         transitionUs = 600_000,
@@ -176,7 +176,7 @@ enum class AutoStyle(
         cutShare = 0.3f,
     ),
     NEON(
-        "Neon notte", "Notte in città: toni freddi, alone delle luci, RGB e glitch brevi sui colpi, blackout e flash, titoli puliti.",
+        "Neón nocturno", "Noche en la ciudad: tonos fríos, halo de las luces, RGB y glitch breves en los golpes, blackout y flashes, títulos limpios.",
         photoUs = 1_600_000, videoUs = 1_900_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SLIDE_UP, TransitionType.SNAPZOOM, TransitionType.GLITCH),
         transitionUs = 300_000,
@@ -191,7 +191,7 @@ enum class AutoStyle(
         cutShare = 0.5f,
     ),
     ESTATE(
-        "Estate pop", "Solare e naturale: luce calda, look da fotocamera digitale, swipe e zoom secchi, flash e rimbalzi a ritmo, titoli puliti.",
+        "Verano pop", "Soleado y natural: luz cálida, look de cámara digital, swipes y zooms secos, flashes y rebotes al ritmo, títulos limpios.",
         photoUs = 1_800_000, videoUs = 2_000_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.SLIDE_UP, TransitionType.WHIP, TransitionType.SNAPZOOM),
         transitionUs = 300_000,
@@ -206,7 +206,7 @@ enum class AutoStyle(
         cutShare = 0.5f,
     ),
     AZIONE(
-        "Azione", "Sport e avventura: tagli secchi, scosse di camera sui colpi, zoom secchi, velocity e rallenty da eroe.",
+        "Acción", "Deporte y aventura: cortes secos, sacudidas de cámara en los golpes, zooms secos, velocity y cámara lenta de héroe.",
         photoUs = 1_400_000, videoUs = 1_700_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SNAPZOOM, TransitionType.CAMSHAKE, TransitionType.SLIDE_UP, TransitionType.SWIPE, TransitionType.TILES),
         transitionUs = 250_000,
@@ -221,7 +221,7 @@ enum class AutoStyle(
         cutShare = 0.5f,
     ),
     ESTREMO(
-        "Estremo", "Bike, MTB, corsa, GoPro: accelerazioni a proiettile su ogni video, scosse e flash sui colpi, blackout sul drop, grandangolo da action cam.",
+        "Extremo", "Bici, MTB, running, GoPro: aceleraciones tipo bala en cada video, sacudidas y flashes en los golpes, blackout en el drop, gran angular de action cam.",
         photoUs = 1_200_000, videoUs = 1_500_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SNAPZOOM, TransitionType.CAMSHAKE, TransitionType.SLIDE_UP, TransitionType.SWIPE, TransitionType.SLICES),
         transitionUs = 240_000,
@@ -238,7 +238,7 @@ enum class AutoStyle(
         cutShare = 0.5f,
     ),
     ROMANTICO(
-        "Romantico", "Luce soffusa e calda, petali e cuori di luce, chiusure a cuore e dissolvenze bokeh, rallenty, titolo in corsivo che va a fuoco.",
+        "Romántico", "Luz suave y cálida, pétalos y corazones de luz, cierres en corazón y fundidos bokeh, cámara lenta, título en cursiva que se enfoca.",
         photoUs = 3_200_000, videoUs = 3_400_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.BOKEHFADE, TransitionType.LUMA, TransitionType.CROSSFADE, TransitionType.HEART),
         transitionUs = 1_000_000,
@@ -253,7 +253,7 @@ enum class AutoStyle(
         minSceneUs = 3_000_000, shorterOnEnergy = false,
     ),
     MATRIMONIO(
-        "Matrimonio", "Elegante e luminoso: bianchi puliti e oro, luce soffusa, lampi di luce e polvere d'oro, passaggi lenti e solenni.",
+        "Boda", "Elegante y luminoso: blancos limpios y dorado, luz suave, destellos de luz y polvo dorado, pasos lentos y solemnes.",
         photoUs = 3_500_000, videoUs = 3_800_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.CROSSFADE, TransitionType.LUMA, TransitionType.BOKEHFADE, TransitionType.BLUR),
         transitionUs = 1_100_000,
@@ -268,7 +268,7 @@ enum class AutoStyle(
         minSceneUs = 3_200_000, shorterOnEnergy = false,
     ),
     SUPER8(
-        "Super 8", "Le pellicole di una volta, ma moderne: immagine che balla, colori caldi sbiaditi, bordo con i fori, proiettore, salti di pellicola e data della videocamera.",
+        "Super 8", "Las películas de antes, pero modernas: imagen que baila, colores cálidos desvaídos, borde con perforaciones, proyector, saltos de película y fecha de la videocámara.",
         photoUs = 2_600_000, videoUs = 2_800_000, beatsPerSlot = 4,
         transitions = listOf(TransitionType.FILMSLIP, TransitionType.BURN, TransitionType.CROSSFADE, TransitionType.LEAK),
         transitionUs = 600_000,
@@ -282,7 +282,7 @@ enum class AutoStyle(
         minSceneUs = 2_200_000, shorterOnEnergy = false,
     ),
     ANNI90(
-        "Anni '90", "Videocamera di famiglia anni '90: VHS, riavvolgimenti, disturbi a tempo, colori saturi un po' sbavati e la data arancione.",
+        "Años 90", "Videocámara familiar de los 90: VHS, rebobinados, interferencias al ritmo, colores saturados un poco corridos y la fecha en naranja.",
         photoUs = 2_200_000, videoUs = 2_400_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.REWIND, TransitionType.GLITCH, TransitionType.SLIDE_UP, TransitionType.STRIPES),
         transitionUs = 450_000,
@@ -299,7 +299,7 @@ enum class AutoStyle(
         introCut = TransitionType.GLITCH, introFx = ClipFx(FxType.RGBBEAT, 0.5f),
     ),
     GRUNGE(
-        "Grunge", "Crudo e moderno: toni smorzati e neri profondi, grana e graffi leggeri, tagli secchi, B/N a scatti e sobbalzi di camera sui colpi, titolo da macchina da scrivere.",
+        "Grunge", "Crudo y moderno: tonos apagados y negros profundos, grano y rayones ligeros, cortes secos, B/N entrecortado y sacudidas de cámara en los golpes, título de máquina de escribir.",
         photoUs = 1_600_000, videoUs = 1_900_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.CAMSHAKE, TransitionType.FILMSLIP, TransitionType.SNAPZOOM, TransitionType.BLACKOUT),
         transitionUs = 260_000,
@@ -317,7 +317,7 @@ enum class AutoStyle(
         introCut = TransitionType.BLACKOUT, introFx = ClipFx(FxType.BWBEAT, 1f),
     ),
     NATURA(
-        "Natura", "Verdi e azzurri ricchi, foschia leggera, scene lunghe, dissolvenze, zoom morbidi e scivolate; qualche stacco netto a tempo; rallenty.",
+        "Naturaleza", "Verdes y azules intensos, bruma ligera, escenas largas, fundidos, zooms suaves y deslizamientos; algún corte seco al ritmo; cámara lenta.",
         photoUs = 3_400_000, videoUs = 3_600_000, beatsPerSlot = 4,
         // Niente lampi bianchi né onde: dissolvenze, zoom morbido, scivolata e sfocatura (come nei documentari di oggi).
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.CROSSFADE, TransitionType.SOFTZOOM, TransitionType.DRIFT, TransitionType.BLUR),
@@ -339,7 +339,7 @@ enum class AutoStyle(
         cutShare = 0.2f,
     ),
     MARE(
-        "Mare", "Turchesi e luce d'estate: riflessi d'acqua, swipe e scivolate, pellicola moderna, fotocamera digitale, rimbalzi a tempo.",
+        "Mar", "Turquesas y luz de verano: reflejos de agua, swipes y deslizamientos, película moderna, cámara digital, rebotes al ritmo.",
         photoUs = 2_400_000, videoUs = 2_600_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.DRIFT, TransitionType.SLIDE_UP, TransitionType.WHIP, TransitionType.CROSSFADE),
         transitionUs = 500_000,
@@ -356,7 +356,7 @@ enum class AutoStyle(
         cutShare = 0.3f,
     ),
     MONTAGNA(
-        "Montagna", "Aria tersa e cielo profondo, pellicola moderna, zoom secchi e swipe, velocity sui panorami, blackout e momento eroe sul drop.",
+        "Montaña", "Aire limpio y cielo profundo, película moderna, zooms secos y swipes, velocity en los paisajes, blackout y momento héroe en el drop.",
         photoUs = 2_600_000, videoUs = 2_900_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.CROSSFADE, TransitionType.SNAPZOOM, TransitionType.WHIP, TransitionType.SLIDE_UP),
         transitionUs = 600_000,
@@ -372,7 +372,7 @@ enum class AutoStyle(
         cutShare = 0.3f,
     ),
     DIARIO(
-        "Diario di viaggio", "Vlog 2026: la data di ogni tappa, tagli netti e swipe, colori naturali, fotocamera digitale, foto che respirano a tempo.",
+        "Diario de viaje", "Vlog 2026: la fecha de cada parada, cortes secos y swipes, colores naturales, cámara digital, fotos que respiran al ritmo.",
         photoUs = 2_200_000, videoUs = 2_500_000, beatsPerSlot = 2,
         transitions = listOf(TransitionType.WHIP, TransitionType.SLIDE_UP, TransitionType.SNAPZOOM, TransitionType.CROSSFADE),
         transitionUs = 400_000,

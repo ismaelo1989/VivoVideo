@@ -146,7 +146,7 @@ object SmartAnalyzer {
         val ex = MediaExtractor()
         ex.setDataSource(ctx, Uri.parse(uri), null)
         val vt = (0 until ex.trackCount).firstOrNull { ex.getTrackFormat(it).getString(MediaFormat.KEY_MIME)?.startsWith("video/") == true }
-            ?: run { ex.release(); error("niente video") }
+            ?: run { ex.release(); error("sin video") }
         val fmt = ex.getTrackFormat(vt)
         ex.selectTrack(vt)
         val rotation = if (fmt.containsKey(MediaFormat.KEY_ROTATION)) fmt.getInteger(MediaFormat.KEY_ROTATION) else runCatching {

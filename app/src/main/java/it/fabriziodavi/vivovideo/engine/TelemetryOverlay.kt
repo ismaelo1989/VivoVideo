@@ -309,7 +309,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
         val col = zone?.let { TeleZones.colors[it] } ?: 0x99FFFFFF.toInt()
         val ph = frac(s.beats.toFloat())
         val beat = exp(-ph * 7f) + 0.45f * exp(-max(0f, ph - 0.18f) * 9f) * (if (ph > 0.18f) 1f else 0f)
-        card(c, r, u, "Battito", fmt(bpm), "bpm", col, zone, zone?.let { TeleZones.heartNames[it] }) { cv, x, y, sz ->
+        card(c, r, u, "Beat", fmt(bpm), "bpm", col, zone, zone?.let { TeleZones.heartNames[it] }) { cv, x, y, sz ->
             val k = 0.82f + 0.2f * beat
             val h = sz * 0.8f * k
             val path = Path().apply {
@@ -329,7 +329,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
         val w = s.power
         val zone = if (w.isNaN()) null else TeleZones.power(w, ftp)
         val col = zone?.let { TeleZones.colors[it] } ?: 0x99FFFFFF.toInt()
-        card(c, r, u, "Potenza", fmt(w), "W", col, zone, zone?.let { TeleZones.powerNames[it] }) { cv, x, y, sz ->
+        card(c, r, u, "Potencia", fmt(w), "W", col, zone, zone?.let { TeleZones.powerNames[it] }) { cv, x, y, sz ->
             val h = sz * 0.85f
             val path = Path().apply {
                 moveTo(x + h * 0.12f, y - h * 0.5f); lineTo(x - h * 0.3f, y + h * 0.06f); lineTo(x - h * 0.02f, y + h * 0.06f)
@@ -342,7 +342,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
 
     /** Cadenza: la pedivella gira davvero alla velocità delle pedalate. */
     private fun cadence(c: Canvas, r: RectF, s: TeleSample, u: Float) {
-        card(c, r, u, "Cadenza", fmt(s.cadence), "rpm", accent, null, null) { cv, x, y, sz ->
+        card(c, r, u, "Cadencia", fmt(s.cadence), "rpm", accent, null, null) { cv, x, y, sz ->
             val rad = sz * 0.36f
             val p = paint().apply { style = Paint.Style.STROKE; strokeWidth = u * 0.5f; color = 0x80FFFFFF.toInt() }
             cv.drawCircle(x, y, rad, p)
@@ -362,7 +362,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
             g.isNaN() -> 0x99FFFFFF.toInt(); g < -2f -> 0xFF4DA3FF.toInt(); g < 3f -> 0xFF2EE59D.toInt()
             g < 6f -> 0xFFFFD43D.toInt(); g < 10f -> 0xFFFF8A3D.toInt(); else -> hot
         }
-        card(c, r, u, if (!g.isNaN() && g < -1f) "Discesa" else "Pendenza", if (g.isNaN()) "--" else fmt(g, if (kotlin.math.abs(g) < 10) 1 else 0), "%", col, null, null) { cv, x, y, sz ->
+        card(c, r, u, if (!g.isNaN() && g < -1f) "Descenso" else "Pendiente", if (g.isNaN()) "--" else fmt(g, if (kotlin.math.abs(g) < 10) 1 else 0), "%", col, null, null) { cv, x, y, sz ->
             val ang = atan((if (g.isNaN()) 0f else g) / 100f * 2.2f).coerceIn(-0.9f, 0.9f)
             val half = sz * 0.48f
             val dy = half * kotlin.math.tan(ang)
@@ -381,7 +381,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
         panel(c, r, u)
         val pad = u * 2.2f + raceShift(u)
         val box = RectF(r.left + pad + u * 14f, r.top + u * 2.2f, r.right - u * 2.2f - raceShift(u), r.bottom - u * 2.2f)
-        label(c, "Quota", r.left + pad, r.top + u * 3.2f, u, 0xB3FFFFFF.toInt())
+        label(c, "Altitud", r.left + pad, r.top + u * 3.2f, u, 0xB3FFFFFF.toInt())
         val big = r.height() * 0.4f
         val wv = text(c, fmt(s.altitude), r.left + pad, r.top + u * 3.4f + big * 0.92f, big)
         label(c, "m", r.left + pad + wv + u * 0.6f, r.top + u * 3.4f + big * 0.92f, u)
@@ -420,7 +420,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
             c.drawRoundRect(r, u * 1.2f, u * 1.2f, paint().apply { color = 0xD90B0D12.toInt() })
             c.drawRect(r.left, r.top, r.right, r.top + u * 0.9f, paint().apply { color = accent })
         } else panel(c, r, u, round)
-        if (!track.hasGps) { label(c, "Niente GPS", r.centerX(), r.centerY(), u, align = Paint.Align.CENTER); return }
+        if (!track.hasGps) { label(c, "Sin GPS", r.centerX(), r.centerY(), u, align = Paint.Align.CENTER); return }
         val pad = r.width() * (if (round) 0.2f else 0.11f)
         val box = RectF(r.left + pad, r.top + pad, r.right - pad, r.bottom - pad)
         if (mapKey != r.width()) {
@@ -468,7 +468,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
     private fun distance(c: Canvas, r: RectF, s: TeleSample, u: Float) {
         panel(c, r, u)
         val pad = u * 2.4f + raceShift(u)
-        label(c, "Distanza", r.left + pad, r.top + u * 3f, u, 0xB3FFFFFF.toInt())
+        label(c, "Distancia", r.left + pad, r.top + u * 3f, u, 0xB3FFFFFF.toInt())
         val big = r.height() * 0.45f
         val km = s.distanceM / 1000f
         val wv = text(c, fmt(km, if (km < 100) 1 else 0), r.left + pad, r.top + u * 3.2f + big * 0.9f, big)
@@ -488,7 +488,7 @@ class TeleRenderer(private val context: Context, private val t: Telemetry, priva
         val big = r.height() * 0.44f
         text(c, String.format(Locale.ITALIAN, "%02d:%02d", local.hour, local.minute), r.left + pad, r.top + u * 1.6f + big * 0.92f, big)
         val el = ((s.timeMs - track.startMs) / 1000).coerceAtLeast(0)
-        label(c, "Tempo", r.right - u * 2.4f - raceShift(u), r.top + u * 3f, u, 0xB3FFFFFF.toInt(), Paint.Align.RIGHT)
+        label(c, "Tiempo", r.right - u * 2.4f - raceShift(u), r.top + u * 3f, u, 0xB3FFFFFF.toInt(), Paint.Align.RIGHT)
         text(c, String.format(Locale.ITALIAN, "%d:%02d:%02d", el / 3600, (el / 60) % 60, el % 60), r.right - u * 2.4f - raceShift(u), r.bottom - u * 2.2f, r.height() * 0.26f,
             accent, align = Paint.Align.RIGHT)
     }

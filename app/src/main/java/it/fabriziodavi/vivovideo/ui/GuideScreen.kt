@@ -83,7 +83,7 @@ private fun blocks(lines: List<String>, marks: List<String>): List<GuideBlock> =
 fun GuideScreen(topic: String? = null, onClose: () -> Unit) {
     val context = LocalContext.current
     val doc = remember {
-        GuideIndex.parse(runCatching { context.assets.open("guida.md").bufferedReader().use { it.readText() } }.getOrDefault("# Guida non disponibile"))
+        GuideIndex.parse(runCatching { context.assets.open("guida.md").bufferedReader().use { it.readText() } }.getOrDefault("# Guía no disponible"))
     }
     val (title, intro, sections) = doc
     val groups = remember(sections) { GuideIndex.grouped(sections) }
@@ -94,9 +94,9 @@ fun GuideScreen(topic: String? = null, onClose: () -> Unit) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(start = 2.dp, end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, if (open >= 0) "Torna all'indice" else "Chiudi la guida") { if (open >= 0) open = -1 else onClose() }
-            Text(if (open >= 0) "Indice" else "Guida", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-            if (open >= 0) IconBtn(VVIcons.Close, "Chiudi la guida", onClick = onClose)
+            IconBtn(VVIcons.Back, if (open >= 0) "Volver al índice" else "Cerrar la guía") { if (open >= 0) open = -1 else onClose() }
+            Text(if (open >= 0) "Índice" else "Guía", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            if (open >= 0) IconBtn(VVIcons.Close, "Cerrar la guía", onClick = onClose)
         }
         if (open >= 0) {
             val s = sections[open]
@@ -121,8 +121,8 @@ fun GuideScreen(topic: String? = null, onClose: () -> Unit) {
             OutlinedTextField(
                 value = query, onValueChange = { query = it },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), singleLine = true,
-                placeholder = { Text("Cerca nella guida (es. targhe, battiti, 4K)", color = VV.Faint) },
-                trailingIcon = { if (query.isNotEmpty()) IconBtn(VVIcons.Close, "Cancella la ricerca") { query = "" } },
+                placeholder = { Text("Buscar en la guía (ej. placas, beats, 4K)", color = VV.Faint) },
+                trailingIcon = { if (query.isNotEmpty()) IconBtn(VVIcons.Close, "Borrar la búsqueda") { query = "" } },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = VV.Tally, unfocusedBorderColor = VV.Line, cursorColor = VV.Tally,
                     focusedTextColor = VV.Text, unfocusedTextColor = VV.Text,
@@ -132,7 +132,7 @@ fun GuideScreen(topic: String? = null, onClose: () -> Unit) {
                 if (marks.isNotEmpty()) {
                     val hits = GuideIndex.search(sections, query)
                     item {
-                        Text(if (hits.isEmpty()) "Nessun argomento contiene queste parole." else "${hits.size} argomenti",
+                        Text(if (hits.isEmpty()) "Ningún tema contiene estas palabras." else "${hits.size} argomenti",
                             style = MaterialTheme.typography.labelMedium, color = VV.Dim, modifier = Modifier.padding(top = 8.dp))
                     }
                     items(hits) { h ->
@@ -148,7 +148,7 @@ fun GuideScreen(topic: String? = null, onClose: () -> Unit) {
                         items(idx) { i ->
                             val s = sections[i]
                             val first = s.lines.firstOrNull()?.let { GuideIndex.plain(it) }.orEmpty()
-                            TopicRow(s.title, AnnotatedString(first), highlight = i == 0 && s.title.startsWith("Novità")) { open = i }
+                            TopicRow(s.title, AnnotatedString(first), highlight = i == 0 && s.title.startsWith("Novedades")) { open = i }
                         }
                     }
                 }

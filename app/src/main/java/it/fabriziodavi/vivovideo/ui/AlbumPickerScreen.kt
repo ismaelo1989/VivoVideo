@@ -63,29 +63,29 @@ fun AlbumPickerScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro") { vm.albumPick = null }
-            Text(if (forNew) "Nuovo progetto da album" else "Aggiungi album", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás") { vm.albumPick = null }
+            Text(if (forNew) "Proyecto nuevo desde un álbum" else "Agregar álbum", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Hint("Tocca uno o più album: tutte le foto e i video entrano nel progetto in ordine di data. Poi li tagli, riordini o togli come vuoi.")
+            Hint("Toca uno o más álbumes: todas las fotos y videos entran en el proyecto por orden de fecha. Luego los cortas, reordenas o quitas como quieras.")
             when {
                 !any -> {
-                    Hint("Per vedere gli album serve il permesso di leggere foto e video.")
-                    PrimaryButton("Consenti l'accesso alla galleria", Modifier.fillMaxWidth()) { permLauncher.launch(Gallery.permissions) }
-                    SecondaryButton("Apri le impostazioni dell'app", Modifier.fillMaxWidth(), onClick = {
+                    Hint("Para ver los álbumes hace falta el permiso para leer fotos y videos.")
+                    PrimaryButton("Permitir el acceso a la galería", Modifier.fillMaxWidth()) { permLauncher.launch(Gallery.permissions) }
+                    SecondaryButton("Abrir los ajustes de la app", Modifier.fillMaxWidth(), onClick = {
                         runCatching { ctx.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + ctx.packageName))) }
                     })
                 }
-                albums == null -> Hint("Lettura degli album…")
+                albums == null -> Hint("Leyendo los álbumes…")
                 else -> {
                     if (!full) {
-                        Hint("Hai dato accesso solo ad alcune foto: si vedono solo quelle.")
-                        SecondaryButton("Consenti l'accesso a tutto", Modifier.fillMaxWidth(), onClick = { permLauncher.launch(Gallery.permissions) })
+                        Hint("Diste acceso solo a algunas fotos: solo se ven esas.")
+                        SecondaryButton("Permitir el acceso a todo", Modifier.fillMaxWidth(), onClick = { permLauncher.launch(Gallery.permissions) })
                     }
-                    if (albums!!.isEmpty()) Hint("Nessun album con foto o video.")
+                    if (albums!!.isEmpty()) Hint("Ningún álbum con fotos o videos.")
                     albums!!.chunked(3).forEach { row ->
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             row.forEach { a ->
@@ -103,7 +103,7 @@ fun AlbumPickerScreen(vm: EditorViewModel) {
         Box(Modifier.fillMaxWidth().padding(16.dp)) {
             val v = items.count { it.isVideo }
             PrimaryButton(
-                if (items.isEmpty()) "Scegli almeno un album" else "Aggiungi ${items.size - v} foto e $v video",
+                if (items.isEmpty()) "Elige al menos un álbum" else "Agregar ${items.size - v} fotos y $v videos",
                 Modifier.fillMaxWidth(), enabled = items.isNotEmpty(),
             ) { if (items.size > 150) confirmMany = true else vm.addAlbumItems(items) }
         }
@@ -113,9 +113,9 @@ fun AlbumPickerScreen(vm: EditorViewModel) {
             onDismissRequest = { confirmMany = false },
             containerColor = VV.Raised,
             title = { Text("${items.size} elementi", style = MaterialTheme.typography.titleSmall) },
-            text = { Text("Sono tanti: la lettura richiederà un po' e il progetto sarà lungo. Per scegliere solo i momenti migliori c'è il Video automatico.", style = MaterialTheme.typography.bodyMedium) },
-            confirmButton = { TextButton(onClick = { confirmMany = false; vm.addAlbumItems(items) }) { Text("Aggiungi tutto", color = VV.Tally) } },
-            dismissButton = { TextButton(onClick = { confirmMany = false }) { Text("Annulla", color = VV.Dim) } },
+            text = { Text("Son muchos: la lectura tardará un poco y el proyecto será largo. Para elegir solo los mejores momentos está el Video automático.", style = MaterialTheme.typography.bodyMedium) },
+            confirmButton = { TextButton(onClick = { confirmMany = false; vm.addAlbumItems(items) }) { Text("Agregar todo", color = VV.Tally) } },
+            dismissButton = { TextButton(onClick = { confirmMany = false }) { Text("Deshacer", color = VV.Dim) } },
         )
     }
 }
@@ -126,14 +126,14 @@ fun AddMediaDialog(onPick: () -> Unit, onAlbums: () -> Unit, onDismiss: () -> Un
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = VV.Raised,
-        title = { Text("Aggiungi foto e video", style = MaterialTheme.typography.titleSmall) },
+        title = { Text("Agregar fotos y videos", style = MaterialTheme.typography.titleSmall) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                PrimaryButton("Scegli foto e video", Modifier.fillMaxWidth()) { onDismiss(); onPick() }
-                SecondaryButton("Album interi", Modifier.fillMaxWidth(), onClick = { onDismiss(); onAlbums() })
-                if (onCollage != null) SecondaryButton("Collage di foto", Modifier.fillMaxWidth(), onClick = { onDismiss(); onCollage() })
+                PrimaryButton("Elegir fotos y videos", Modifier.fillMaxWidth()) { onDismiss(); onPick() }
+                SecondaryButton("Álbumes completos", Modifier.fillMaxWidth(), onClick = { onDismiss(); onAlbums() })
+                if (onCollage != null) SecondaryButton("Collage de fotos", Modifier.fillMaxWidth(), onClick = { onDismiss(); onCollage() })
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Annulla", color = VV.Dim) } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Deshacer", color = VV.Dim) } },
     )
 }

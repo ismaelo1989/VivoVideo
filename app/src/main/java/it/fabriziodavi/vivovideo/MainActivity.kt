@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Diary.init(this)
-        Diary.log("Avvio, versione ${BuildConfig.VERSION_NAME}")
+        Diary.log("Inicio, versión ${BuildConfig.VERSION_NAME}")
         Safety.install(this)
         super.onCreate(savedInstanceState)
         // Se l'app era caduta, lo si dice (con il dettaglio) e si spengono le funzioni sperimentali coinvolte.

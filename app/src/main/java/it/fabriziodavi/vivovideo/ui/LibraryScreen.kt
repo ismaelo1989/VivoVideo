@@ -147,15 +147,15 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro") { vm.library = null }
-            Text(if (effects) "Effetti sonori" else "Musica libera", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-            IconBtn(VVIcons.Tune, "Codici dei servizi") { showKeys = true }
+            IconBtn(VVIcons.Back, "Atrás") { vm.library = null }
+            Text(if (effects) "Efectos de sonido" else "Música libre", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Tune, "Códigos de los servicios") { showKeys = true }
         }
         Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             OutlinedTextField(
                 value = query, onValueChange = { query = it },
                 modifier = Modifier.fillMaxWidth(), singleLine = true,
-                placeholder = { Text(if (effects) "Cerca (in inglese: whoosh, rain…)" else "Cerca (in inglese: summer, epic…)", color = VV.Faint) },
+                placeholder = { Text(if (effects) "Buscar (en inglés: whoosh, rain…)" else "Buscar (en inglés: summer, epic…)", color = VV.Faint) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { tick++ }),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -163,10 +163,10 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
                     focusedTextColor = VV.Text, unfocusedTextColor = VV.Text,
                 ),
             )
-            PillRow(listOf<String?>(null) + words.map { it.second }, chip, { w -> words.firstOrNull { it.second == w }?.first ?: "Tutto" }) { chip = it }
+            PillRow(listOf<String?>(null) + words.map { it.second }, chip, { w -> words.firstOrNull { it.second == w }?.first ?: "Todo" }) { chip = it }
             if (sources.size > 1) PillRow(sources, source, { it.label }) { source = it }
-            ToggleRow("Solo licenze per uso commerciale", commercial) { commercial = it; LibraryKeys.setCommercialOnly(ctx, it) }
-            if (!effects && source == LibrarySource.JAMENDO) ToggleRow("Solo strumentali (senza voce)", instrumental) { instrumental = it }
+            ToggleRow("Solo licencias de uso comercial", commercial) { commercial = it; LibraryKeys.setCommercialOnly(ctx, it) }
+            if (!effects && source == LibrarySource.JAMENDO) ToggleRow("Solo instrumentales (sin voz)", instrumental) { instrumental = it }
         }
         Box(Modifier.fillMaxWidth().weight(1f).padding(top = 8.dp)) {
             when {
@@ -174,9 +174,9 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
                 state.error != null -> Column(Modifier.align(Alignment.Center).padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(state.error ?: "", style = MaterialTheme.typography.bodyMedium, color = VV.Danger)
                     Spacer(Modifier.height(10.dp))
-                    SecondaryButton("Riprova", onClick = { tick++ })
+                    SecondaryButton("Reintentar", onClick = { tick++ })
                 }
-                state.searched && state.results.isEmpty() -> Text("Nessun risultato: prova altre parole.", style = MaterialTheme.typography.bodyMedium,
+                state.searched && state.results.isEmpty() -> Text("Sin resultados: prueba otras palabras.", style = MaterialTheme.typography.bodyMedium,
                     color = VV.Dim, modifier = Modifier.align(Alignment.Center))
                 else -> LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(state.results, key = { it.source.name + it.id }) { t ->
@@ -185,7 +185,7 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
                     if (state.results.size >= 15) item {
                         Box(Modifier.fillMaxWidth().padding(top = 6.dp), contentAlignment = Alignment.Center) {
                             if (state.loadingMore) CircularProgressIndicator(Modifier.size(28.dp), color = VV.Tally)
-                            else SecondaryButton("Altri risultati", onClick = {
+                            else SecondaryButton("Más resultados", onClick = {
                                 scope.launch {
                                     state.loadingMore = true
                                     try {
@@ -203,7 +203,7 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
                     }
                     item {
                         Text(
-                            "Brani e suoni da ${source.label}, con licenze Creative Commons. Quando usi un brano l'app ne salva autore e licenza: li trovi in Audio → Brano → Crediti, da copiare nella descrizione del video.",
+                            "Canciones y sonidos de ${source.label}, con licencias Creative Commons. Cuando usas una canción la app guarda autor y licencia: los encuentras en Audio → Canción → Créditos, para copiar en la descripción del video.",
                             style = MaterialTheme.typography.bodySmall, color = VV.Faint, modifier = Modifier.padding(16.dp),
                         )
                     }
@@ -218,14 +218,14 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
         AlertDialog(
             onDismissRequest = { showKeys = false },
             containerColor = VV.Raised,
-            title = { Text("Codici dei servizi", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Códigos de los servicios", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Restano salvati solo su questo telefono. Senza codici funziona Openverse.", style = MaterialTheme.typography.bodySmall)
+                    Text("Se guardan solo en este teléfono. Sin códigos funciona Openverse.", style = MaterialTheme.typography.bodySmall)
                     KeyField("Jamendo – Client ID", j) { j = it }
-                    LinkText("Crea il codice su devportal.jamendo.com", "https://devportal.jamendo.com")
+                    LinkText("Crea el código en devportal.jamendo.com", "https://devportal.jamendo.com")
                     KeyField("Freesound – API key", f) { f = it }
-                    LinkText("Crea la chiave su freesound.org/apiv2/apply", "https://freesound.org/apiv2/apply")
+                    LinkText("Crea la clave en freesound.org/apiv2/apply", "https://freesound.org/apiv2/apply")
                 }
             },
             confirmButton = {
@@ -239,9 +239,9 @@ fun LibraryScreen(vm: EditorViewModel, state: LibraryState = remember { LibraryS
                         else -> LibrarySource.OPENVERSE
                     }
                     tick++
-                }) { Text("Salva", color = VV.Tally) }
+                }) { Text("Guardar", color = VV.Tally) }
             },
-            dismissButton = { TextButton(onClick = { showKeys = false }) { Text("Annulla", color = VV.Dim) } },
+            dismissButton = { TextButton(onClick = { showKeys = false }) { Text("Deshacer", color = VV.Dim) } },
         )
     }
 }
@@ -272,7 +272,7 @@ private fun TrackRow(t: OnlineTrack, playing: Boolean, downloading: Boolean, can
         Box(
             Modifier.size(40.dp).clip(CircleShape).background(if (playing) VV.Tally else VV.Raised2).clickable(onClick = onPlay),
             contentAlignment = Alignment.Center,
-        ) { Icon(if (playing) VVIcons.Pause else VVIcons.Play, if (playing) "Ferma" else "Ascolta", tint = if (playing) VV.TallyInk else VV.Text) }
+        ) { Icon(if (playing) VVIcons.Pause else VVIcons.Play, if (playing) "Detener" else "Escuchar", tint = if (playing) VV.TallyInk else VV.Text) }
         Column(Modifier.weight(1f).padding(horizontal = 10.dp)) {
             Text(t.title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
@@ -287,7 +287,7 @@ private fun TrackRow(t: OnlineTrack, playing: Boolean, downloading: Boolean, can
             contentAlignment = Alignment.Center,
         ) {
             if (downloading) CircularProgressIndicator(Modifier.size(16.dp), color = VV.TallyInk, strokeWidth = 2.dp)
-            else Text("Usa", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = if (canUse) VV.TallyInk else VV.Faint)
+            else Text("Usar", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = if (canUse) VV.TallyInk else VV.Faint)
         }
     }
     Spacer(Modifier.width(1.dp))

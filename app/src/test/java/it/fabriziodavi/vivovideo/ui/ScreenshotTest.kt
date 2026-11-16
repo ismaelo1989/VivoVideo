@@ -100,7 +100,7 @@ class ScreenshotTest {
             startUs = 1_000_000, lengthUs = 9_000_000, fadeOutUs = 2_000_000,
             beatsUs = (0 until 400).map { it * 468_750L }, bpm = 128f,
         )
-        val t2 = t.copy(id = "b", name = "Voce", startUs = 6_000_000, lengthUs = 4_000_000)
+        val t2 = t.copy(id = "b", name = "Voz", startUs = 6_000_000, lengthUs = 4_000_000)
         vm.setMusicForTest(listOf(t, t2))
         vm.selectedMusicId = t.id
         compose.setContent { VivoTheme { EditorScreen(vm, initialTool = Tool.MUSIC) } }

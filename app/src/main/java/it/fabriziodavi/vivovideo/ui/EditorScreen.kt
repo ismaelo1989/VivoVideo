@@ -162,32 +162,32 @@ private val ZOOMS = listOf(8f, 15f, 30f, 60f, 120f)
 
 /** Le sei voci della barra principale, sempre visibili. */
 enum class ToolGroup(val label: String, val icon: () -> ImageVector) {
-    EDIT("Modifica", { VVIcons.Edit }),
+    EDIT("Editar", { VVIcons.Edit }),
     AUDIO("Audio", { VVIcons.Music }),
-    TEXT("Testo", { VVIcons.Text }),
-    LAYER("Livelli", { VVIcons.Layers }),
-    EFFECTS("Effetti", { VVIcons.Effects }),
-    COLOR("Colore", { VVIcons.Palette }),
+    TEXT("Texto", { VVIcons.Text }),
+    LAYER("Capas", { VVIcons.Layers }),
+    EFFECTS("Efectos", { VVIcons.Effects }),
+    COLOR("Color", { VVIcons.Palette }),
 }
 
 /** Strumenti e pannelli. [group] è la voce della barra principale a cui appartengono. */
 enum class Tool(val label: String, val icon: () -> ImageVector, val group: ToolGroup?, val needsClip: Boolean = false) {
-    SPLIT("Dividi", { VVIcons.Split }, ToolGroup.EDIT),
-    SPEED("Velocità", { VVIcons.Speed }, ToolGroup.EDIT, needsClip = true),
-    DURATION("Durata", { VVIcons.Speed }, ToolGroup.EDIT, needsClip = true),
-    FRAME("Inquadra", { VVIcons.Fullscreen }, ToolGroup.EDIT, needsClip = true),
+    SPLIT("Dividir", { VVIcons.Split }, ToolGroup.EDIT),
+    SPEED("Velocidad", { VVIcons.Speed }, ToolGroup.EDIT, needsClip = true),
+    DURATION("Duración", { VVIcons.Speed }, ToolGroup.EDIT, needsClip = true),
+    FRAME("Encuadre", { VVIcons.Fullscreen }, ToolGroup.EDIT, needsClip = true),
     KEYFRAME("Keyframe", { VVIcons.Keyframe }, ToolGroup.EDIT, needsClip = true),
-    TRANSITION("Transizione", { VVIcons.Transition }, ToolGroup.EDIT),
+    TRANSITION("Transición", { VVIcons.Transition }, ToolGroup.EDIT),
     SLIDESHOW("Slideshow", { VVIcons.Movie }, ToolGroup.EDIT),
     FORMAT("Formato", { VVIcons.Fullscreen }, ToolGroup.EDIT),
-    SPORT("Dati sport", { VVIcons.Speed }, ToolGroup.EDIT),
-    MORE("Altro", { VVIcons.Tune }, ToolGroup.EDIT, needsClip = true),
+    SPORT("Datos deportivos", { VVIcons.Speed }, ToolGroup.EDIT),
+    MORE("Otro", { VVIcons.Tune }, ToolGroup.EDIT, needsClip = true),
     MUSIC("Audio", { VVIcons.Music }, ToolGroup.AUDIO),
-    TEXT("Testo", { VVIcons.Text }, ToolGroup.TEXT),
-    LAYER("Livelli", { VVIcons.Layers }, ToolGroup.LAYER),
-    EFFECTS("Effetti", { VVIcons.Effects }, ToolGroup.EFFECTS, needsClip = true),
-    COLOR("Colore", { VVIcons.Palette }, ToolGroup.COLOR),
-    EXPORT("Esporta", { VVIcons.Export }, null),
+    TEXT("Texto", { VVIcons.Text }, ToolGroup.TEXT),
+    LAYER("Capas", { VVIcons.Layers }, ToolGroup.LAYER),
+    EFFECTS("Efectos", { VVIcons.Effects }, ToolGroup.EFFECTS, needsClip = true),
+    COLOR("Color", { VVIcons.Palette }, ToolGroup.COLOR),
+    EXPORT("Exportar", { VVIcons.Export }, null),
 }
 
 /** Strumenti della seconda riga di "Modifica" (Velocità diventa Durata sulle foto). */
@@ -206,9 +206,9 @@ fun ToolGroup.panel(): Tool? = when (this) {
 }
 
 /** Schede in cima ai pannelli più ricchi. */
-val MUSIC_TABS = listOf("Brano", "Ritmo", "Battiti", "Voce", "Clip")
-val TEXT_TABS = listOf("Stile", "Animazione", "Movimento")
-val LAYER_TABS = listOf("Aspetto", "Forma", "Animazione")
+val MUSIC_TABS = listOf("Canción", "Ritmo", "Beats", "Voz", "Clip")
+val TEXT_TABS = listOf("Estilo", "Animación", "Movimiento")
+val LAYER_TABS = listOf("Aspecto", "Forma", "Animación")
 /** Animazioni per i livelli (quelle lettera per lettera, glitch e luccichio sono solo per i testi). */
 /** Le novità premium in testa alle liste: si vedono subito. */
 // L'incrociata resta la prima (è la più usata), poi le novità.
@@ -222,8 +222,8 @@ val PRESETS_NEW_FIRST: List<TextPreset> = TextPreset.entries.filter { it.trend }
 val ANIMS_NEW_FIRST: List<TextAnim> = listOf(TextAnim.NONE) + TextAnim.entries.filter { it.ordinal >= TextAnim.BOUNCE.ordinal } +
     TextAnim.entries.filter { it != TextAnim.NONE && it.ordinal < TextAnim.BOUNCE.ordinal }
 val LAYER_ANIMS = TextAnim.entries.filter { !it.inOnly && !it.letters && it != TextAnim.GLITCH }
-val EFFECT_TABS = listOf("Effetti", "Dissolvenze", "Persona", "Privacy")
-val COLOR_TABS = listOf("Base", "Ruote", "HSL", "Progetto")
+val EFFECT_TABS = listOf("Efectos", "Fundidos", "Persona", "Privacy")
+val COLOR_TABS = listOf("Base", "Ruedas", "HSL", "Proyecto")
 
 @Composable
 fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int = 0) {
@@ -299,7 +299,7 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
     fun onTool(t: Tool) {
         if (t.needsClip && vm.selectedClip == null) {
             val c = targetClip()
-            if (c == null) { vm.message = "Aggiungi prima un video o una foto."; return }
+            if (c == null) { vm.message = "Primero agrega un video o una foto."; return }
             vm.selectedClipId = c.id
         }
         when (t) {
@@ -334,7 +334,7 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
             Modifier.fillMaxWidth().height(48.dp).padding(start = 2.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconBtn(VVIcons.Back, "Progetti", enabled = !running) { vm.closeProject() }
+            IconBtn(VVIcons.Back, "Proyectos", enabled = !running) { vm.closeProject() }
             Text(
                 project.name,
                 style = MaterialTheme.typography.titleMedium,
@@ -342,10 +342,10 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                 modifier = Modifier.weight(1f).clickable(enabled = !running) { renaming = true }.padding(horizontal = 4.dp),
             )
             // La guida si apre sull'argomento dello strumento aperto (senza strumenti, sull'indice).
-            IconBtn(VVIcons.Help, "Guida") { vm.pause(); vm.guideTopic = GuideIndex.topicFor(activeTool); vm.showGuide = true }
-            IconBtn(VVIcons.Tune, "Progetto", enabled = !running) { vm.pause(); projectMenu = true }
-            IconBtn(VVIcons.Undo, "Annulla", enabled = vm.canUndo && !running, onClick = vm::undo)
-            IconBtn(VVIcons.Redo, "Ripeti", enabled = vm.canRedo && !running, onClick = vm::redo)
+            IconBtn(VVIcons.Help, "Guía") { vm.pause(); vm.guideTopic = GuideIndex.topicFor(activeTool); vm.showGuide = true }
+            IconBtn(VVIcons.Tune, "Proyecto", enabled = !running) { vm.pause(); projectMenu = true }
+            IconBtn(VVIcons.Undo, "Deshacer", enabled = vm.canUndo && !running, onClick = vm::undo)
+            IconBtn(VVIcons.Redo, "Repetir", enabled = vm.canRedo && !running, onClick = vm::redo)
             if (showExport) {
                 Spacer(Modifier.width(4.dp))
                 ExportPill(enabled = project.clips.isNotEmpty()) { activeTool = Tool.EXPORT }
@@ -359,7 +359,7 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                 .background(if (vm.player != null) VV.Text else VV.Raised)
                 .clickable(enabled = vm.player != null, onClick = vm::togglePlay),
             contentAlignment = Alignment.Center,
-        ) { Icon(if (vm.isPlaying) VVIcons.Pause else VVIcons.Play, "Riproduci", tint = VV.Canvas) }
+        ) { Icon(if (vm.isPlaying) VVIcons.Pause else VVIcons.Play, "Reproducir", tint = VV.Canvas) }
     }
     val timecode: @Composable () -> Unit = {
         Row(verticalAlignment = Alignment.Bottom) {
@@ -425,11 +425,11 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                     }
                 }
                 project.clips.isEmpty() -> EmptyState(onAdd = pickVideos)
-                running -> Text("Anteprima in pausa durante l'esportazione", style = MaterialTheme.typography.bodySmall)
+                running -> Text("Vista previa en pausa durante la exportación", style = MaterialTheme.typography.bodySmall)
             }
             if (vm.preparing > 0) {
                 Text(
-                    vm.preparingLabel.ifBlank { if (vm.preparing == 1) "Preparo un tratto dell'anteprima…" else "Preparo ${vm.preparing} tratti dell'anteprima…" },
+                    vm.preparingLabel.ifBlank { if (vm.preparing == 1) "Preparando un tramo de la vista previa…" else "Preparando ${vm.preparing} tramos de la vista previa…" },
                     color = Color.White, fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.TopStart).padding(8.dp)
                         .background(Color(0x99000000), RoundedCornerShape(6.dp)).padding(horizontal = 8.dp, vertical = 4.dp),
@@ -437,7 +437,7 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
             }
             if (vm.missingFiles.isNotEmpty() && vm.clipWork == null) {
                 Text(
-                    if (vm.missingFiles.size == 1) "1 file non trovato · tocca per ricollegarlo" else "${vm.missingFiles.size} file non trovati · tocca per ricollegarli",
+                    if (vm.missingFiles.size == 1) "1 archivo no encontrado · toca para reconectarlo" else "${vm.missingFiles.size} archivos no encontrados · toca para reconectarlos",
                     color = Color.White, fontSize = 13.sp,
                     modifier = Modifier.align(Alignment.TopCenter).padding(8.dp)
                         .background(VV.Danger, RoundedCornerShape(8.dp)).clickable { relinkOpen = true }.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -454,7 +454,7 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                         modifier = Modifier.width(200.dp).height(4.dp).clip(RoundedCornerShape(2.dp)),
                         color = VV.Tally, trackColor = VV.Raised2,
                     )
-                    TextButton(onClick = vm::cancelClipWork) { Text("Annulla", color = VV.Dim) }
+                    TextButton(onClick = vm::cancelClipWork) { Text("Deshacer", color = VV.Dim) }
                 }
             }
             // Con l'avviso dei file mancanti l'errore tecnico non si mostra (sarebbero due scritte una sopra l'altra).
@@ -475,14 +475,14 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                             Box(Modifier.align(Alignment.CenterStart)) { timecode() }
                             Box(Modifier.align(Alignment.Center)) { playButton(40.dp) }
                             Box(Modifier.align(Alignment.CenterEnd)) {
-                                IconBtn(if (fullscreen) VVIcons.FullscreenExit else VVIcons.Fullscreen, "Schermo intero", tint = Color.White) { fullscreen = !fullscreen }
+                                IconBtn(if (fullscreen) VVIcons.FullscreenExit else VVIcons.Fullscreen, "Pantalla completa", tint = Color.White) { fullscreen = !fullscreen }
                             }
                         }
                     }
                 }
             } else if (project.clips.isNotEmpty()) {
                 Box(Modifier.align(Alignment.TopEnd).padding(4.dp)) {
-                    IconBtn(VVIcons.Fullscreen, "Schermo intero", tint = Color.White) { fullscreen = true }
+                    IconBtn(VVIcons.Fullscreen, "Pantalla completa", tint = Color.White) { fullscreen = true }
                 }
             }
         }
@@ -506,8 +506,8 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                         style = MaterialTheme.typography.labelMedium, color = if (fmtOn) VV.TallyInk else VV.Text,
                     )
                 }
-                IconBtn(VVIcons.Remove, "Riduci zoom", tint = VV.Dim) { if (zoom > 0) zoom-- }
-                IconBtn(VVIcons.Add, "Aumenta zoom", tint = VV.Dim) { if (zoom < ZOOMS.lastIndex) zoom++ }
+                IconBtn(VVIcons.Remove, "Reducir zoom", tint = VV.Dim) { if (zoom > 0) zoom-- }
+                IconBtn(VVIcons.Add, "Aumentar zoom", tint = VV.Dim) { if (zoom < ZOOMS.lastIndex) zoom++ }
             }
         }
     }
@@ -607,9 +607,9 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
         Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp, top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(t.label, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
             if (clip != null && (t.needsClip || t == Tool.TRANSITION || (t == Tool.MUSIC && tab == 4))) {
-                Text("Clip ${project.clips.indexOf(clip) + 1} di ${project.clips.size}", style = MaterialTheme.typography.bodySmall)
+                Text("Clip ${project.clips.indexOf(clip) + 1} de ${project.clips.size}", style = MaterialTheme.typography.bodySmall)
             }
-            IconBtn(VVIcons.Check, "Chiudi", enabled = !running) { activeTool = null }
+            IconBtn(VVIcons.Check, "Cerrar", enabled = !running) { activeTool = null }
         }
         if (tabs.isNotEmpty()) PanelTabs(tabs, tab) { tab = it }
     }
@@ -643,8 +643,8 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
                 Row(Modifier.fillMaxWidth().background(VV.Panel), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.weight(1f)) { timeline() }
                     Column {
-                        IconBtn(VVIcons.Add, "Aumenta zoom", tint = VV.Dim) { if (zoom < ZOOMS.lastIndex) zoom++ }
-                        IconBtn(VVIcons.Remove, "Riduci zoom", tint = VV.Dim) { if (zoom > 0) zoom-- }
+                        IconBtn(VVIcons.Add, "Aumentar zoom", tint = VV.Dim) { if (zoom < ZOOMS.lastIndex) zoom++ }
+                        IconBtn(VVIcons.Remove, "Reducir zoom", tint = VV.Dim) { if (zoom > 0) zoom-- }
                     }
                 }
             }
@@ -691,58 +691,58 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
         AlertDialog(
             onDismissRequest = { clipMenu = false },
             containerColor = VV.Raised,
-            title = { Text(if (c == null) "Clip" else "Clip ${idx + 1} di ${project.clips.size}", style = MaterialTheme.typography.titleSmall) },
+            title = { Text(if (c == null) "Clip" else "Clip ${idx + 1} de ${project.clips.size}", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column {
                     fun act(f: () -> Unit) { f(); clipMenu = false }
                     if (c != null) {
-                        MenuRow(VVIcons.MoveLeft, "Sposta prima", enabled = idx > 0) { act { vm.moveSelected(-1) } }
-                        MenuRow(VVIcons.MoveRight, "Sposta dopo", enabled = idx < project.clips.lastIndex) { act { vm.moveSelected(+1) } }
-                        MenuRow(VVIcons.Copy, "Duplica") { act { vm.duplicateSelected() } }
-                        MenuRow(VVIcons.Split, "Dividi all'indicatore") { act { vm.splitAtPlayhead() } }
-                        if (c.collage != null) MenuRow(VVIcons.Copy, "Modifica collage") { act { vm.editCollage(c.id) } }
+                        MenuRow(VVIcons.MoveLeft, "Mover antes", enabled = idx > 0) { act { vm.moveSelected(-1) } }
+                        MenuRow(VVIcons.MoveRight, "Mover después", enabled = idx < project.clips.lastIndex) { act { vm.moveSelected(+1) } }
+                        MenuRow(VVIcons.Copy, "Duplicar") { act { vm.duplicateSelected() } }
+                        MenuRow(VVIcons.Split, "Dividir en el indicador") { act { vm.splitAtPlayhead() } }
+                        if (c.collage != null) MenuRow(VVIcons.Copy, "Editar collage") { act { vm.editCollage(c.id) } }
                         if (!c.isPhoto) {
-                            MenuRow(VVIcons.Pause, "Fermo immagine all'indicatore") { act { vm.freezeFrame() } }
-                            MenuRow(VVIcons.Effects, "Momento migliore") { act { vm.bestMoment() } }
-                            MenuRow(VVIcons.MoveLeft, if (c.reversed != null) "Di nuovo nel verso normale" else "Al contrario") { act { vm.toggleReverse() } }
+                            MenuRow(VVIcons.Pause, "Congelar imagen en el indicador") { act { vm.freezeFrame() } }
+                            MenuRow(VVIcons.Effects, "Mejor momento") { act { vm.bestMoment() } }
+                            MenuRow(VVIcons.MoveLeft, if (c.reversed != null) "De nuevo en el sentido normal" else "Al revés") { act { vm.toggleReverse() } }
                         }
-                        if (!c.isPhoto && !c.muted) MenuRow(VVIcons.Volume, "Stacca l'audio") { act { vm.detachAudio() } }
-                        MenuRow(VVIcons.Copy, "Copia attributi") { act { vm.copyStyle() } }
-                        if (vm.copiedStyle != null && vm.copiedStyle?.id != c.id) MenuRow(VVIcons.Copy, "Incolla attributi") { act { pasteDialog = true } }
-                        MenuRow(VVIcons.Check, "Seleziona più clip") { act { vm.startMultiSelect() } }
+                        if (!c.isPhoto && !c.muted) MenuRow(VVIcons.Volume, "Separar el audio") { act { vm.detachAudio() } }
+                        MenuRow(VVIcons.Copy, "Copiar atributos") { act { vm.copyStyle() } }
+                        if (vm.copiedStyle != null && vm.copiedStyle?.id != c.id) MenuRow(VVIcons.Copy, "Pegar atributos") { act { pasteDialog = true } }
+                        MenuRow(VVIcons.Check, "Seleccionar varios clips") { act { vm.startMultiSelect() } }
                     }
                     if (project.clips.size >= 2) {
-                        MenuRow(VVIcons.Shuffle, if (vm.canShuffleAgain) "Rimescola ancora" else "Rimescola tutte le clip") { act { vm.shuffleClips(null) } }
+                        MenuRow(VVIcons.Shuffle, if (vm.canShuffleAgain) "Mezclar otra vez" else "Mezclar todos los clips") { act { vm.shuffleClips(null) } }
                     }
-                    MenuRow(VVIcons.Add, "Aggiungi video e foto") { act { pickVideos() } }
-                    if (c != null) MenuRow(VVIcons.Delete, "Elimina", tint = VV.Danger) { act { vm.deleteSelected() } }
+                    MenuRow(VVIcons.Add, "Agregar videos y fotos") { act { pickVideos() } }
+                    if (c != null) MenuRow(VVIcons.Delete, "Eliminar", tint = VV.Danger) { act { vm.deleteSelected() } }
                 }
             },
-            confirmButton = { TextButton(onClick = { clipMenu = false }) { Text("Chiudi", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { clipMenu = false }) { Text("Cerrar", color = VV.Dim) } },
         )
     }
     if (projectMenu) {
         AlertDialog(
             onDismissRequest = { projectMenu = false },
             containerColor = VV.Raised,
-            title = { Text("Progetto", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Proyecto", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column {
-                    MenuRow(VVIcons.Copy, "Salva come modello") { projectMenu = false; naming = true }
-                    MenuRow(VVIcons.Undo, "Torna ai video originali") { projectMenu = false; restoreAsk = true }
-                    MenuRow(VVIcons.Export, "Copia di sicurezza (leggera)") {
+                    MenuRow(VVIcons.Copy, "Guardar como plantilla") { projectMenu = false; naming = true }
+                    MenuRow(VVIcons.Undo, "Volver a los videos originales") { projectMenu = false; restoreAsk = true }
+                    MenuRow(VVIcons.Export, "Copia de seguridad (ligera)") {
                         projectMenu = false; backupWithMedia = false; backupSaver.launch(project.name.ifBlank { "progetto" } + ".vivo")
                     }
-                    MenuRow(VVIcons.Export, "Copia di sicurezza con tutti i video") {
+                    MenuRow(VVIcons.Export, "Copia de seguridad con todos los videos") {
                         projectMenu = false; backupWithMedia = true; backupSaver.launch(project.name.ifBlank { "progetto" } + ".vivo")
                     }
-                    if (vm.missingFiles.isNotEmpty()) MenuRow(VVIcons.Movie, "Ricollega i file spariti") { projectMenu = false; relinkOpen = true }
-                    MenuRow(VVIcons.Help, "Segnala un problema") { projectMenu = false; reportOpen = true }
-                    MenuRow(VVIcons.Check, "Collaudo") { projectMenu = false; vm.showTestPlan = true }
-                    Hint("Leggera: il progetto e i file creati dall'app (foto importate, voce, fermi immagine, brani scaricati); i video restano nella galleria. Con tutti i video: si apre anche su un altro telefono.")
+                    if (vm.missingFiles.isNotEmpty()) MenuRow(VVIcons.Movie, "Reconectar los archivos perdidos") { projectMenu = false; relinkOpen = true }
+                    MenuRow(VVIcons.Help, "Reportar un problema") { projectMenu = false; reportOpen = true }
+                    MenuRow(VVIcons.Check, "Pruebas") { projectMenu = false; vm.showTestPlan = true }
+                    Hint("Ligera: el proyecto y los archivos creados por la app (fotos importadas, voz, imágenes congeladas, canciones descargadas); los videos se quedan en la galería. Con todos los videos: se abre también en otro teléfono.")
                 }
             },
-            confirmButton = { TextButton(onClick = { projectMenu = false }) { Text("Chiudi", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { projectMenu = false }) { Text("Cerrar", color = VV.Dim) } },
         )
     }
     if (reportOpen) ReportDialog(vm, onDismiss = { reportOpen = false })
@@ -751,17 +751,17 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
         AlertDialog(
             onDismissRequest = { restoreAsk = false },
             containerColor = VV.Raised,
-            title = { Text("Tornare ai video originali?", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("¿Volver a los videos originales?", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Text(
-                    "Il progetto torna ai $n video e foto come li hai importati: interi e nell'ordine di importazione, senza tagli, " +
-                        "velocità, colore, effetti, transizioni, testi, sottotitoli, musica, voce e livelli. I file sul telefono non si toccano. " +
-                        "Un solo Annulla riporta il progetto a com'è adesso.",
+                    "El proyecto vuelve a los $n videos y fotos como los importaste: completos y en el orden de importación, sin cortes, " +
+                        "velocidad, color, efectos, transiciones, textos, subtítulos, música, voz ni niveles. Los archivos del teléfono no se tocan. " +
+                        "Un solo Deshacer devuelve el proyecto a como está ahora.",
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
-            confirmButton = { TextButton(onClick = { restoreAsk = false; vm.restoreOriginals() }, enabled = n > 0) { Text("Torna agli originali", color = VV.Tally) } },
-            dismissButton = { TextButton(onClick = { restoreAsk = false }) { Text("Annulla", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { restoreAsk = false; vm.restoreOriginals() }, enabled = n > 0) { Text("Volver a los originales", color = VV.Tally) } },
+            dismissButton = { TextButton(onClick = { restoreAsk = false }) { Text("Deshacer", color = VV.Dim) } },
         )
     }
     if (naming) {
@@ -769,40 +769,40 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
         AlertDialog(
             onDismissRequest = { naming = false },
             containerColor = VV.Raised,
-            title = { Text("Nome del modello", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Nombre de la plantilla", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column {
                     OutlinedTextField(value = name, onValueChange = { name = it }, singleLine = true)
-                    Hint("Il modello tiene ${project.clips.size} spazi con durate, velocità, transizioni, effetti e colori, più testi, musica e livelli. Poi basta scegliere i video.")
+                    Hint("La plantilla guarda ${project.clips.size} espacios con duraciones, velocidades, transiciones, efectos y colores, más textos, música y capas. Después solo hay que elegir los videos.")
                 }
             },
-            confirmButton = { TextButton(onClick = { vm.saveTemplate(name); naming = false }) { Text("Salva", color = VV.Tally) } },
-            dismissButton = { TextButton(onClick = { naming = false }) { Text("Annulla", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { vm.saveTemplate(name); naming = false }) { Text("Guardar", color = VV.Tally) } },
+            dismissButton = { TextButton(onClick = { naming = false }) { Text("Deshacer", color = VV.Dim) } },
         )
     }
     if (relinkOpen) {
         AlertDialog(
             onDismissRequest = { relinkOpen = false },
             containerColor = VV.Raised,
-            title = { Text("File non trovati", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Archivos no encontrados", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    if (vm.missingFiles.isEmpty()) Hint("Tutti i file sono al loro posto.")
+                    if (vm.missingFiles.isEmpty()) Hint("Todos los archivos están en su lugar.")
                     vm.missingFiles.forEach { u ->
                         val info = vm.missingInfo(u)
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(info.name.ifBlank { "File senza nome" }, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-                            TextButton(onClick = { relinkTarget = u; relinkPicker.launch(arrayOf("video/*", "image/*", "audio/*")) }) { Text("Scegli", color = VV.Tally) }
+                            Text(info.name.ifBlank { "Archivo sin nombre" }, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                            TextButton(onClick = { relinkTarget = u; relinkPicker.launch(arrayOf("video/*", "image/*", "audio/*")) }) { Text("Elegir", color = VV.Tally) }
                         }
                     }
                     if (vm.missingFiles.isNotEmpty()) {
                         vm.relinkNote?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = VV.Tally) }
-                        SecondaryButton("Cerca di nuovo nel telefono", Modifier.fillMaxWidth(), onClick = { vm.autoRelink() })
-                        Hint("L'app cerca da sola il file per nome e per peso. Se non lo trova, tocca «Scegli» e indicalo tu: tagli, effetti e tutto il resto restano.")
+                        SecondaryButton("Buscar de nuevo en el teléfono", Modifier.fillMaxWidth(), onClick = { vm.autoRelink() })
+                        Hint("La app busca sola el archivo por nombre y por tamaño. Si no lo encuentra, toca «Elegir» e indícalo tú: los cortes, efectos y todo lo demás se conservan.")
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { relinkOpen = false }) { Text("Chiudi", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { relinkOpen = false }) { Text("Cerrar", color = VV.Dim) } },
         )
     }
     if (pasteDialog) {
@@ -814,10 +814,10 @@ fun EditorScreen(vm: EditorViewModel, initialTool: Tool? = null, initialTab: Int
         AlertDialog(
             onDismissRequest = { renaming = false },
             containerColor = VV.Raised,
-            title = { Text("Nome del progetto", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Nombre del proyecto", style = MaterialTheme.typography.titleSmall) },
             text = { OutlinedTextField(value = name, onValueChange = { name = it }, singleLine = true) },
-            confirmButton = { TextButton(onClick = { vm.rename(name); renaming = false }) { Text("Salva", color = VV.Tally) } },
-            dismissButton = { TextButton(onClick = { renaming = false }) { Text("Annulla", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { vm.rename(name); renaming = false }) { Text("Guardar", color = VV.Tally) } },
+            dismissButton = { TextButton(onClick = { renaming = false }) { Text("Deshacer", color = VV.Dim) } },
         )
     }
 }
@@ -841,7 +841,7 @@ private fun ExportPill(enabled: Boolean, onClick: () -> Unit) {
     ) {
         Icon(VVIcons.Export, null, tint = if (enabled) VV.TallyInk else VV.Faint, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(6.dp))
-        Text("Esporta", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = if (enabled) VV.TallyInk else VV.Faint)
+        Text("Exportar", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = if (enabled) VV.TallyInk else VV.Faint)
     }
 }
 
@@ -903,7 +903,7 @@ private fun SeekBar(vm: EditorViewModel, durationUs: Long) {
             vm.scrubTo((v * durationUs).toLong())
         },
         onValueChangeFinished = { vm.endScrub(); dragging = null },
-        modifier = Modifier.fillMaxWidth().height(28.dp).semantics { contentDescription = "Avanzamento" },
+        modifier = Modifier.fillMaxWidth().height(28.dp).semantics { contentDescription = "Avance" },
         colors = androidx.compose.material3.SliderDefaults.colors(
             thumbColor = VV.Tally, activeTrackColor = VV.Tally, inactiveTrackColor = Color(0x66FFFFFF),
         ),
@@ -932,18 +932,18 @@ private fun AutoBar(vm: EditorViewModel, enabled: Boolean) {
         Box(
             Modifier.clip(RoundedCornerShape(999.dp)).background(VV.Raised).clickable(enabled = idle) { choose = true }
                 .padding(horizontal = 14.dp, vertical = 8.dp),
-        ) { Text("Stile", style = MaterialTheme.typography.labelLarge) }
+        ) { Text("Estilo", style = MaterialTheme.typography.labelLarge) }
         Spacer(Modifier.width(8.dp))
         Box(
             Modifier.clip(RoundedCornerShape(999.dp)).background(if (idle) VV.Tally else VV.Raised).clickable(enabled = idle) { vm.anotherProposal() }
                 .padding(horizontal = 14.dp, vertical = 8.dp),
-        ) { Text("Altra proposta", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = if (idle) VV.TallyInk else VV.Faint) }
+        ) { Text("Otra propuesta", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = if (idle) VV.TallyInk else VV.Faint) }
     }
     if (choose) {
         AlertDialog(
             onDismissRequest = { choose = false },
             containerColor = VV.Raised,
-            title = { Text("Rifai con lo stile…", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Rehacer con el estilo…", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     AutoStyle.entries.forEach { st ->
@@ -959,7 +959,7 @@ private fun AutoBar(vm: EditorViewModel, enabled: Boolean) {
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { choose = false }) { Text("Chiudi", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { choose = false }) { Text("Cerrar", color = VV.Dim) } },
         )
     }
 }
@@ -969,16 +969,16 @@ private fun AutoBar(vm: EditorViewModel, enabled: Boolean) {
 private fun CreditsBox(credits: List<String>) {
     if (credits.isEmpty()) return
     val ctx = LocalContext.current
-    val text = "Musica ed effetti:\n" + credits.joinToString("\n")
+    val text = "Música y efectos:\n" + credits.joinToString("\n")
     Column(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(VV.Raised).padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Text("Crediti da mettere nella descrizione del video", style = MaterialTheme.typography.labelLarge, color = VV.Tally)
+        Text("Créditos para poner en la descripción del video", style = MaterialTheme.typography.labelLarge, color = VV.Tally)
         SelectionContainer { Text(credits.joinToString("\n"), style = MaterialTheme.typography.bodySmall) }
-        SecondaryButton("Copia i crediti", onClick = {
+        SecondaryButton("Copiar los créditos", onClick = {
             val cm = ctx.getSystemService(android.content.ClipboardManager::class.java)
-            cm?.setPrimaryClip(android.content.ClipData.newPlainText("Crediti", text))
+            cm?.setPrimaryClip(android.content.ClipData.newPlainText("Créditos", text))
         })
     }
 }
@@ -1023,9 +1023,9 @@ private fun EmptyState(onAdd: () -> Unit) {
         Box(
             Modifier.size(52.dp).clip(CircleShape).border(1.dp, VV.Line, CircleShape).clickable(onClick = onAdd),
             contentAlignment = Alignment.Center,
-        ) { Icon(VVIcons.Add, "Aggiungi video e foto", tint = VV.Text) }
+        ) { Icon(VVIcons.Add, "Agregar videos y fotos", tint = VV.Text) }
         Spacer(Modifier.height(10.dp))
-        Text("Aggiungi video e foto da montare", style = MaterialTheme.typography.bodySmall)
+        Text("Agrega videos y fotos para editar", style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -1047,7 +1047,7 @@ private fun SpeedPanel(vm: EditorViewModel, running: Boolean) {
         val here = vm.speedPointAtPlayhead()
         val f = vm.playheadFraction()
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.MoveLeft, "Punto precedente") { vm.jumpSpeedPoint(-1) }
+            IconBtn(VVIcons.MoveLeft, "Punto anterior") { vm.jumpSpeedPoint(-1) }
             Box(
                 Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).background(if (here != null) VV.Tally else VV.Raised)
                     .clickable(enabled = !running) { if (f == null) vm.seekToSelectedStart() else vm.toggleSpeedPointAtPlayhead() }.padding(vertical = 11.dp),
@@ -1055,15 +1055,15 @@ private fun SpeedPanel(vm: EditorViewModel, running: Boolean) {
             ) {
                 Text(
                     when {
-                        f == null -> "Vai all'inizio della clip"
-                        here == null -> "Aggiungi punto velocità qui"
-                        here.t == 0f || here.t == 1f -> "Punto di " + (if (here.t == 0f) "inizio" else "fine") + " clip"
-                        else -> "Togli il punto"
+                        f == null -> "Ir al inicio del clip"
+                        here == null -> "Agregar punto de velocidad aquí"
+                        here.t == 0f || here.t == 1f -> "Punto de " + (if (here.t == 0f) "inizio" else "fine") + " clip"
+                        else -> "Quitar el punto"
                     },
                     style = MaterialTheme.typography.labelLarge, color = if (here != null) VV.TallyInk else VV.Text,
                 )
             }
-            IconBtn(VVIcons.MoveRight, "Punto successivo") { vm.jumpSpeedPoint(+1) }
+            IconBtn(VVIcons.MoveRight, "Punto siguiente") { vm.jumpSpeedPoint(+1) }
         }
         if (f != null) {
             val now = here?.speed ?: SpeedInterp.valueAt(clip.curvePoints, f)
@@ -1075,7 +1075,7 @@ private fun SpeedPanel(vm: EditorViewModel, running: Boolean) {
                 return if (kotlin.math.abs(sp - 1f) < 0.04f) 1f else sp
             }
             LabeledSlider(
-                "Velocità in questo punto", null, toSlider(now), !running, range = 0..1000,
+                "Velocidad en este punto", null, toSlider(now), !running, range = 0..1000,
                 format = { "%.2f×".format(fromSlider(it)).replace('.', ',') },
             ) { v -> vm.setSpeedAtPlayhead(fromSlider(v)) }
         }
@@ -1095,13 +1095,13 @@ private fun SpeedPanel(vm: EditorViewModel, running: Boolean) {
                 ) { Text(preset.label, style = MaterialTheme.typography.labelLarge, color = if (on) VV.TallyInk else VV.Text) }
             }
         }
-        Hint("Scorri la timeline fino al fotogramma esatto e aggiungi lì un punto, oppure trascina i punti sul grafico (tocco su uno spazio vuoto per aggiungere, doppio tocco per togliere). Per partire da zero usa \"Piatta 1×\". Durata: " + formatTime(clip.outputUs))
+        Hint("Desplaza la línea de tiempo hasta el fotograma exacto y agrega ahí un punto, o arrastra los puntos en la gráfica (toca un espacio vacío para agregar, doble toque para quitar). Para empezar de cero usa \"Plana 1×\". Duración: " + formatTime(clip.outputUs))
     } else {
         Hint(
             when (clip.speed) {
-                ClipSpeed.SLOW -> "Metà velocità per tutta la clip."
-                ClipSpeed.FAST -> "Doppia velocità per tutta la clip."
-                else -> "Velocità originale. Scegli \"Curva\" per disegnare uno speed ramp."
+                ClipSpeed.SLOW -> "Mitad de velocidad en todo el clip."
+                ClipSpeed.FAST -> "Doble velocidad en todo el clip."
+                else -> "Velocidad original. Elige \"Curva\" para dibujar un speed ramp."
             } + "  Durata: " + formatTime(clip.outputUs)
         )
     }
@@ -1118,8 +1118,8 @@ private fun TimelapseSection(vm: EditorViewModel, clip: it.fabriziodavi.vivovide
     PanelLabel("Time-lapse")
     val tl = clip.timelapse
     if (tl != null) {
-        Hint("Time-lapse ${tl.speed}× · scie ${tl.trails.label.lowercase()}${if (tl.moving) " · stabilizzato" else ""}${if (tl.ambient) " · audio del posto" else ""}. Durata: ${formatTime(clip.outputUs)}.")
-        SecondaryButton("Torna al video originale", Modifier.fillMaxWidth()) { vm.undoTimelapse() }
+        Hint("Time-lapse ${tl.speed}× · estelas ${tl.trails.label.lowercase()}${if (tl.moving) " · estabilizado" else ""}${if (tl.ambient) " · audio del lugar" else ""}. Duración: ${formatTime(clip.outputUs)}.")
+        SecondaryButton("Volver al video original", Modifier.fillMaxWidth()) { vm.undoTimelapse() }
     }
     val srcUs = tl?.source?.let { it.trimEndUs - it.trimStartUs } ?: clip.trimmedUs
     var speed by remember(clip.id) { mutableIntStateOf(tl?.speed ?: 20) }
@@ -1128,16 +1128,16 @@ private fun TimelapseSection(vm: EditorViewModel, clip: it.fabriziodavi.vivovide
     var ambient by remember(clip.id) { mutableStateOf(tl?.ambient ?: false) }
     var flash by remember(clip.id) { mutableStateOf(false) }
     PillRow(it.fabriziodavi.vivovideo.model.TimelapsePlan.SPEEDS, speed, { "$it×" }, !running) { speed = it }
-    Hint("${formatTime(srcUs)} diventano ${formatTime(srcUs / speed)}." + if (srcUs / speed < 1_000_000) " Troppo corto: scegli meno velocità." else "")
-    Text("Scie di chi si muove", style = MaterialTheme.typography.labelMedium, color = VV.Dim)
+    Hint("${formatTime(srcUs)} se convierten en ${formatTime(srcUs / speed)}." + if (srcUs / speed < 1_000_000) " Demasiado corto: elige menos velocidad." else "")
+    Text("Estelas de quien se mueve", style = MaterialTheme.typography.labelMedium, color = VV.Dim)
     Segmented(it.fabriziodavi.vivovideo.model.TimelapseTrails.entries, trails, { it.label }, !running) { trails = it }
-    ToggleRow("Ripresa camminando o in auto (stabilizza: hyperlapse)", moving, !running) { moving = it }
-    ToggleRow("Tieni il suono del posto, basso", ambient, !running) { ambient = it }
-    ToggleRow("Esci con un lampo sulla scena dopo", flash, !running) { flash = it }
-    PrimaryButton(if (tl == null) "Crea il time-lapse" else "Rifai il time-lapse", Modifier.fillMaxWidth(), enabled = !running && srcUs / speed >= 500_000) {
+    ToggleRow("Toma caminando o en coche (estabiliza: hyperlapse)", moving, !running) { moving = it }
+    ToggleRow("Conservar el sonido del lugar, bajo", ambient, !running) { ambient = it }
+    ToggleRow("Salir con un destello a la escena siguiente", flash, !running) { flash = it }
+    PrimaryButton(if (tl == null) "Crear el time-lapse" else "Rehacer el time-lapse", Modifier.fillMaxWidth(), enabled = !running && srcUs / speed >= 500_000) {
         vm.makeTimelapse(speed, trails, ambient, moving, flash)
     }
-    Hint("Per l'effetto «passanti che diventano scie»: telefono fermo (meglio su un appoggio), una strada o una piazza, almeno un minuto di ripresa, 20× o 50× con scie lunghe.")
+    Hint("Para el efecto «transeúntes que se vuelven estelas»: teléfono fijo (mejor sobre un apoyo), una calle o una plaza, al menos un minuto de grabación, 20× o 50× con estelas largas.")
 }
 
 /** Gesto in corso sul video, mostrato subito; il keyframe si salva quando si alzano le dita. */
@@ -1151,7 +1151,7 @@ private fun KeyframePanel(vm: EditorViewModel, running: Boolean) {
     val v = vm.transformAtPlayhead()
     val enabled = !running && inside
     Row(verticalAlignment = Alignment.CenterVertically) {
-        IconBtn(VVIcons.MoveLeft, "Keyframe precedente", enabled = clip.keyframes.isNotEmpty()) { vm.jumpKeyframe(-1) }
+        IconBtn(VVIcons.MoveLeft, "Keyframe anterior", enabled = clip.keyframes.isNotEmpty()) { vm.jumpKeyframe(-1) }
         Box(
             Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).background(if (here != null) VV.Tally else VV.Raised)
                 .clickable(enabled = enabled) { vm.toggleKeyframeAtPlayhead() }.padding(vertical = 11.dp),
@@ -1161,38 +1161,38 @@ private fun KeyframePanel(vm: EditorViewModel, running: Boolean) {
                 Icon(VVIcons.Keyframe, null, tint = if (here != null) VV.TallyInk else VV.Text, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    if (here != null) "Togli il keyframe" else "Aggiungi keyframe qui",
+                    if (here != null) "Quitar el keyframe" else "Agregar keyframe aquí",
                     style = MaterialTheme.typography.labelLarge, color = if (here != null) VV.TallyInk else VV.Text,
                 )
             }
         }
-        IconBtn(VVIcons.MoveRight, "Keyframe successivo", enabled = clip.keyframes.isNotEmpty()) { vm.jumpKeyframe(+1) }
+        IconBtn(VVIcons.MoveRight, "Keyframe siguiente", enabled = clip.keyframes.isNotEmpty()) { vm.jumpKeyframe(+1) }
     }
     if (!inside) {
-        Hint("Porta l'indicatore dentro la clip selezionata.")
+        Hint("Lleva el indicador dentro del clip seleccionado.")
         return
     }
     Hint(
-        if (clip.keyframes.isEmpty()) "Pizzica, trascina o ruota il video con due dita, oppure usa i cursori: il keyframe si crea da solo."
-        else "${clip.keyframes.size} keyframe in questa clip. Sposta l'indicatore e cambia i valori: ogni modifica crea o aggiorna un keyframe."
+        if (clip.keyframes.isEmpty()) "Pellizca, arrastra o gira el video con dos dedos, o usa los controles deslizantes: el keyframe se crea solo."
+        else "${clip.keyframes.size} keyframes en este clip. Mueve el indicador y cambia los valores: cada cambio crea o actualiza un keyframe."
     )
     LabeledSlider("Zoom", null, (v.scale * 100).toInt(), enabled, range = 20..400, format = { "$it%" }) {
         vm.setTransformAtPlayhead(v.copy(scale = it / 100f))
     }
-    LabeledSlider("Orizzontale", null, (v.x * 100).toInt(), enabled, range = -100..100) {
+    LabeledSlider("Horizontal", null, (v.x * 100).toInt(), enabled, range = -100..100) {
         vm.setTransformAtPlayhead(v.copy(x = it / 100f))
     }
-    LabeledSlider("Verticale", null, (v.y * 100).toInt(), enabled, range = -100..100) {
+    LabeledSlider("Vertical", null, (v.y * 100).toInt(), enabled, range = -100..100) {
         vm.setTransformAtPlayhead(v.copy(y = it / 100f))
     }
-    LabeledSlider("Rotazione", null, v.rotation.toInt(), enabled, range = -180..180, format = { "$it°" }) {
+    LabeledSlider("Rotación", null, v.rotation.toInt(), enabled, range = -180..180, format = { "$it°" }) {
         vm.setTransformAtPlayhead(v.copy(rotation = it.toFloat()))
     }
-    LabeledSlider("Opacità", "Sotto il video c'è il nero: abbassandola si ottiene una dissolvenza.", (v.opacity * 100).toInt(), enabled, format = { "$it%" }) {
+    LabeledSlider("Opacidad", "Debajo del video está el negro: bajándola se consigue un fundido.", (v.opacity * 100).toInt(), enabled, format = { "$it%" }) {
         vm.setTransformAtPlayhead(v.copy(opacity = it / 100f))
     }
     if (clip.keyframes.size >= 2) {
-        PanelLabel("Andamento verso il keyframe successivo")
+        PanelLabel("Curva hacia el siguiente keyframe")
         val t = vm.playheadInSelected() ?: 0L
         val current = clip.keyframes.filter { it.timeUs <= t + 40_000 }.maxByOrNull { it.timeUs }?.easing
         Segmented(Easing.entries, current ?: Easing.SMOOTH, { it.label }, !running && current != null) {
@@ -1200,7 +1200,7 @@ private fun KeyframePanel(vm: EditorViewModel, running: Boolean) {
         }
     }
     if (clip.keyframes.isNotEmpty()) {
-        SecondaryButton("Togli tutti i keyframe della clip", onClick = vm::clearKeyframes)
+        SecondaryButton("Quitar todos los keyframes del clip", onClick = vm::clearKeyframes)
     }
 }
 
@@ -1216,36 +1216,36 @@ private fun TransitionPanel(vm: EditorViewModel, running: Boolean) {
     val clip = vm.selectedClip ?: return
     val index = p.clips.indexOfFirst { it.id == clip.id }
     if (index < 0 || index == p.clips.lastIndex) {
-        Hint("Nessuna clip dopo questa: la transizione si applica tra la clip selezionata e la successiva.")
+        Hint("No hay ningún clip después de este: la transición se aplica entre el clip seleccionado y el siguiente.")
         return
     }
     val spec = clip.transitionOut
-    PanelLabel("Verso la clip ${index + 2}")
+    PanelLabel("Hacia el clip ${index + 2}")
     val options: List<TransitionType?> = listOf(null) + TRANSITIONS_NEW_FIRST
-    PillRow(options, spec?.type, { it?.label ?: "Nessuna" }, !running) { t ->
+    PillRow(options, spec?.type, { it?.label ?: "Ninguna" }, !running) { t ->
         // Le transizioni nuove partono con la loro durata (le tendine a 0,5 s passavano in un lampo).
         vm.setTransition(t?.let { TransitionSpec(it, it.defaultUs ?: spec?.durationUs ?: 500_000L) })
     }
     if (spec != null) {
         val ms = (spec.durationUs / 1000).toInt()
         LabeledSlider(
-            "Durata", null, ms / 100, !running, range = 2..20,
+            "Duración", null, ms / 100, !running, range = 2..20,
             format = { String.format(java.util.Locale.ITALIAN, "%.1f s", it / 10f) },
         ) { v -> vm.setTransition(spec.copy(durationUs = v * 100_000L)) }
         val cross = spec.type.composite
         val real = if (cross) p.crossfades().firstOrNull { it.index == index }?.let { it.beforeUs + it.afterUs } ?: 0L
             else p.transitionHalfUs(index) * 2
         if (spec.type == TransitionType.MASK_PASS && clip.person == null) {
-            Hint("Questa clip non ha ancora lo scontorno della persona: fallo in Effetti → Persona (qualsiasi sfondo), poi la persona resterà davanti nel passaggio.")
+            Hint("Este clip todavía no tiene el recorte de la persona: hazlo en Efectos → Persona (con cualquier fondo), y la persona se quedará delante en la transición.")
         } else if (real < spec.durationUs) {
             Hint(
-                if (cross && real == 0L) "Non c'è video oltre il taglio da usare: allunga le clip con le maniglie (o scegli un'altra transizione)."
-                else String.format(java.util.Locale.ITALIAN, if (cross) "Poco video oltre il taglio: durata effettiva %.1f s." else "Clip corte: durata effettiva %.1f s.", real / 1_000_000f)
+                if (cross && real == 0L) "No hay video más allá del corte que usar: alarga los clips con los tiradores (o elige otra transición)."
+                else String.format(java.util.Locale.ITALIAN, if (cross) "Poco video más allá del corte: duración efectiva %.1f s." else "Clips cortos: duración efectiva %.1f s.", real / 1_000_000f)
             )
         }
-        SecondaryButton("Applica a tutti i tagli", selected = p.transitionOnAllCuts(spec), onClick = { vm.setTransitionAll(spec) })
+        SecondaryButton("Aplicar a todos los cortes", selected = p.transitionOnAllCuts(spec), onClick = { vm.setTransitionAll(spec) })
     }
-    Hint(spec?.type?.hint ?: "Metà effetto alla fine di questa clip, metà all'inizio della successiva.")
+    Hint(spec?.type?.hint ?: "La mitad del efecto al final de este clip, la otra mitad al inicio del siguiente.")
 }
 
 @Composable
@@ -1253,7 +1253,7 @@ private fun MusicPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
     val p = vm.project ?: return
     val enabled = !running
     // Mixer: tutti i suoni del progetto in una schermata (volume, bilanciamento, equalizzatore, compressore, uscita).
-    PrimaryButton("Mixer audio", Modifier.fillMaxWidth(), enabled = enabled) { vm.openMixer() }
+    PrimaryButton("Mezclador de audio", Modifier.fillMaxWidth(), enabled = enabled) { vm.openMixer() }
     if (tab == 4) { ClipAudioTab(vm, running); return }
     if (tab == 3) { VoiceTab(vm, running); return }
     // Nessun brano selezionato: prende quello sotto l'indicatore (o il primo).
@@ -1265,12 +1265,12 @@ private fun MusicPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
     }
     val t = vm.selectedMusic
     if (t == null) {
-        Hint("Scegli un brano dal telefono (MP3, M4A, WAV, FLAC, anche MIDI) o dalla libreria di musica libera: parte dal punto dell'indicatore e si ferma alla fine del video.")
+        Hint("Elige una canción del teléfono (MP3, M4A, WAV, FLAC, también MIDI) o de la biblioteca de música libre: empieza en el punto del indicador y se detiene al final del video.")
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            PrimaryButton("Libreria online", Modifier.weight(1f), enabled = enabled) { vm.openLibrary(effects = false) }
-            SecondaryButton("Dal telefono", Modifier.weight(1f), onClick = { if (enabled) onAdd() })
+            PrimaryButton("Biblioteca en línea", Modifier.weight(1f), enabled = enabled) { vm.openLibrary(effects = false) }
+            SecondaryButton("Del teléfono", Modifier.weight(1f), onClick = { if (enabled) onAdd() })
         }
-        SecondaryButton("Effetti sonori", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.openLibrary(effects = true) })
+        SecondaryButton("Efectos de sonido", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.openLibrary(effects = true) })
         return
     }
     val total = p.durationUs
@@ -1287,15 +1287,15 @@ private fun MusicPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
                 vm.updateMusic { it.copy(volume = v / 100f) }
             }
             val secs = { v: Int -> String.format(java.util.Locale.ITALIAN, "%.1f s", v / 10f) }
-            LabeledSlider("Dissolvenza in entrata", null, (t.fadeInUs / 100_000).toInt(), enabled, range = 0..100, format = secs) { v ->
+            LabeledSlider("Fundido de entrada", null, (t.fadeInUs / 100_000).toInt(), enabled, range = 0..100, format = secs) { v ->
                 vm.updateMusic { it.copy(fadeInUs = v * 100_000L) }
             }
-            LabeledSlider("Dissolvenza in uscita", null, (t.fadeOutUs / 100_000).toInt(), enabled, range = 0..100, format = secs) { v ->
+            LabeledSlider("Fundido de salida", null, (t.fadeOutUs / 100_000).toInt(), enabled, range = 0..100, format = secs) { v ->
                 vm.updateMusic { it.copy(fadeOutUs = v * 100_000L) }
             }
             val maxOffset = ((t.sourceDurationUs - MusicTrack.MIN_US) / 100_000).toInt().coerceAtLeast(0)
             LabeledSlider(
-                "Parti dal punto del brano", "Per far partire la musica dal ritornello o da un altro punto.",
+                "Empezar desde el punto de la canción", "Para que la música empiece desde el estribillo o desde otro punto.",
                 (t.offsetUs / 100_000).toInt().coerceAtMost(maxOffset), enabled && maxOffset > 0, range = 0..maxOf(maxOffset, 1),
                 format = { formatTime(it * 100_000L) },
             ) { v ->
@@ -1305,57 +1305,57 @@ private fun MusicPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SecondaryButton("Inizia da qui", onClick = {
+                SecondaryButton("Empezar desde aquí", onClick = {
                     if (enabled) vm.updateMusic { it.copy(startUs = vm.playheadUs.coerceIn(0, (total - MusicTrack.MIN_US).coerceAtLeast(0))) }
                 })
-                SecondaryButton("Fino alla fine", onClick = {
+                SecondaryButton("Hasta el final", onClick = {
                     if (enabled) vm.updateMusic { it.copy(lengthUs = (it.sourceDurationUs - it.offsetUs).coerceAtLeast(MusicTrack.MIN_US)) }
                 })
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SecondaryButton("Dividi qui", onClick = { if (enabled) vm.splitMusicAtPlayhead() })
-                SecondaryButton("Elimina brano", onClick = { if (enabled) vm.deleteMusic() })
+                SecondaryButton("Dividir aquí", onClick = { if (enabled) vm.splitMusicAtPlayhead() })
+                SecondaryButton("Eliminar canción", onClick = { if (enabled) vm.deleteMusic() })
             }
-            PanelLabel("Voci e musica")
-            ToggleRow("Abbassa la musica quando si parla", p.duck, enabled) { vm.setDuck(on = it) }
-            if (p.duck) LabeledSlider("Quanto abbassarla", "In anteprima sotto la voce fuori campo; nel video esportato anche dove si parla nelle clip.", p.duckDb, enabled, range = 4..24, format = { "–$it dB" }) { vm.setDuck(db = it) }
-            PanelLabel("Aggiungi")
+            PanelLabel("Voces y música")
+            ToggleRow("Bajar la música cuando se habla", p.duck, enabled) { vm.setDuck(on = it) }
+            if (p.duck) LabeledSlider("Cuánto bajarla", "En la vista previa, bajo la voz en off; en el video exportado también donde se habla en los clips.", p.duckDb, enabled, range = 4..24, format = { "–$it dB" }) { vm.setDuck(db = it) }
+            PanelLabel("Agregar")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SecondaryButton("Libreria", Modifier.weight(1f), onClick = { if (enabled) vm.openLibrary(effects = false) })
-                SecondaryButton("Effetti sonori", Modifier.weight(1f), onClick = { if (enabled) vm.openLibrary(effects = true) })
+                SecondaryButton("Biblioteca", Modifier.weight(1f), onClick = { if (enabled) vm.openLibrary(effects = false) })
+                SecondaryButton("Efectos de sonido", Modifier.weight(1f), onClick = { if (enabled) vm.openLibrary(effects = true) })
             }
-            SecondaryButton("Brano dal telefono", Modifier.fillMaxWidth(), onClick = { if (enabled) onAdd() })
+            SecondaryButton("Canción del teléfono", Modifier.fillMaxWidth(), onClick = { if (enabled) onAdd() })
             CreditsBox(p.credits())
-            Hint("Nella timeline: tocca il brano per selezionarlo, trascinalo per spostarlo, usa le maniglie per accorciarlo. Le dissolvenze si sentono anche in anteprima.")
+            Hint("En la línea de tiempo: toca la canción para seleccionarla, arrástrala para moverla, usa los tiradores para acortarla. Los fundidos se oyen también en la vista previa.")
         }
         1 -> {
             if (t.beatsUs.isEmpty()) {
-                PrimaryButton("Rileva i battiti automaticamente", Modifier.fillMaxWidth(), enabled = enabled, onClick = vm::detectBeats)
-                Hint("Dai file MIDI i battiti sono già esatti. Puoi anche segnarli a mano nella scheda Battiti.")
+                PrimaryButton("Detectar los beats automáticamente", Modifier.fillMaxWidth(), enabled = enabled, onClick = vm::detectBeats)
+                Hint("En los archivos MIDI los beats ya son exactos. También puedes marcarlos a mano en la pestaña Beats.")
             } else {
-                Text("${t.bpm.roundToInt()} BPM · ${t.timelineBeats(total).size} battiti nel video", style = MaterialTheme.typography.bodyMedium)
-                Segmented(listOf(1, 2, 4), t.beatEvery, { if (it == 1) "Tutti" else "Ogni $it" }, enabled) { n ->
+                Text("${t.bpm.roundToInt()} BPM · ${t.timelineBeats(total).size} beats en el video", style = MaterialTheme.typography.bodyMedium)
+                Segmented(listOf(1, 2, 4), t.beatEvery, { if (it == 1) "Todos" else "Ogni $it" }, enabled) { n ->
                     vm.updateBeats { it.copy(beatEvery = n) }
                 }
                 LabeledSlider(
-                    "Sposta i battiti automatici", "Se cadono tutti un po' prima o dopo il colpo, correggili qui.",
+                    "Mover los beats automáticos", "Si caen todos un poco antes o después del golpe, corrígelos aquí.",
                     (t.beatShiftUs / 10_000).toInt(), enabled, range = -30..30,
                     format = { (if (it > 0) "+" else "") + "${it * 10} ms" },
                 ) { v -> vm.updateBeats { it.copy(beatShiftUs = v * 10_000L) } }
-                SecondaryButton("Battere ↔ levare (sposta di mezzo battito)", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.flipBeatPhase() })
-                Hint("Se i tagli sono a tempo ma cadono fra un colpo e l'altro (sui piatti invece che sulla grancassa), tocca qui; ritocca per tornare indietro.")
+                SecondaryButton("Tiempo fuerte ↔ contratiempo (mueve medio beat)", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.flipBeatPhase() })
+                Hint("Si los cortes van a tempo pero caen entre un golpe y otro (en los platillos en lugar del bombo), toca aquí; vuelve a tocar para regresar.")
             }
             if (t.hasBeats) {
-                PanelLabel("Tagli a ritmo")
-                SecondaryButton("Allinea i tagli al ritmo", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.alignCutsToBeats() })
-                SecondaryButton("Dividi i video sui battiti", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.splitOnBeats() })
-                ToggleRow("Aggancia i tagli ai battiti", vm.snapToBeats, enabled) { vm.snapToBeats = it }
-                SecondaryButton("Cancella tutti i battiti", onClick = { if (enabled) vm.clearBeats() })
+                PanelLabel("Cortes al ritmo")
+                SecondaryButton("Alinear los cortes al ritmo", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.alignCutsToBeats() })
+                SecondaryButton("Dividir los videos en los beats", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.splitOnBeats() })
+                ToggleRow("Ajustar los cortes a los beats", vm.snapToBeats, enabled) { vm.snapToBeats = it }
+                SecondaryButton("Borrar todos los beats", onClick = { if (enabled) vm.clearBeats() })
             }
         }
         else -> {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                SecondaryButton("Segna / togli qui", onClick = { if (enabled) vm.toggleBeatAtPlayhead() })
+                SecondaryButton("Marcar / quitar aquí", onClick = { if (enabled) vm.toggleBeatAtPlayhead() })
                 // Tap: si preme play e si tocca a tempo di musica.
                 Box(
                     Modifier.weight(1f).clip(RoundedCornerShape(12.dp))
@@ -1365,7 +1365,7 @@ private fun MusicPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        if (vm.isPlaying) "TAP a tempo" else "▶ Ascolta e tocca",
+                        if (vm.isPlaying) "TAP al compás" else "▶ Escucha y toca",
                         style = MaterialTheme.typography.labelLarge,
                         color = if (vm.isPlaying) VV.TallyInk else VV.Text,
                     )
@@ -1373,13 +1373,13 @@ private fun MusicPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
             }
             if (t.hasBeats) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SecondaryButton("◀ Battito", onClick = { vm.jumpBeat(-1) })
-                    SecondaryButton("Battito ▶", onClick = { vm.jumpBeat(+1) })
+                    SecondaryButton("◀ Beat", onClick = { vm.jumpBeat(-1) })
+                    SecondaryButton("Beat ▶", onClick = { vm.jumpBeat(+1) })
                 }
             }
-            ToggleRow("Taglia le clip a ogni tocco", vm.tapCuts, enabled) { vm.tapCuts = it }
-            if (vm.pendingCutCount > 0) Text("${vm.pendingCutCount} tagli pronti: si fanno alla pausa", style = MaterialTheme.typography.labelMedium, color = VV.Tally)
-            Hint("Segna: aggiunge un battito nel punto dell'indicatore, o toglie quello che c'è già (anche automatico). Tap: avvia l'ascolto e tocca il pulsante a ogni colpo; i battiti a mano sono bianchi. Con \"Taglia le clip\" acceso, quando metti in pausa il video viene tagliato in ogni punto toccato (un solo Annulla li toglie tutti).")
+            ToggleRow("Cortar los clips en cada toque", vm.tapCuts, enabled) { vm.tapCuts = it }
+            if (vm.pendingCutCount > 0) Text("${vm.pendingCutCount} cortes listos: se hacen en la pausa", style = MaterialTheme.typography.labelMedium, color = VV.Tally)
+            Hint("Marcar: agrega un beat en el punto del indicador, o quita el que ya está (también el automático). Tap: inicia la escucha y toca el botón en cada golpe; los beats a mano son blancos. Con \"Cortar los clips\" activado, cuando pones pausa el video se corta en cada punto tocado (un solo Deshacer los quita todos).")
         }
     }
 }
@@ -1391,9 +1391,9 @@ private fun VoiceTab(vm: EditorViewModel, running: Boolean) {
     val ctx = LocalContext.current
     val p = vm.project ?: return
     val perm = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
-        if (ok) vm.startVoice() else vm.message = "Per registrare la voce serve il permesso del microfono."
+        if (ok) vm.startVoice() else vm.message = "Para grabar la voz hace falta el permiso del micrófono."
     }
-    Hint("Porta l'indicatore dove vuoi iniziare, tocca Registra e parla mentre il video scorre; tocca di nuovo per fermare. La voce diventa una riga nella timeline, sincronizzata.")
+    Hint("Lleva el indicador adonde quieras empezar, toca Grabar y habla mientras el video avanza; toca de nuevo para detener. La voz se vuelve una fila en la línea de tiempo, sincronizada.")
     Box(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(if (vm.recording) VV.Danger else VV.Tally)
             .clickable(enabled = !running) {
@@ -1406,18 +1406,18 @@ private fun VoiceTab(vm: EditorViewModel, running: Boolean) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            if (vm.recording) "■  Ferma la registrazione  ${formatTime(vm.playheadUs)}" else "●  Registra la voce",
+            if (vm.recording) "■  Detener la grabación  ${formatTime(vm.playheadUs)}" else "●  Grabar la voz",
             style = MaterialTheme.typography.titleSmall, color = if (vm.recording) Color.White else VV.TallyInk,
         )
     }
-    ToggleRow("Silenzia l'anteprima mentre registro", vm.muteWhileRecording, !vm.recording) { vm.muteWhileRecording = it }
-    Hint("Con le cuffie puoi lasciare l'audio acceso e sentire il video mentre parli; senza cuffie meglio silenziarlo, così il microfono registra solo la tua voce.")
-    ToggleRow("Abbassa la musica quando si parla", p.duck, !running) { vm.setDuck(on = it) }
+    ToggleRow("Silenciar la vista previa mientras grabo", vm.muteWhileRecording, !vm.recording) { vm.muteWhileRecording = it }
+    Hint("Con audífonos puedes dejar el audio encendido y oír el video mientras hablas; sin audífonos es mejor silenciarlo, así el micrófono graba solo tu voz.")
+    ToggleRow("Bajar la música cuando se habla", p.duck, !running) { vm.setDuck(on = it) }
     val voices = p.music.filter { it.dialog }
     if (voices.isNotEmpty()) {
-        PanelLabel("Voci e audio staccati")
+        PanelLabel("Voces y audio separado")
         PillRow(voices, vm.selectedMusic?.takeIf { it.dialog }, { it?.name ?: "" }, !running) { v -> if (v != null) vm.selectedMusicId = v.id }
-        Hint("Selezionata una voce, nella scheda Brano ne regoli volume, dissolvenze, divisione ed eliminazione.")
+        Hint("Con una voz seleccionada, en la pestaña Canción ajustas su volumen, fundidos, división y eliminación.")
     }
 }
 
@@ -1428,20 +1428,20 @@ private fun ClipAudioTab(vm: EditorViewModel, running: Boolean) {
         LaunchedEffect(Unit) { p.locate(vm.playheadUs)?.let { (i, _) -> vm.selectedClipId = p.clips[i].id } }
     }
     val clip = vm.selectedClip
-    if (clip == null) { Hint("Nessuna clip nel progetto."); return }
+    if (clip == null) { Hint("Ningún clip en el proyecto."); return }
     // Per i video parlati: toglie silenzi e "ehm" da tutto il progetto.
-    SecondaryButton("Taglia pause e ehm", Modifier.fillMaxWidth(), onClick = { if (!running) { vm.pause(); vm.speechPlan = null; vm.jumpMode = false; vm.showSpeechCut = true } })
+    SecondaryButton("Quitar pausas y «ehm»", Modifier.fillMaxWidth(), onClick = { if (!running) { vm.pause(); vm.speechPlan = null; vm.jumpMode = false; vm.showSpeechCut = true } })
     // Jump cut pronti: come sopra, e a ogni taglio cambia l'inquadratura (stili Pulito, Dinamico, Social).
     SecondaryButton("Jump cut", Modifier.fillMaxWidth(), onClick = { if (!running) { vm.pause(); vm.speechPlan = null; vm.jumpMode = true; vm.showSpeechCut = true } })
-    if (clip.isPhoto) { Hint("Le foto non hanno audio."); return }
-    ToggleRow("Disattiva l'audio della clip", clip.muted, !running) { v -> vm.updateSelected { it.copy(muted = v) } }
+    if (clip.isPhoto) { Hint("Las fotos no tienen audio."); return }
+    ToggleRow("Desactivar el audio del clip", clip.muted, !running) { v -> vm.updateSelected { it.copy(muted = v) } }
     LabeledSlider(
         "Volume", null, (clip.volume * 100).toInt(), enabled = !running && !clip.muted, range = 0..200,
         format = { "$it%" },
     ) { v -> vm.updateSelected { it.copy(volume = v / 100f) } }
-    SecondaryButton("Stacca l'audio", Modifier.fillMaxWidth(), onClick = { if (!running) vm.detachAudio() })
-    Hint("Stacca l'audio: diventa una riga a sé nella timeline; allungandola o spostandola, la voce può iniziare prima dell'immagine o continuare dopo il taglio (tagli a J e a L).")
-    Hint("Tocca un'altra clip nella timeline per regolarne il volume. Nei cambi di velocità l'audio esportato mantiene il tono naturale (impostazione in Esporta).")
+    SecondaryButton("Separar el audio", Modifier.fillMaxWidth(), onClick = { if (!running) vm.detachAudio() })
+    Hint("Separa el audio: se vuelve una fila aparte en la línea de tiempo; al alargarla o moverla, la voz puede empezar antes de la imagen o seguir después del corte (cortes en J y en L).")
+    Hint("Toca otro clip en la línea de tiempo para ajustar su volumen. En los cambios de velocidad el audio exportado mantiene el tono natural (ajuste en Exportar).")
 }
 
 @Composable
@@ -1449,14 +1449,14 @@ private fun PhotoPanel(vm: EditorViewModel, running: Boolean) {
     val clip = vm.selectedClip ?: return
     val enabled = !running
     LabeledSlider(
-        "Durata della foto", null, (clip.trimmedUs / 100_000).toInt(), enabled, range = 2..150,
+        "Duración de la foto", null, (clip.trimmedUs / 100_000).toInt(), enabled, range = 2..150,
         format = { String.format(java.util.Locale.ITALIAN, "%.1f s", it / 10f) },
     ) { v -> vm.setPhotoDuration(v * 100_000L) }
-    PanelLabel("Movimento")
+    PanelLabel("Movimiento")
     var allPhotos by remember { mutableStateOf(false) }
     PillRow(MotionStyle.entries, MotionStyle.matching(clip.keyframes, clip.trimmedUs), { it?.label ?: "" }, enabled) { m -> if (m != null) vm.applyMotion(m, allPhotos) }
-    ToggleRow("Applica a tutte le foto", allPhotos, enabled) { allPhotos = it }
-    Hint("I movimenti usano due keyframe: li personalizzi dallo strumento Keyframe. Zoom fisso, posizione e Adatta/Riempi sono in Inquadra. Con i battiti, la maniglia destra aggancia la durata al ritmo.")
+    ToggleRow("Aplicar a todas las fotos", allPhotos, enabled) { allPhotos = it }
+    Hint("Los movimientos usan dos keyframes: los personalizas desde la herramienta Keyframe. Zoom fijo, posición y Ajustar/Llenar están en Encuadre. Con los beats, el tirador derecho ajusta la duración al ritmo.")
 }
 
 /** Zoom su un punto, per i tutorial: si sceglie la zona del quadro, quanto ingrandire e per quanto. */
@@ -1464,8 +1464,8 @@ private fun PhotoPanel(vm: EditorViewModel, running: Boolean) {
 private fun TutorialZoom(vm: EditorViewModel, enabled: Boolean) {
     var zoom by remember { mutableStateOf(2f) }
     var hold by remember { mutableStateOf(2_500_000L) }
-    PanelLabel("Zoom su un punto (tutorial)")
-    Hint("Porta l'indicatore dove vuoi lo zoom e tocca la zona del quadro: l'immagine ci arriva morbida, resta e torna.")
+    PanelLabel("Zoom en un punto (tutorial)")
+    Hint("Lleva el indicador adonde quieras el zoom y toca la zona del cuadro: la imagen llega suave, se queda y regresa.")
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             it.fabriziodavi.vivovideo.model.Tutorial.Spot.entries.chunked(3).forEach { row ->
@@ -1491,56 +1491,56 @@ private fun FramePanel(vm: EditorViewModel, running: Boolean) {
     val clip = vm.selectedClip ?: return
     val enabled = !running
     val f = clip.frame
-    Segmented(FrameMode.entries, clip.frameMode, { if (it == FrameMode.BLUR) "Sfocato" else it.label }, enabled) { m ->
+    Segmented(FrameMode.entries, clip.frameMode, { if (it == FrameMode.BLUR) "Desenfocado" else it.label }, enabled) { m ->
         vm.updateSelected { it.withMode(m) }
     }
-    if (clip.frameMode == FrameMode.BLUR) Hint("Sfondo sfocato: l'immagine intera, con dietro una sua copia sfocata al posto delle bande nere.")
-    Hint("Pizzica, trascina o ruota l'anteprima con due dita, oppure usa i cursori.")
+    if (clip.frameMode == FrameMode.BLUR) Hint("Fondo desenfocado: la imagen completa, con detrás una copia suya desenfocada en lugar de las barras negras.")
+    Hint("Pellizca, arrastra o gira la vista previa con dos dedos, o usa los controles deslizantes.")
     LabeledSlider("Zoom", null, (f.scale * 100).toInt(), enabled, range = 20..400, format = { "$it%" }) {
         vm.setFrame(f.copy(scale = it / 100f))
     }
-    LabeledSlider("Orizzontale", null, (f.x * 100).toInt(), enabled, range = -100..100) { vm.setFrame(f.copy(x = it / 100f)) }
-    LabeledSlider("Verticale", null, (f.y * 100).toInt(), enabled, range = -100..100) { vm.setFrame(f.copy(y = it / 100f)) }
-    LabeledSlider("Rotazione", null, f.rotation.toInt(), enabled, range = -180..180, format = { "$it°" }) {
+    LabeledSlider("Horizontal", null, (f.x * 100).toInt(), enabled, range = -100..100) { vm.setFrame(f.copy(x = it / 100f)) }
+    LabeledSlider("Vertical", null, (f.y * 100).toInt(), enabled, range = -100..100) { vm.setFrame(f.copy(y = it / 100f)) }
+    LabeledSlider("Rotación", null, f.rotation.toInt(), enabled, range = -180..180, format = { "$it°" }) {
         vm.setFrame(f.copy(rotation = it.toFloat()))
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Ruota 90°", onClick = {
+        SecondaryButton("Girar 90°", onClick = {
             if (enabled) vm.setFrame(f.copy(rotation = ((f.rotation + 90f + 540f) % 360f) - 180f))
         })
-        SecondaryButton("Reimposta", onClick = { if (enabled) { vm.setFrame(Transform()); vm.project?.let { p -> vm.updateSelected { it.withMode(p.presetModeFor(it)) } } } })
+        SecondaryButton("Restablecer", onClick = { if (enabled) { vm.setFrame(Transform()); vm.project?.let { p -> vm.updateSelected { it.withMode(p.presetModeFor(it)) } } } })
     }
-    SecondaryButton("Applica a tutte le clip", selected = vm.project?.frameOnAll(clip) == true, onClick = { if (enabled) vm.applyFrameToAll() })
-    PanelLabel("Zoom sul volto")
+    SecondaryButton("Aplicar a todos los clips", selected = vm.project?.frameOnAll(clip) == true, onClick = { if (enabled) vm.applyFrameToAll() })
+    PanelLabel("Zoom en el rostro")
     val zoomed = f.scale > 1.001f
-    if (!zoomed) SecondaryButton("Stringi sul volto", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.faceZoom() })
+    if (!zoomed) SecondaryButton("Cerrar en el rostro", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.faceZoom() })
     else {
-        SecondaryButton("Allunga lo zoom fino all'indicatore", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.extendZoomToPlayhead() })
+        SecondaryButton("Alargar el zoom hasta el indicador", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.extendZoomToPlayhead() })
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            SecondaryButton("Alla clip dopo", onClick = { if (enabled) vm.extendZoomToNext() })
-            SecondaryButton("Togli lo zoom", onClick = { if (enabled) vm.setFrame(Transform()) })
+            SecondaryButton("Al clip siguiente", onClick = { if (enabled) vm.extendZoomToNext() })
+            SecondaryButton("Quitar el zoom", onClick = { if (enabled) vm.setFrame(Transform()) })
         }
     }
-    Hint("Per allungare lo zoom quanto vuoi: porta l'indicatore dove deve finire e tocca «Allunga lo zoom fino all'indicatore». Per farlo iniziare in un punto preciso: indicatore lì, Dividi e Stringi sul volto sul pezzo dopo.")
+    Hint("Para alargar el zoom cuanto quieras: lleva el indicador adonde debe terminar y toca «Alargar el zoom hasta el indicador». Para que empiece en un punto preciso: indicador ahí, Dividir y Cerrar en el rostro en el trozo siguiente.")
     TutorialZoom(vm, enabled)
-    PanelLabel("Segui il soggetto")
+    PanelLabel("Seguir al sujeto")
     if (clip.reframe == null) {
-        SecondaryButton("Segui il soggetto", Modifier.fillMaxWidth(), onClick = { if (enabled && vm.clipWork == null) vm.followSubject() })
-        Hint("Riempie il quadro e sposta l'inquadratura per tenere al centro volti o soggetto: perfetto per mettere un video orizzontale in un progetto verticale.")
+        SecondaryButton("Seguir al sujeto", Modifier.fillMaxWidth(), onClick = { if (enabled && vm.clipWork == null) vm.followSubject() })
+        Hint("Llena el cuadro y mueve el encuadre para mantener en el centro los rostros o el sujeto: perfecto para poner un video horizontal en un proyecto vertical.")
     } else {
-        Hint(if (clip.fill) "L'inquadratura segue il soggetto." else "Per seguire il soggetto serve \"Riempi\" (in alto).")
-        SecondaryButton("Smetti di seguire", onClick = { if (enabled) vm.stopFollow() })
+        Hint(if (clip.fill) "El encuadre sigue al sujeto." else "Para seguir al sujeto hace falta \"Llenar\" (arriba).")
+        SecondaryButton("Dejar de seguir", onClick = { if (enabled) vm.stopFollow() })
     }
     if (!clip.isPhoto) {
-        PanelLabel("Stabilizzazione")
+        PanelLabel("Estabilización")
         val st = clip.stab
         if (st == null) {
-            SecondaryButton("Stabilizza la clip", Modifier.fillMaxWidth(), onClick = { if (enabled && vm.clipWork == null) vm.stabilize() })
-            Hint("Misura il tremolio della camera e lo leviga, con un leggero zoom per nascondere i bordi. Video lunghi o in 4K/8K richiedono un po' di tempo.")
+            SecondaryButton("Estabilizar el clip", Modifier.fillMaxWidth(), onClick = { if (enabled && vm.clipWork == null) vm.stabilize() })
+            Hint("Mide el temblor de la cámara y lo suaviza, con un ligero zoom para esconder los bordes. Los videos largos o en 4K/8K requieren un poco de tiempo.")
         } else {
-            LabeledSlider("Forza", null, (st.strength * 100).toInt(), enabled, range = 0..100, format = { "$it%" }) { vm.setStabStrength(it / 100f) }
-            Hint("Zoom usato: ${"%.0f".format((StabMath.plan(st).zoom - 1) * 100)}%. Più forza = movimento più fermo, ma più zoom.")
-            SecondaryButton("Togli la stabilizzazione", selected = false, onClick = { if (enabled) vm.removeStab() })
+            LabeledSlider("Fuerza", null, (st.strength * 100).toInt(), enabled, range = 0..100, format = { "$it%" }) { vm.setStabStrength(it / 100f) }
+            Hint("Zoom usado: ${"%.0f".format((StabMath.plan(st).zoom - 1) * 100)}%. Más fuerza = movimiento más firme, pero más zoom.")
+            SecondaryButton("Quitar la estabilización", selected = false, onClick = { if (enabled) vm.removeStab() })
         }
     }
 }
@@ -1556,14 +1556,14 @@ private fun TextPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickFon
     val enabled = !running
     if (t == null) {
         if (p.texts.isNotEmpty()) {
-            PanelLabel("Testi nel progetto")
+            PanelLabel("Textos en el proyecto")
             PillRow(p.texts, null as TextItem?, { it?.text?.lines()?.firstOrNull()?.take(18) ?: "" }, enabled) { x -> if (x != null) vm.selectText(x.id) }
         }
-        PrimaryButton("Aggiungi testo", Modifier.fillMaxWidth(), enabled = enabled, onClick = vm::addText)
-        SecondaryButton("Sottotitoli automatici", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showSubtitles = true } })
-        SecondaryButton(if (p.creditsRoll != null) "Titoli di coda · modifica" else "Titoli di coda", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showCredits = true } })
-        SecondaryButton("Passo numerato (tutorial)", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.addStep() })
-        Hint("Il testo parte dall'indicatore. Nella timeline lo sposti trascinandolo e ne cambi la durata con le maniglie.")
+        PrimaryButton("Agregar texto", Modifier.fillMaxWidth(), enabled = enabled, onClick = vm::addText)
+        SecondaryButton("Subtítulos automáticos", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showSubtitles = true } })
+        SecondaryButton(if (p.creditsRoll != null) "Créditos finales · editar" else "Créditos finales", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showCredits = true } })
+        SecondaryButton("Paso numerado (tutorial)", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.addStep() })
+        Hint("El texto empieza en el indicador. En la línea de tiempo lo mueves arrastrándolo y cambias su duración con los tiradores.")
         return
     }
     OutlinedTextField(
@@ -1580,29 +1580,29 @@ private fun TextPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickFon
     )
     when (tab) {
         0 -> {
-            ToggleRow("Dietro la persona", t.behindPerson, enabled) { vm.setTextBehind(it) }
+            ToggleRow("Detrás de la persona", t.behindPerson, enabled) { vm.setTextBehind(it) }
             if (t.behindPerson) {
-                Hint("Il testo sta fra lo sfondo e la persona, che gli passa davanti. L'app lo mette grande sopra le spalle, con la testa che ne copre solo la parte bassa, così si legge. Serve lo scontorno della persona (se manca lo fa l'app, lasciando lo sfondo com'è).")
-                SecondaryButton("Rimetti dietro la testa", onClick = { if (enabled) vm.placeBehind(t.id) })
-                LabeledSlider("Si legge attraverso la persona", null, (t.behindShow * 100).toInt(), enabled, range = 0..60, format = { if (it == 0) "no" else "$it%" }) { v ->
+                Hint("El texto queda entre el fondo y la persona, que le pasa por delante. La app lo pone grande sobre los hombros, con la cabeza que solo cubre la parte baja, para que se lea. Hace falta el recorte de la persona (si falta lo hace la app, dejando el fondo como está).")
+                SecondaryButton("Volver a poner detrás de la cabeza", onClick = { if (enabled) vm.placeBehind(t.id) })
+                LabeledSlider("Se lee a través de la persona", null, (t.behindShow * 100).toInt(), enabled, range = 0..60, format = { if (it == 0) "no" else "$it%" }) { v ->
                     vm.updateText { it.copy(behindShow = v / 100f) }
                 }
             }
-            PanelLabel("Stili pronti")
+            PanelLabel("Estilos listos")
             PillRow(PRESETS_NEW_FIRST, TextPreset.matching(t), { it?.label ?: "" }, enabled) { pr -> if (pr != null) vm.applyTextPreset(pr) }
-            PanelLabel("Carattere")
+            PanelLabel("Carácter")
             PillRow(TextFont.entries.map<TextFont, TextFont?> { it }, if (t.fontFile == null) t.font else null, { it?.label ?: "" }, enabled) { f -> if (f != null) vm.updateText { it.copy(font = f, fontFile = null) } }
-            PanelLabel("I tuoi font")
+            PanelLabel("Tus fuentes")
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 vm.fonts.forEach { path ->
                     SecondaryButton(File(path).nameWithoutExtension.take(18), selected = t.fontFile == path, onClick = { if (enabled) vm.updateText { it.copy(fontFile = path) } })
                 }
-                SecondaryButton("+ Aggiungi font", onClick = { if (enabled) onPickFont() })
+                SecondaryButton("+ Agregar fuente", onClick = { if (enabled) onPickFont() })
             }
             if (t.fontFile != null) {
-                TextButton(onClick = { t.fontFile?.let { vm.removeFont(it) } }) { Text("Togli questo font dall'app", color = VV.Danger) }
+                TextButton(onClick = { t.fontFile?.let { vm.removeFont(it) } }) { Text("Quitar esta fuente de la app", color = VV.Danger) }
             }
-            PanelLabel("Colore")
+            PanelLabel("Color")
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 TEXT_COLORS.forEach { c ->
                     Box(
@@ -1612,12 +1612,12 @@ private fun TextPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickFon
                     )
                 }
             }
-            PanelLabel("Sfumatura verso")
+            PanelLabel("Degradado hacia")
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     Modifier.clip(RoundedCornerShape(15.dp)).background(if (t.gradientTo == null) VV.Tally else VV.Raised)
                         .clickable(enabled = enabled) { vm.updateText { it.copy(gradientTo = null) } }.padding(horizontal = 12.dp, vertical = 6.dp)
-                ) { Text("Nessuna", style = MaterialTheme.typography.labelMedium, color = if (t.gradientTo == null) VV.TallyInk else VV.Text) }
+                ) { Text("Ninguna", style = MaterialTheme.typography.labelMedium, color = if (t.gradientTo == null) VV.TallyInk else VV.Text) }
                 TEXT_COLORS.forEach { c ->
                     Box(
                         Modifier.size(30.dp).clip(RoundedCornerShape(15.dp)).background(Color(c))
@@ -1626,24 +1626,24 @@ private fun TextPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickFon
                     )
                 }
             }
-            PanelLabel("Contorno e ombra")
+            PanelLabel("Contorno y sombra")
             Segmented(TextLook.entries, t.look, { it.label }, enabled) { l -> vm.updateText { it.copy(look = l) } }
-            LabeledSlider("Dimensione", null, (t.size * 1000).toInt(), enabled, range = 15..250, format = { "${it / 10}" }) { v ->
+            LabeledSlider("Tamaño", null, (t.size * 1000).toInt(), enabled, range = 15..250, format = { "${it / 10}" }) { v ->
                 vm.updateText(typing = true) { it.copy(size = v / 1000f) }
             }
-            LabeledSlider("Spaziatura lettere", null, (t.spacing * 100).toInt(), enabled, range = -5..60) { v ->
+            LabeledSlider("Espaciado entre letras", null, (t.spacing * 100).toInt(), enabled, range = -5..60) { v ->
                 vm.updateText(typing = true) { it.copy(spacing = v / 100f) }
             }
-            ToggleRow("Tutto maiuscolo", t.upper, enabled) { v -> vm.updateText { it.copy(upper = v) } }
+            ToggleRow("Todo en mayúsculas", t.upper, enabled) { v -> vm.updateText { it.copy(upper = v) } }
         }
         1 -> {
-            PanelLabel("Cinetico: una parola alla volta")
+            PanelLabel("Cinético: una palabra a la vez")
             PillRow(listOf<KineticStyle?>(null) + KineticStyle.entries, t.kinetic, { it?.label ?: "No" }, enabled) { k -> vm.setKinetic(k, all = false) }
             if (t.kinetic != null) {
-                Hint(t.kinetic.hint + ". Le parole importanti (numeri, parole lunghe, esclamazioni) prendono il colore di risalto." +
-                    if (t.subtitle) " Sui sottotitoli segue la voce." else " Le parole arrivano una ogni ~0,35 s.")
-                if (t.subtitle) SecondaryButton("Usa questo stile per tutti i sottotitoli", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.setKinetic(t.kinetic, all = true) })
-                PanelLabel("Colore delle parole importanti")
+                Hint(t.kinetic.hint + ". Las palabras importantes (números, palabras largas, exclamaciones) toman el color de resalte." +
+                    if (t.subtitle) " En los subtítulos sigue la voz." else " Las palabras llegan una cada ~0,35 s.")
+                if (t.subtitle) SecondaryButton("Usar este estilo en todos los subtítulos", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.setKinetic(t.kinetic, all = true) })
+                PanelLabel("Color de las palabras importantes")
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     (listOf(Subtitles.KINETIC_HIGHLIGHT) + TEXT_COLORS).distinct().forEach { c ->
                         Box(
@@ -1656,11 +1656,11 @@ private fun TextPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickFon
             }
             if (t.subtitle && t.wordsUs.isNotEmpty() && t.kinetic == null) {
                 // Sottotitoli con i tempi della voce: come seguono il parlato e di che colore.
-                PanelLabel("Le parole seguono la voce")
-                val modes = listOf(0 to "No", 3 to "Si colora mentre parli", 1 to "Karaoke", 2 to "Parola per parola")
+                PanelLabel("Las palabras siguen la voz")
+                val modes = listOf(0 to "No", 3 to "Se colorea mientras hablas", 1 to "Karaoke", 2 to "Palabra por palabra")
                 PillRow(modes.map { it.first }, t.wordMode, { m -> modes.first { it.first == m }.second }, enabled) { m -> vm.setWordMode(m, null, all = false) }
                 if (t.wordMode == 1 || t.wordMode == 3) {
-                    PanelLabel("Colore della voce")
+                    PanelLabel("Color de la voz")
                     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         Subtitles.ACCENTS.forEach { (_, c) ->
                             Box(
@@ -1671,37 +1671,37 @@ private fun TextPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickFon
                         }
                     }
                 }
-                SecondaryButton("Usa per tutti i sottotitoli", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.setWordMode(t.wordMode, t.highlight, all = true) })
+                SecondaryButton("Usar en todos los subtítulos", Modifier.fillMaxWidth(), onClick = { if (enabled) vm.setWordMode(t.wordMode, t.highlight, all = true) })
             }
-            PanelLabel("In entrata")
+            PanelLabel("De entrada")
             PillRow(ANIMS_NEW_FIRST, t.animIn, { it.label }, enabled) { a -> vm.updateText { it.copy(animIn = a) } }
-            PanelLabel("In uscita")
+            PanelLabel("De salida")
             PillRow(ANIMS_NEW_FIRST.filter { !it.inOnly }, t.animOut, { it.label }, enabled) { a -> vm.updateText { it.copy(animOut = a) } }
         }
         else -> {
-            PanelLabel("Posizione")
+            PanelLabel("Posición")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 SecondaryButton("Alto", selected = t.x == 0f && t.y == -0.36f, onClick = { vm.updateText { it.copy(x = 0f, y = -0.36f) } })
                 SecondaryButton("Centro", selected = t.x == 0f && t.y == 0f, onClick = { vm.updateText { it.copy(x = 0f, y = 0f) } })
-                SecondaryButton("Basso", selected = t.x == 0f && t.y == 0.36f, onClick = { vm.updateText { it.copy(x = 0f, y = 0.36f) } })
+                SecondaryButton("Bajo", selected = t.x == 0f && t.y == 0.36f, onClick = { vm.updateText { it.copy(x = 0f, y = 0.36f) } })
             }
-            Hint("Oppure trascina, pizzica e ruota il riquadro sull'anteprima con le dita.")
+            Hint("O arrastra, pellizca y gira el recuadro en la vista previa con los dedos.")
             MotionSection(vm, t.endPose != null, enabled, t.startUs, t.durationUs) { vm.toggleTextMotion() }
         }
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Inizia qui", Modifier.weight(1f), onClick = { if (enabled) vm.textToPlayhead(start = true) })
-        SecondaryButton("Finisci qui", Modifier.weight(1f), onClick = { if (enabled) vm.textToPlayhead(start = false) })
+        SecondaryButton("Empieza aquí", Modifier.weight(1f), onClick = { if (enabled) vm.textToPlayhead(start = true) })
+        SecondaryButton("Termina aquí", Modifier.weight(1f), onClick = { if (enabled) vm.textToPlayhead(start = false) })
     }
-    Hint("Inizia qui sposta il testo all'indicatore; Finisci qui lo fa finire lì. Nella timeline: tocca il testo, poi trascinalo; le maniglie ai lati cambiano la durata.")
+    Hint("Empieza aquí mueve el texto al indicador; Termina aquí lo hace terminar ahí. En la línea de tiempo: toca el texto y arrástralo; los tiradores de los lados cambian la duración.")
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Nuovo", onClick = { if (enabled) vm.addText() })
-        SecondaryButton("Duplica", onClick = { if (enabled) vm.duplicateText() })
-        SecondaryButton("Elimina", onClick = { if (enabled) vm.deleteText() })
+        SecondaryButton("Nuevo", onClick = { if (enabled) vm.addText() })
+        SecondaryButton("Duplicar", onClick = { if (enabled) vm.duplicateText() })
+        SecondaryButton("Eliminar", onClick = { if (enabled) vm.deleteText() })
     }
-    SecondaryButton("Stile a tutti i testi", selected = p.textStyleOnAll(t), onClick = { if (enabled) vm.applyTextStyleToAll() })
-    SecondaryButton("Sottotitoli automatici", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showSubtitles = true } })
-    SecondaryButton(if (p.creditsRoll != null) "Titoli di coda · modifica" else "Titoli di coda", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showCredits = true } })
+    SecondaryButton("Estilo para todos los textos", selected = p.textStyleOnAll(t), onClick = { if (enabled) vm.applyTextStyleToAll() })
+    SecondaryButton("Subtítulos automáticos", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showSubtitles = true } })
+    SecondaryButton(if (p.creditsRoll != null) "Créditos finales · editar" else "Créditos finales", Modifier.fillMaxWidth(), onClick = { if (enabled) { vm.pause(); vm.showCredits = true } })
 }
 
 /**
@@ -1810,13 +1810,13 @@ private fun LayerHandleOverlay(vm: EditorViewModel, l: Layer) {
 /** Interruttore del movimento e scelta della posizione da modificare (inizio/fine), come in ProShow. */
 @Composable
 private fun MotionSection(vm: EditorViewModel, on: Boolean, enabled: Boolean, startUs: Long, durationUs: Long, onToggle: () -> Unit) {
-    PanelLabel("Movimento")
-    ToggleRow("Muovi da una posizione a un'altra", on, enabled) { onToggle() }
+    PanelLabel("Movimiento")
+    ToggleRow("Mover de una posición a otra", on, enabled) { onToggle() }
     if (on) {
-        Segmented(listOf(false, true), vm.editEnd, { if (it) "Posizione finale" else "Posizione iniziale" }, enabled) { e ->
+        Segmented(listOf(false, true), vm.editEnd, { if (it) "Posición final" else "Posición inicial" }, enabled) { e ->
             vm.showPoseEnd(e, startUs, durationUs)
         }
-        Hint("Scegli quale posizione modificare e sistemala con le dita sull'anteprima: il movimento va dall'una all'altra in modo morbido.")
+        Hint("Elige qué posición modificar y acomódala con los dedos en la vista previa: el movimiento va de una a otra de forma suave.")
     }
 }
 
@@ -1827,88 +1827,88 @@ private fun LayerPanel(vm: EditorViewModel, running: Boolean, tab: Int, onAdd: (
     val enabled = !running
     if (l == null) {
         if (p.layers.isNotEmpty()) {
-            PanelLabel("Livelli nel progetto")
+            PanelLabel("Capas en el proyecto")
             PillRow(p.layers, null as Layer?, { it?.name?.take(18) ?: "" }, enabled) { x -> if (x != null) vm.selectLayer(x.id) }
         }
-        PrimaryButton("Aggiungi immagine o video", Modifier.fillMaxWidth(), enabled = enabled, onClick = onAdd)
-        Hint("Foto, loghi, adesivi PNG con trasparenza o altri video (picture-in-picture) sopra al video, dall'indicatore. Nella timeline li sposti e ne cambi la durata con le maniglie.")
-        PanelLabel("Evidenziazioni per tutorial")
+        PrimaryButton("Agregar imagen o video", Modifier.fillMaxWidth(), enabled = enabled, onClick = onAdd)
+        Hint("Fotos, logos, calcomanías PNG con transparencia u otros videos (picture-in-picture) sobre el video, desde el indicador. En la línea de tiempo los mueves y cambias su duración con los tiradores.")
+        PanelLabel("Resaltes para tutoriales")
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             it.fabriziodavi.vivovideo.model.Tutorial.Mark.entries.forEach { m ->
                 SecondaryButton(m.label, onClick = { if (enabled) vm.addTutorialMark(m) })
             }
         }
-        Hint("Compaiono al centro dall'indicatore per 3 s: trascinale dove serve, pizzica per la misura, ruota la freccia con due dita. I numeri vanno avanti da soli (1, 2, 3…).")
+        Hint("Aparecen en el centro desde el indicador durante 3 s: arrástralos adonde haga falta, pellizca para el tamaño, gira la flecha con dos dedos. Los números avanzan solos (1, 2, 3…).")
         return
     }
     val pose = vm.editedLayerPose() ?: l.pose
     Text(l.name, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Inizia qui", Modifier.weight(1f), onClick = { if (enabled) vm.layerToPlayhead(start = true) })
-        SecondaryButton("Finisci qui", Modifier.weight(1f), onClick = { if (enabled) vm.layerToPlayhead(start = false) })
+        SecondaryButton("Empieza aquí", Modifier.weight(1f), onClick = { if (enabled) vm.layerToPlayhead(start = true) })
+        SecondaryButton("Termina aquí", Modifier.weight(1f), onClick = { if (enabled) vm.layerToPlayhead(start = false) })
     }
     when (tab) {
         0 -> {
-            Hint("Trascina, pizzica e ruota il riquadro sull'anteprima con due dita.")
-            LabeledSlider("Dimensione", null, (pose.scale * 100).toInt(), enabled, range = 5..150, format = { "$it%" }) {
+            Hint("Arrastra, pellizca y gira el recuadro en la vista previa con dos dedos.")
+            LabeledSlider("Tamaño", null, (pose.scale * 100).toInt(), enabled, range = 5..150, format = { "$it%" }) {
                 vm.setLayerPose(pose.copy(scale = it / 100f))
             }
-            LabeledSlider("Opacità", null, (pose.opacity * 100).toInt(), enabled, format = { "$it%" }) {
+            LabeledSlider("Opacidad", null, (pose.opacity * 100).toInt(), enabled, format = { "$it%" }) {
                 vm.setLayerPose(pose.copy(opacity = it / 100f))
             }
-            LabeledSlider("Rotazione", null, pose.rotation.toInt(), enabled, range = -180..180, format = { "$it°" }) {
+            LabeledSlider("Rotación", null, pose.rotation.toInt(), enabled, range = -180..180, format = { "$it°" }) {
                 vm.setLayerPose(pose.copy(rotation = it.toFloat()))
             }
             if (l.isVideo) {
-                Hint("In anteprima il video sovrapposto si vede come immagine ferma; nel video esportato si muove.")
-                PanelLabel("Audio del video sovrapposto")
-                ToggleRow("Disattiva l'audio", l.muted, enabled) { v -> vm.updateLayer { it.copy(muted = v) } }
+                Hint("En la vista previa el video superpuesto se ve como imagen fija; en el video exportado se mueve.")
+                PanelLabel("Audio del video superpuesto")
+                ToggleRow("Desactivar el audio", l.muted, enabled) { v -> vm.updateLayer { it.copy(muted = v) } }
                 if (!l.muted) LabeledSlider("Volume", null, (l.volume * 100).toInt(), enabled, range = 0..200, format = { "$it%" }) { v ->
                     vm.updateLayer { it.copy(volume = v / 100f) }
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SecondaryButton("Porta sopra", onClick = { if (enabled) vm.moveLayerZ(+1) })
-                SecondaryButton("Porta sotto", onClick = { if (enabled) vm.moveLayerZ(-1) })
+                SecondaryButton("Subir encima", onClick = { if (enabled) vm.moveLayerZ(+1) })
+                SecondaryButton("Bajar debajo", onClick = { if (enabled) vm.moveLayerZ(-1) })
             }
         }
         1 -> {
             PanelLabel("Forma")
             PillRow(LayerMask.entries, l.shape, { it.label }, enabled) { m -> vm.updateLayer { it.copy(mask = m, rounded = false) } }
-            PanelLabel(if (l.isVideo) "Cornice" else "Cornice e ombra")
+            PanelLabel(if (l.isVideo) "Marco" else "Marco y sombra")
             Segmented(LayerBorder.entries, l.border, { it.label }, enabled) { b -> vm.updateLayer { it.copy(border = b) } }
-            if (!l.isVideo) ToggleRow("Ombra", l.shadow, enabled) { v -> vm.updateLayer { it.copy(shadow = v) } }
+            if (!l.isVideo) ToggleRow("Sombra", l.shadow, enabled) { v -> vm.updateLayer { it.copy(shadow = v) } }
             if (l.isVideo) {
                 PanelLabel("Solo la persona")
                 if (l.person == null) {
                     PersonQuality(vm, enabled)
-                    SecondaryButton("Scontorna la persona", Modifier.fillMaxWidth(), onClick = { if (enabled && vm.clipWork == null) vm.cutLayerPerson() })
-                    Hint("Toglie lo sfondo dietro alla persona, senza telo verde: resta solo lei sopra al video principale.")
+                    SecondaryButton("Recortar la persona", Modifier.fillMaxWidth(), onClick = { if (enabled && vm.clipWork == null) vm.cutLayerPerson() })
+                    Hint("Quita el fondo detrás de la persona, sin pantalla verde: solo queda ella sobre el video principal.")
                 } else {
-                    Hint("Si vede solo la persona.")
-                    SecondaryButton("Rimetti lo sfondo", onClick = { if (enabled) vm.updateLayer { it.copy(person = null) } })
+                    Hint("Se ve solo la persona.")
+                    SecondaryButton("Volver a poner el fondo", onClick = { if (enabled) vm.updateLayer { it.copy(person = null) } })
                 }
             }
-            PanelLabel("Scontorno (togli lo sfondo)")
+            PanelLabel("Recorte (quitar el fondo)")
             PillRow(KeyColor.entries, l.key, { it.label }, enabled) { k -> vm.updateLayer { it.copy(key = k) } }
             if (l.key != KeyColor.NONE) {
-                LabeledSlider("Tolleranza", "Alzala se resta un alone di sfondo, abbassala se sparisce anche il soggetto.", (l.keyTolerance * 100).toInt(), enabled, format = { "$it%" }) { v ->
+                LabeledSlider("Tolerancia", "Súbela si queda un halo de fondo, bájala si desaparece también el sujeto.", (l.keyTolerance * 100).toInt(), enabled, format = { "$it%" }) { v ->
                     vm.updateLayer { it.copy(keyTolerance = v / 100f) }
                 }
             }
         }
         else -> {
             MotionSection(vm, l.endPose != null, enabled, l.startUs, l.durationUs) { vm.toggleLayerMotion() }
-            PanelLabel("Animazione in entrata")
+            PanelLabel("Animación de entrada")
             PillRow(LAYER_ANIMS, l.animIn, { it.label }, enabled) { a -> vm.updateLayer { it.copy(animIn = a) } }
-            PanelLabel("Animazione in uscita")
+            PanelLabel("Animación de salida")
             PillRow(LAYER_ANIMS, l.animOut, { it.label }, enabled) { a -> vm.updateLayer { it.copy(animOut = a) } }
         }
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Aggiungi", onClick = { if (enabled) onAdd() })
-        SecondaryButton("Duplica", onClick = { if (enabled) vm.duplicateLayer() })
-        SecondaryButton("Elimina", onClick = { if (enabled) vm.deleteLayer() })
+        SecondaryButton("Agregar", onClick = { if (enabled) onAdd() })
+        SecondaryButton("Duplicar", onClick = { if (enabled) vm.duplicateLayer() })
+        SecondaryButton("Eliminar", onClick = { if (enabled) vm.deleteLayer() })
     }
 }
 
@@ -1921,21 +1921,21 @@ private fun FormatPanel(vm: EditorViewModel, running: Boolean) {
     Segmented(VideoFormat.entries, p.format, { if (it == VideoFormat.AUTO) "Auto" else it.short }, enabled) { vm.setFormat(format = it) }
     Hint(
         when (p.format) {
-            VideoFormat.AUTO -> "Automatico: come la prima clip (ora " + (if (p.outputOrientation() == Orientation.PORTRAIT) "verticale" else if (p.outputOrientation() == Orientation.SQUARE) "quadrato" else "orizzontale") + ")."
-            VideoFormat.VERTICAL -> "Verticale 9:16: per storie, reel e telefono."
-            VideoFormat.HORIZONTAL -> "Orizzontale 16:9: per TV, computer e YouTube."
-            VideoFormat.SQUARE -> "Quadrato 1:1: per i post."
+            VideoFormat.AUTO -> "Automático: como el primer clip (ahora " + (if (p.outputOrientation() == Orientation.PORTRAIT) "verticale" else if (p.outputOrientation() == Orientation.SQUARE) "quadrato" else "orizzontale") + ")."
+            VideoFormat.VERTICAL -> "Vertical 9:16: para historias, reels y teléfono."
+            VideoFormat.HORIZONTAL -> "Horizontal 16:9: para TV, computadora y YouTube."
+            VideoFormat.SQUARE -> "Cuadrado 1:1: para publicaciones."
         }
     )
-    PanelLabel("Foto e video con lo stesso orientamento")
-    Segmented(FrameMode.entries, p.sameMode, { if (it == FrameMode.BLUR) "Sfocato" else it.label }, enabled) { vm.setFormat(same = it) }
-    PanelLabel("Foto e video con l'orientamento opposto")
-    Segmented(FrameMode.entries, p.otherMode, { if (it == FrameMode.BLUR) "Sfocato" else it.label }, enabled) { vm.setFormat(other = it) }
+    PanelLabel("Fotos y videos con la misma orientación")
+    Segmented(FrameMode.entries, p.sameMode, { if (it == FrameMode.BLUR) "Desenfocado" else it.label }, enabled) { vm.setFormat(same = it) }
+    PanelLabel("Fotos y videos con la orientación opuesta")
+    Segmented(FrameMode.entries, p.otherMode, { if (it == FrameMode.BLUR) "Desenfocado" else it.label }, enabled) { vm.setFormat(other = it) }
     val v = p.clips.count { it.orientation == Orientation.PORTRAIT }
     val o = p.clips.count { it.orientation == Orientation.LANDSCAPE }
-    Hint("Nel progetto: $v verticali, $o orizzontali. Riempi taglia i bordi, Adatta mostra tutto con bande nere, Sfocato mostra tutto con dietro una copia sfocata.")
-    SecondaryButton("Applica a tutte le clip", Modifier.fillMaxWidth(), selected = p.followsPresets(), onClick = { if (enabled) vm.setFormat() })
-    Hint("Le preimpostazioni valgono anche per le foto e i video che aggiungi dopo. Una singola clip la cambi in Inquadra.")
+    Hint("En el proyecto: $v verticales, $o horizontales. Llenar recorta los bordes, Ajustar muestra todo con barras negras, Desenfocado muestra todo con detrás una copia desenfocada.")
+    SecondaryButton("Aplicar a todos los clips", Modifier.fillMaxWidth(), selected = p.followsPresets(), onClick = { if (enabled) vm.setFormat() })
+    Hint("Los preajustes valen también para las fotos y videos que agregues después. Un clip individual lo cambias en Encuadre.")
 }
 
 @Composable
@@ -1950,27 +1950,27 @@ private fun SlideshowPanel(vm: EditorViewModel, running: Boolean) {
     var transition by remember { mutableStateOf<TransitionType?>(null) }
     var noTransitions by remember { mutableStateOf(false) }
     var fill by remember { mutableStateOf(true) }
-    Hint("Prepara in un colpo tutte le foto del progetto (${p.clips.count { it.isPhoto }}): durata, movimento e transizioni. Si può annullare.")
-    PanelLabel("Durata di ogni foto")
-    if (hasBeats) ToggleRow("A ritmo della musica", rhythm, enabled) { rhythm = it }
+    Hint("Prepara de una vez todas las fotos del proyecto (${p.clips.count { it.isPhoto }}): duración, movimiento y transiciones. Se puede deshacer.")
+    PanelLabel("Duración de cada foto")
+    if (hasBeats) ToggleRow("Al ritmo de la música", rhythm, enabled) { rhythm = it }
     if (rhythm && hasBeats) {
         Segmented(listOf(1, 2, 4, 8), beats, { "$it battit" + if (it == 1) "o" else "i" }, enabled) { beats = it }
     } else {
-        LabeledSlider("Secondi", null, seconds, enabled, range = 10..100, format = { String.format(java.util.Locale.ITALIAN, "%.1f s", it / 10f) }) { seconds = it }
-        if (!hasBeats) Hint("Con una musica e i suoi battiti, le foto possono cambiare a tempo.")
+        LabeledSlider("Segundos", null, seconds, enabled, range = 10..100, format = { String.format(java.util.Locale.ITALIAN, "%.1f s", it / 10f) }) { seconds = it }
+        if (!hasBeats) Hint("Con una música y sus beats, las fotos pueden cambiar al compás.")
     }
-    PanelLabel("Movimento delle foto")
+    PanelLabel("Movimiento de las fotos")
     val motions: List<MotionStyle?> = listOf(null) + MotionStyle.entries
     PillRow(motions, motion, { it?.label ?: "Vario" }, enabled) { motion = it }
-    PanelLabel("Transizioni")
+    PanelLabel("Transiciones")
     val trans: List<TransitionType?> = listOf(null) + TRANSITIONS_NEW_FIRST
     PillRow(listOf<Any?>("none") + trans, if (noTransitions) "none" else transition, { a ->
-        when (a) { "none" -> "Nessuna"; null -> "Varie"; else -> (a as TransitionType).label }
+        when (a) { "none" -> "Ninguna"; null -> "Varias"; else -> (a as TransitionType).label }
     }, enabled) { a ->
         noTransitions = a == "none"
         transition = a as? TransitionType
     }
-    ToggleRow("Foto a tutto schermo (riempi il quadro)", fill, enabled) { fill = it }
+    ToggleRow("Fotos a pantalla completa (llenar el cuadro)", fill, enabled) { fill = it }
     Box(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(VV.Tally)
             .clickable(enabled = enabled) {
@@ -1981,7 +1981,7 @@ private fun SlideshowPanel(vm: EditorViewModel, running: Boolean) {
                 ))
             }.padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
-    ) { Text("Crea slideshow", style = MaterialTheme.typography.labelLarge, color = VV.TallyInk) }
+    ) { Text("Crear presentación", style = MaterialTheme.typography.labelLarge, color = VV.TallyInk) }
 }
 
 @Composable
@@ -1994,22 +1994,22 @@ private fun EffectsPanel(vm: EditorViewModel, running: Boolean, tab: Int) {
     if (tab == 3) { PrivacyTab(vm, clip, enabled); return }
     val secs = { v: Int -> if (v == 0) "No" else String.format(java.util.Locale.ITALIAN, "%.1f s", v / 10f) }
     val maxTenths = (clip.outputUs / 2 / 100_000).toInt().coerceIn(1, 50)
-    PanelLabel("Dissolvenze della clip")
-    LabeledSlider("In entrata", null, (clip.fadeInUs / 100_000).toInt().coerceAtMost(maxTenths), enabled, range = 0..maxTenths, format = secs) { v ->
+    PanelLabel("Fundidos del clip")
+    LabeledSlider("De entrada", null, (clip.fadeInUs / 100_000).toInt().coerceAtMost(maxTenths), enabled, range = 0..maxTenths, format = secs) { v ->
         vm.updateSelected { it.copy(fadeInUs = v * 100_000L) }
     }
-    LabeledSlider("In uscita", null, (clip.fadeOutUs / 100_000).toInt().coerceAtMost(maxTenths), enabled, range = 0..maxTenths, format = secs) { v ->
+    LabeledSlider("De salida", null, (clip.fadeOutUs / 100_000).toInt().coerceAtMost(maxTenths), enabled, range = 0..maxTenths, format = secs) { v ->
         vm.updateSelected { it.copy(fadeOutUs = v * 100_000L) }
     }
     if (clip.fadeInUs > 0 || clip.fadeOutUs > 0) {
         Segmented(FadeColor.entries, clip.fadeColor, { "Dal/al " + it.label.lowercase() }, enabled) { c -> vm.updateSelected { it.copy(fadeColor = c) } }
-        if (!clip.isPhoto) ToggleRow("Anche l'audio (nel video esportato)", clip.fadeAudio, enabled) { v -> vm.updateSelected { it.copy(fadeAudio = v) } }
+        if (!clip.isPhoto) ToggleRow("También el audio (en el video exportado)", clip.fadeAudio, enabled) { v -> vm.updateSelected { it.copy(fadeAudio = v) } }
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Apri e chiudi il video", selected = p.videoEndsFaded(), onClick = { if (enabled) vm.toggleVideoEnds() })
-        if (clip.fadeInUs > 0 || clip.fadeOutUs > 0) SecondaryButton("A tutte le clip", selected = p.fadesOnAll(clip), onClick = { if (enabled) vm.applyFadesToAll() })
+        SecondaryButton("Abrir y cerrar el video", selected = p.videoEndsFaded(), onClick = { if (enabled) vm.toggleVideoEnds() })
+        if (clip.fadeInUs > 0 || clip.fadeOutUs > 0) SecondaryButton("A todos los clips", selected = p.fadesOnAll(clip), onClick = { if (enabled) vm.applyFadesToAll() })
     }
-    Hint("\"Apri e chiudi il video\": dissolvenza dal nero sulla prima clip (1 s) e al nero sull'ultima (1,5 s). Acceso è in ambra; toccalo di nuovo per toglierle.")
+    Hint("\"Abrir y cerrar el video\": fundido desde negro en el primer clip (1 s) y a negro en el último (1,5 s). Encendido está en ámbar; tócalo de nuevo para quitarlos.")
 }
 
 @Composable
@@ -2041,23 +2041,23 @@ private fun FxTab(vm: EditorViewModel, clip: it.fabriziodavi.vivovideo.model.Cli
         LabeledSlider(f.type.label, null, (f.amount * 100).toInt(), enabled, format = { "$it%" }) { v -> vm.setFxAmount(f.type, v / 100f) }
     }
     if (clip.fx.any { it.type.onBeats } && p.beatTimes().isEmpty()) {
-        Hint("\"Pulsa a ritmo\", \"Lampi a ritmo\" e \"Colpo a ritmo\" usano i battiti della musica: aggiungi un brano e rileva i battiti dal pannello Musica.")
+        Hint("\"Pulsa al ritmo\", \"Destellos al ritmo\" y \"Golpe al ritmo\" usan los beats de la música: agrega una canción y detecta los beats desde el panel Música.")
     }
-    PanelLabel("Bianco e nero da un punto")
+    PanelLabel("Blanco y negro desde un punto")
     var bwFade by remember { mutableStateOf(true) }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Bianco e nero da qui", onClick = { if (enabled) vm.bwFromPlayhead(true, bwFade) })
-        SecondaryButton("Colore da qui", onClick = { if (enabled) vm.bwFromPlayhead(false, bwFade) })
+        SecondaryButton("Blanco y negro desde aquí", onClick = { if (enabled) vm.bwFromPlayhead(true, bwFade) })
+        SecondaryButton("Color desde aquí", onClick = { if (enabled) vm.bwFromPlayhead(false, bwFade) })
     }
-    ToggleRow("Passaggio sfumato (0,6 s)", bwFade, enabled) { bwFade = it }
-    Hint("Porta l'indicatore dove vuoi il cambio: da lì fino alla fine il video va in bianco e nero (o torna a colori). Puoi farlo quante volte vuoi, come nei video di YouTube.")
+    ToggleRow("Paso suave (0,6 s)", bwFade, enabled) { bwFade = it }
+    Hint("Lleva el indicador adonde quieras el cambio: desde ahí hasta el final el video pasa a blanco y negro (o vuelve a color). Puedes hacerlo cuantas veces quieras, como en los videos de YouTube.")
     if (clip.fx.isNotEmpty()) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            SecondaryButton("Applica a tutte le clip", selected = p.fxOnAll(clip), onClick = { if (enabled) vm.applyFxToAll() })
-            SecondaryButton("Togli tutti", onClick = { if (enabled) vm.updateSelected { it.copy(fx = emptyList()) } })
+            SecondaryButton("Aplicar a todos los clips", selected = p.fxOnAll(clip), onClick = { if (enabled) vm.applyFxToAll() })
+            SecondaryButton("Quitar todos", onClick = { if (enabled) vm.updateSelected { it.copy(fx = emptyList()) } })
         }
     } else {
-        Hint("Tocca un effetto per accenderlo o spegnerlo; si possono combinare anche di categorie diverse.")
+        Hint("Toca un efecto para encenderlo o apagarlo; se pueden combinar incluso de categorías distintas.")
     }
 }
 
@@ -2068,19 +2068,19 @@ private fun ColorPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickLu
     val enabled = !running
     if (tab == 3) {
         vm.selectedClip?.let { clip ->
-            PanelLabel("Questa clip")
-            ToggleRow("Girata in LOG: converti in colori normali", clip.log, enabled) { v -> vm.updateSelected { it.copy(log = v) } }
+            PanelLabel("Este clip")
+            ToggleRow("Grabado en LOG: convertir a colores normales", clip.log, enabled) { v -> vm.updateSelected { it.copy(log = v) } }
         }
-        PanelLabel("Tutto il progetto")
+        PanelLabel("Todo el proyecto")
         val look = runCatching { Look.valueOf(c.look) }.getOrDefault(Look.NONE)
         PillRow(Look.entries, look, { it.label }, enabled) { l -> vm.updateColor { it.copy(look = l.name) } }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(c.lutName ?: "Nessuna LUT", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            TextButton(onClick = onPickLut, enabled = enabled) { Text(if (c.lutPath == null) "Carica .cube" else "Cambia", color = VV.Tally) }
-            if (c.lutPath != null) TextButton(onClick = { vm.updateColor { it.copy(lutPath = null, lutName = null) } }, enabled = enabled) { Text("Togli", color = VV.Dim) }
+            Text(c.lutName ?: "Sin LUT", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            TextButton(onClick = onPickLut, enabled = enabled) { Text(if (c.lutPath == null) "Cargar .cube" else "Cambiar", color = VV.Tally) }
+            if (c.lutPath != null) TextButton(onClick = { vm.updateColor { it.copy(lutPath = null, lutName = null) } }, enabled = enabled) { Text("Quitar", color = VV.Dim) }
         }
-        LabeledSlider("Alte luci / cielo", null, c.highlights, enabled) { v -> vm.updateColor { it.copy(highlights = v) } }
-        LabeledSlider("Riduzione rumore", "Leviga cielo e zone uniformi mantenendo i bordi.", c.denoise, enabled) { v -> vm.updateColor { it.copy(denoise = v) } }
+        LabeledSlider("Altas luces / cielo", null, c.highlights, enabled) { v -> vm.updateColor { it.copy(highlights = v) } }
+        LabeledSlider("Reducción de ruido", "Suaviza el cielo y las zonas uniformes manteniendo los bordes.", c.denoise, enabled) { v -> vm.updateColor { it.copy(denoise = v) } }
         return
     }
     // Le schede della clip lavorano sulla clip selezionata (o su quella sotto l'indicatore).
@@ -2095,28 +2095,28 @@ private fun ColorPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickLu
     val signed = { v: Int -> if (v > 0) "+$v" else "$v" }
     when (tab) {
         0 -> {
-            LabeledSlider("Esposizione", null, pct(g.exposure), enabled, range = -200..200,
+            LabeledSlider("Exposición", null, pct(g.exposure), enabled, range = -200..200,
                 format = { String.format(java.util.Locale.ITALIAN, "%+.1f EV", it / 100f) }) { v -> set { it.copy(exposure = v / 100f) } }
-            LabeledSlider("Contrasto", null, pct(g.contrast), enabled, range = -100..100, format = signed) { v -> set { it.copy(contrast = v / 100f) } }
-            LabeledSlider("Alte luci", null, pct(g.highlights), enabled, range = -100..100, format = signed) { v -> set { it.copy(highlights = v / 100f) } }
-            LabeledSlider("Ombre", null, pct(g.shadows), enabled, range = -100..100, format = signed) { v -> set { it.copy(shadows = v / 100f) } }
-            LabeledSlider("Temperatura", "Verso il blu (–) o verso l'arancio (+).", pct(g.temperature), enabled, range = -100..100, format = signed) { v -> set { it.copy(temperature = v / 100f) } }
-            LabeledSlider("Tinta", "Verso il verde (–) o verso il magenta (+).", pct(g.tint), enabled, range = -100..100, format = signed) { v -> set { it.copy(tint = v / 100f) } }
-            LabeledSlider("Saturazione", null, pct(g.saturation), enabled, range = -100..100, format = signed) { v -> set { it.copy(saturation = v / 100f) } }
-            LabeledSlider("Vividezza", "Ravviva i colori spenti lasciando com'è la pelle.", pct(g.vibrance), enabled, range = -100..100, format = signed) { v -> set { it.copy(vibrance = v / 100f) } }
+            LabeledSlider("Contraste", null, pct(g.contrast), enabled, range = -100..100, format = signed) { v -> set { it.copy(contrast = v / 100f) } }
+            LabeledSlider("Altas luces", null, pct(g.highlights), enabled, range = -100..100, format = signed) { v -> set { it.copy(highlights = v / 100f) } }
+            LabeledSlider("Sombras", null, pct(g.shadows), enabled, range = -100..100, format = signed) { v -> set { it.copy(shadows = v / 100f) } }
+            LabeledSlider("Temperatura", "Hacia el azul (–) o hacia el naranja (+).", pct(g.temperature), enabled, range = -100..100, format = signed) { v -> set { it.copy(temperature = v / 100f) } }
+            LabeledSlider("Tinte", "Hacia el verde (–) o hacia el magenta (+).", pct(g.tint), enabled, range = -100..100, format = signed) { v -> set { it.copy(tint = v / 100f) } }
+            LabeledSlider("Saturación", null, pct(g.saturation), enabled, range = -100..100, format = signed) { v -> set { it.copy(saturation = v / 100f) } }
+            LabeledSlider("Intensidad", "Aviva los colores apagados sin tocar la piel.", pct(g.vibrance), enabled, range = -100..100, format = signed) { v -> set { it.copy(vibrance = v / 100f) } }
         }
         1 -> {
-            Hint("Trascina il punto verso un colore per spingere ombre, toni medi o luci in quella direzione; più lontano dal centro, più forte.")
+            Hint("Arrastra el punto hacia un color para empujar sombras, tonos medios o luces en esa dirección; cuanto más lejos del centro, más fuerte.")
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                ColorWheel("Ombre", g.shadowWheel, enabled) { w -> set { it.copy(shadowWheel = w) } }
-                ColorWheel("Toni medi", g.midWheel, enabled) { w -> set { it.copy(midWheel = w) } }
-                ColorWheel("Luci", g.highWheel, enabled) { w -> set { it.copy(highWheel = w) } }
+                ColorWheel("Sombras", g.shadowWheel, enabled) { w -> set { it.copy(shadowWheel = w) } }
+                ColorWheel("Tonos medios", g.midWheel, enabled) { w -> set { it.copy(midWheel = w) } }
+                ColorWheel("Luces", g.highWheel, enabled) { w -> set { it.copy(highWheel = w) } }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SecondaryButton("Look cinema", Modifier.weight(1f), onClick = {
+                SecondaryButton("Look cine", Modifier.weight(1f), onClick = {
                     if (enabled) set { it.copy(shadowWheel = Wheel(190f, 0.5f), highWheel = Wheel(30f, 0.4f), contrast = maxOf(it.contrast, 0.15f)) }
                 })
-                SecondaryButton("Azzera ruote", Modifier.weight(1f), onClick = { if (enabled) set { it.copy(shadowWheel = Wheel(), midWheel = Wheel(), highWheel = Wheel()) } })
+                SecondaryButton("Reiniciar ruedas", Modifier.weight(1f), onClick = { if (enabled) set { it.copy(shadowWheel = Wheel(), midWheel = Wheel(), highWheel = Wheel()) } })
             }
         }
         else -> {
@@ -2134,18 +2134,18 @@ private fun ColorPanel(vm: EditorViewModel, running: Boolean, tab: Int, onPickLu
             }
             val h = g.band(band)
             Text(band.label, style = MaterialTheme.typography.labelLarge, color = VV.Tally)
-            LabeledSlider("Tonalità", null, pct(h.hue), enabled, range = -100..100, format = signed) { v -> set { it.withBand(band, h.copy(hue = v / 100f)) } }
-            LabeledSlider("Saturazione", null, pct(h.sat), enabled, range = -100..100, format = signed) { v -> set { it.withBand(band, h.copy(sat = v / 100f)) } }
-            LabeledSlider("Luminosità", null, pct(h.lum), enabled, range = -100..100, format = signed) { v -> set { it.withBand(band, h.copy(lum = v / 100f)) } }
-            Hint("Cambia un solo colore: per esempio il cielo più blu (Blu: saturazione +) o il verde dei prati meno acceso, senza toccare il resto.")
+            LabeledSlider("Tono", null, pct(h.hue), enabled, range = -100..100, format = signed) { v -> set { it.withBand(band, h.copy(hue = v / 100f)) } }
+            LabeledSlider("Saturación", null, pct(h.sat), enabled, range = -100..100, format = signed) { v -> set { it.withBand(band, h.copy(sat = v / 100f)) } }
+            LabeledSlider("Brillo", null, pct(h.lum), enabled, range = -100..100, format = signed) { v -> set { it.withBand(band, h.copy(lum = v / 100f)) } }
+            Hint("Cambia un solo color: por ejemplo el cielo más azul (Azul: saturación +) o el verde del pasto menos intenso, sin tocar el resto.")
         }
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Copia", Modifier.weight(1f), onClick = { vm.copiedGrade = g })
-        SecondaryButton("Incolla", Modifier.weight(1f), onClick = { vm.copiedGrade?.let { cg -> if (enabled) set { cg } } })
-        SecondaryButton("Reimposta", Modifier.weight(1f), onClick = { if (enabled) set { Grade() } })
+        SecondaryButton("Copiar", Modifier.weight(1f), onClick = { vm.copiedGrade = g })
+        SecondaryButton("Pegar", Modifier.weight(1f), onClick = { vm.copiedGrade?.let { cg -> if (enabled) set { cg } } })
+        SecondaryButton("Restablecer", Modifier.weight(1f), onClick = { if (enabled) set { Grade() } })
     }
-    SecondaryButton("Applica a tutte le clip", Modifier.fillMaxWidth(), selected = p.clips.size > 1 && p.clips.all { it.grade == g }, onClick = { if (enabled) vm.applyGradeToAll() })
+    SecondaryButton("Aplicar a todos los clips", Modifier.fillMaxWidth(), selected = p.clips.size > 1 && p.clips.all { it.grade == g }, onClick = { if (enabled) vm.applyGradeToAll() })
 }
 
 /** Istogramma del fotogramma sotto l'indicatore, già corretto: luminosità (grigio) e canali rosso, verde, blu. */
@@ -2159,7 +2159,7 @@ private fun Histogram(vm: EditorViewModel, clip: it.fabriziodavi.vivovideo.model
     val bins = remember(px, clip.grade) { px?.let { GradeMath.histogram(it, clip.grade) } }
     Box(Modifier.fillMaxWidth().height(64.dp).clip(RoundedCornerShape(8.dp)).background(Color(0xFF0B0C0F))) {
         if (bins == null) {
-            Text("Istogramma", style = MaterialTheme.typography.labelSmall, color = VV.Faint, modifier = Modifier.align(Alignment.Center))
+            Text("Histograma", style = MaterialTheme.typography.labelSmall, color = VV.Faint, modifier = Modifier.align(Alignment.Center))
         } else {
             Canvas(Modifier.fillMaxSize().padding(horizontal = 4.dp, vertical = 4.dp)) {
                 val n = bins[0].size
@@ -2179,7 +2179,7 @@ private fun Histogram(vm: EditorViewModel, clip: it.fabriziodavi.vivovideo.model
             val clipLo = bins[0].first() * 100 / total
             if (clipHi >= 3 || clipLo >= 3) {
                 Text(
-                    listOfNotNull(if (clipHi >= 3) "Luci bruciate $clipHi%" else null, if (clipLo >= 3) "Ombre chiuse $clipLo%" else null).joinToString(" · "),
+                    listOfNotNull(if (clipHi >= 3) "Luces quemadas $clipHi%" else null, if (clipLo >= 3) "Sombras cerradas $clipLo%" else null).joinToString(" · "),
                     style = MaterialTheme.typography.labelSmall, color = VV.Tally,
                     modifier = Modifier.align(Alignment.TopEnd).padding(6.dp),
                 )
@@ -2235,7 +2235,7 @@ private fun ExportPanel(vm: EditorViewModel, onOpen: (android.net.Uri) -> Unit) 
     val o = vm.exportOptions
     val state = vm.exportState
     val running = state is ExportState.Running
-    PanelLabel("Pronto per")
+    PanelLabel("Listo para")
     Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         ExportPreset.entries.forEach { pr ->
             SecondaryButton(pr.label, selected = pr.matches(o)) { if (!running) vm.exportOptions = pr.applyTo(o) }
@@ -2243,32 +2243,32 @@ private fun ExportPanel(vm: EditorViewModel, onOpen: (android.net.Uri) -> Unit) 
     }
     ExportPreset.entries.firstOrNull { it.matches(o) }?.let { Hint(it.hint) }
     vm.exportEstimate()?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = VV.Tally) }
-    PanelLabel("Risoluzione")
+    PanelLabel("Resolución")
     Segmented(OutputSize.entries, o.size, { it.label }, !running) { vm.exportOptions = o.copy(size = it, maxBitrate = null) }
-    PanelLabel("Fotogrammi al secondo")
+    PanelLabel("Fotogramas por segundo")
     Segmented(OutputFps.entries, o.fps, { it.label }, !running) { vm.exportOptions = o.copy(fps = it, maxBitrate = null) }
     PanelLabel("Codec")
     Segmented(OutputCodec.entries, if (o.hdr && vm.hasHdr) OutputCodec.H265 else o.codec, { it.label }, !running) {
         vm.exportOptions = o.copy(codec = it, maxBitrate = null, hdr = o.hdr && it == OutputCodec.H265)
     }
     if (vm.hasHdr) {
-        ToggleRow("HDR 10 bit, come l'hai girato", o.hdr, !running) { vm.exportOptions = o.copy(hdr = it, codec = if (it) OutputCodec.H265 else o.codec) }
-        Hint(if (o.hdr) "Luci e colori pieni sugli schermi HDR (YouTube, Instagram, galleria del telefono). Si usa H.265. Se qualcosa non lo regge, l'app esporta in SDR e te lo scrive nel risultato."
-            else "Nel progetto ci sono video HDR: ora vengono convertiti in SDR, il formato che si vede bene ovunque.")
+        ToggleRow("HDR 10 bits, como lo grabaste", o.hdr, !running) { vm.exportOptions = o.copy(hdr = it, codec = if (it) OutputCodec.H265 else o.codec) }
+        Hint(if (o.hdr) "Luces y colores plenos en las pantallas HDR (YouTube, Instagram, galería del teléfono). Se usa H.265. Si algo no lo soporta, la app exporta en SDR y te lo avisa en el resultado."
+            else "En el proyecto hay videos HDR: ahora se convierten a SDR, el formato que se ve bien en todas partes.")
         // Dettaglio: un video 4K esportato in 1080p perde finezza (le luci HDR restano).
         val src4k = vm.project?.clips?.any { !it.isPhoto && minOf(it.width, it.height) >= 2000 } == true
         if (src4k && o.size != OutputSize.ORIGINAL && o.size != OutputSize.P2160) {
-            Hint("I video del progetto sono in 4K: in ${o.size.label} si perde un po' di dettaglio. Per avere la stessa nitidezza dell'originale scegli Risoluzione Originale o 4K.")
+            Hint("Los videos del proyecto están en 4K: en ${o.size.label} se pierde un poco de detalle. Para tener la misma nitidez del original elige Resolución original o 4K.")
         }
     }
-    ToggleRow("Audio a tono naturale nei cambi di velocità", o.keepPitch, !running) { vm.exportOptions = o.copy(keepPitch = it) }
-    ToggleRow("Volume uniformato: ${vm.project?.mix?.target?.label ?: "–14 LUFS"} (si cambia in Audio → Mixer)", o.loudness, !running) { vm.exportOptions = o.copy(loudness = it) }
-    PanelLabel("Sperimentale: dissolvenze incrociate e video sovrapposti")
-    ToggleRow("Nel video esportato", vm.multiExportEnabled, !running) { vm.setMultiExport(it) }
-    Hint("In anteprima dissolvenze incrociate e video sovrapposti si preparano in anticipo (pochi secondi dopo una modifica). Se l'app si chiude per un errore, questa opzione si spegne da sola.")
-    PanelLabel("Anteprima")
-    ToggleRow("Copie leggere per i video 4K, 8K e 120 fps", vm.useProxies, !running) { vm.setProxies(it) }
-    Hint("Solo per l'anteprima, che scorre più fluida: il video esportato usa sempre gli originali.")
+    ToggleRow("Audio con tono natural en los cambios de velocidad", o.keepPitch, !running) { vm.exportOptions = o.copy(keepPitch = it) }
+    ToggleRow("Volumen uniformado: ${vm.project?.mix?.target?.label ?: "–14 LUFS"} (se cambia en Audio → Mezclador)", o.loudness, !running) { vm.exportOptions = o.copy(loudness = it) }
+    PanelLabel("Experimental: fundidos cruzados y videos superpuestos")
+    ToggleRow("En el video exportado", vm.multiExportEnabled, !running) { vm.setMultiExport(it) }
+    Hint("En la vista previa los fundidos cruzados y videos superpuestos se preparan con antelación (unos segundos después de un cambio). Si la app se cierra por un error, esta opción se apaga sola.")
+    PanelLabel("Vista previa")
+    ToggleRow("Copias ligeras para videos 4K, 8K y 120 fps", vm.useProxies, !running) { vm.setProxies(it) }
+    Hint("Solo para la vista previa, que corre más fluida: el video exportado usa siempre los originales.")
     when (state) {
         is ExportState.Running -> {
             Text(state.label + (state.percent?.let { "  $it%" } ?: ""), style = MaterialTheme.typography.bodyMedium)
@@ -2277,22 +2277,22 @@ private fun ExportPanel(vm: EditorViewModel, onOpen: (android.net.Uri) -> Unit) 
                 modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
                 color = VV.Tally, trackColor = VV.Raised2,
             )
-            SecondaryButton("Annulla", onClick = vm::cancelExport)
+            SecondaryButton("Deshacer", onClick = vm::cancelExport)
         }
         is ExportState.Done -> {
-            ResultBox("Salvato in Film/VivoVideo", state.details) {
+            ResultBox("Guardado en Film/VivoVideo", state.details) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    PrimaryButton("Apri il video") { onOpen(state.uri) }
-                    SecondaryButton("Chiudi", onClick = vm::dismissExportResult)
+                    PrimaryButton("Abrir el video") { onOpen(state.uri) }
+                    SecondaryButton("Cerrar", onClick = vm::dismissExportResult)
                 }
             }
             CreditsBox(vm.project?.credits().orEmpty())
         }
-        is ExportState.Failed -> ResultBox("L'esportazione non è riuscita", state.message) {
-            Hint("Fai uno screenshot di questo messaggio e mandalo a Claude.")
-            SecondaryButton("Chiudi", onClick = vm::dismissExportResult)
+        is ExportState.Failed -> ResultBox("La exportación no se pudo completar", state.message) {
+            Hint("Haz una captura de pantalla de este mensaje y mándasela a Claude.")
+            SecondaryButton("Cerrar", onClick = vm::dismissExportResult)
         }
-        ExportState.Idle -> PrimaryButton("Esporta il video", Modifier.fillMaxWidth(), enabled = vm.project?.clips?.isNotEmpty() == true, onClick = vm::startExport)
+        ExportState.Idle -> PrimaryButton("Exportar el video", Modifier.fillMaxWidth(), enabled = vm.project?.clips?.isNotEmpty() == true, onClick = vm::startExport)
     }
 }
 
@@ -2335,26 +2335,26 @@ private fun MultiSelectBar(vm: EditorViewModel, ids: Set<String>, onPaste: () ->
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 when {
-                    ids.isNotEmpty() -> "${ids.size} clip scelte"
-                    vm.copiedStyle != null -> "Tocca le clip su cui incollare"
-                    else -> "Tocca le clip da scegliere"
+                    ids.isNotEmpty() -> "${ids.size} clips elegidos"
+                    vm.copiedStyle != null -> "Toca los clips donde pegar"
+                    else -> "Toca los clips que quieres elegir"
                 },
                 style = MaterialTheme.typography.titleSmall, color = VV.Text, modifier = Modifier.weight(1f),
             )
-            TextButton(onClick = vm::selectAllClips) { Text("Tutte", color = VV.Tally) }
-            TextButton(onClick = vm::endMultiSelect) { Text("Fine", color = VV.Dim) }
+            TextButton(onClick = vm::selectAllClips) { Text("Todas", color = VV.Tally) }
+            TextButton(onClick = vm::endMultiSelect) { Text("Fin", color = VV.Dim) }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (vm.copiedStyle != null) SecondaryButton("Incolla attributi", Modifier.weight(1f), onClick = { if (ids.isNotEmpty()) onPaste() })
-            else SecondaryButton("Copia attributi", Modifier.weight(1f), onClick = vm::copyStyle)
-            SecondaryButton("Elimina", Modifier.weight(1f), onClick = vm::deleteMulti)
+            if (vm.copiedStyle != null) SecondaryButton("Pegar atributos", Modifier.weight(1f), onClick = { if (ids.isNotEmpty()) onPaste() })
+            else SecondaryButton("Copiar atributos", Modifier.weight(1f), onClick = vm::copyStyle)
+            SecondaryButton("Eliminar", Modifier.weight(1f), onClick = vm::deleteMulti)
         }
         // Rimescola: le clip scelte (almeno due); subito dopo, un altro ordine.
         if (vm.copiedStyle == null) SecondaryButton(
-            if (vm.canShuffleAgain) "Rimescola ancora" else "Rimescola le clip scelte", Modifier.fillMaxWidth(),
-            onClick = { if (vm.canShuffleAgain || ids.size >= 2) vm.shuffleClips(ids) else vm.message = "Scegli almeno due clip da rimescolare." },
+            if (vm.canShuffleAgain) "Mezclar otra vez" else "Mezclar los clips elegidos", Modifier.fillMaxWidth(),
+            onClick = { if (vm.canShuffleAgain || ids.size >= 2) vm.shuffleClips(ids) else vm.message = "Elige al menos dos clips para mezclar." },
         )
-        if (vm.copiedStyle == null) Hint("Copia gli attributi dalla clip evidenziata, poi scegli le clip su cui incollarli.")
+        if (vm.copiedStyle == null) Hint("Copia los atributos del clip resaltado, luego elige los clips donde pegarlos.")
     }
 }
 
@@ -2366,17 +2366,17 @@ private fun PasteStyleDialog(src: Clip, targets: Int, onPaste: (Set<ClipAttr>) -
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = VV.Raised,
-        title = { Text("Incolla attributi su $targets clip", style = MaterialTheme.typography.titleSmall) },
+        title = { Text("Pegar atributos en $targets clips", style = MaterialTheme.typography.titleSmall) },
         text = {
             Column {
                 ClipAttr.entries.forEach { a ->
                     ToggleRow(a.label + if (a in present) "" else " (normale)", a in chosen) { on -> chosen = if (on) chosen + a else chosen - a }
                 }
-                Hint("I keyframe si adattano alla durata di ogni clip. Velocità e volume non cambiano le foto.")
+                Hint("Los keyframes se adaptan a la duración de cada clip. La velocidad y el volumen no cambian las fotos.")
             }
         },
-        confirmButton = { TextButton(onClick = { onPaste(chosen) }, enabled = chosen.isNotEmpty() && targets > 0) { Text("Incolla", color = VV.Tally) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Annulla", color = VV.Dim) } },
+        confirmButton = { TextButton(onClick = { onPaste(chosen) }, enabled = chosen.isNotEmpty() && targets > 0) { Text("Pegar", color = VV.Tally) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Deshacer", color = VV.Dim) } },
     )
 }
 
@@ -2390,53 +2390,53 @@ private fun PrivacyTab(vm: EditorViewModel, clip: Clip, enabled: Boolean) {
     val r = clip.redact
     val busy = vm.clipWork != null
     if (r != null) {
-        PanelLabel("Oscurato")
-        val what = listOfNotNull(if (r.faces) "volti" else null, if (r.plates) "targhe" else null, if (r.objectSeed != null) "un oggetto" else null).joinToString(", ")
-        Hint("In questa clip: $what. " + if (clip.isPhoto) "${r.found} elementi coperti." else "Coperti in ${r.found} fotogrammi su ${r.count}.")
+        PanelLabel("Oculto")
+        val what = listOfNotNull(if (r.faces) "volti" else null, if (r.plates) "targhe" else null, if (r.objectSeed != null) "un objeto" else null).joinToString(", ")
+        Hint("En este clip: $what. " + if (clip.isPhoto) "${r.found} elementos cubiertos." else "Cubiertos en ${r.found} fotogramas de ${r.count}.")
         PillRow(it.fabriziodavi.vivovideo.model.RedactStyle.entries, r.style, { it.label }, enabled) { vm.changeRedactStyle(it) }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            SecondaryButton("Rifai", onClick = { if (enabled && !busy) vm.redactClip() })
-            SecondaryButton("Togli", onClick = { if (enabled) vm.removeRedact() })
+            SecondaryButton("Rehacer", onClick = { if (enabled && !busy) vm.redactClip() })
+            SecondaryButton("Quitar", onClick = { if (enabled) vm.removeRedact() })
         }
-        Hint("Se accorci o allunghi molto la clip, o cambi cosa oscurare qui sotto, tocca Rifai.")
+        Hint("Si acortas o alargas mucho el clip, o cambias qué ocultar más abajo, toca Rehacer.")
     } else {
-        PanelLabel("Oscura volti, targhe e oggetti")
-        Hint("L'app trova cosa coprire in ogni fotogramma della clip, sul telefono e senza internet, e lo segue mentre si muove.")
+        PanelLabel("Ocultar rostros, placas y objetos")
+        Hint("La app encuentra qué cubrir en cada fotograma del clip, en el teléfono y sin internet, y lo sigue mientras se mueve.")
     }
-    ToggleRow("Volti", vm.redactFaces, enabled) { vm.redactFaces = it }
-    ToggleRow("Targhe", vm.redactPlates, enabled) { vm.redactPlates = it }
+    ToggleRow("Rostros", vm.redactFaces, enabled) { vm.redactFaces = it }
+    ToggleRow("Placas", vm.redactPlates, enabled) { vm.redactPlates = it }
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(if (vm.redactSeed != null) "Oggetto scelto" else "Un oggetto", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
-        SecondaryButton(if (vm.redactSeed != null) "Cambia" else "Toccalo nell'immagine", onClick = { if (enabled && !busy) vm.openObjectPick() })
-        if (vm.redactSeed != null) IconBtn(VVIcons.Close, "Nessun oggetto") { vm.clearObject() }
+        Text(if (vm.redactSeed != null) "Objeto elegido" else "Un objeto", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        SecondaryButton(if (vm.redactSeed != null) "Cambiar" else "Tócalo en la imagen", onClick = { if (enabled && !busy) vm.openObjectPick() })
+        if (vm.redactSeed != null) IconBtn(VVIcons.Close, "Ningún objeto") { vm.clearObject() }
     }
     if (r == null) {
         PillRow(it.fabriziodavi.vivovideo.model.RedactStyle.entries, vm.redactStyle, { it.label }, enabled) { vm.redactStyle = it }
-        PrimaryButton(if (clip.isPhoto) "Oscura" else "Analizza e oscura", Modifier.fillMaxWidth(), enabled = enabled && !busy) { vm.redactClip() }
-        if (!clip.isPhoto) Hint("Ci vuole circa il tempo della clip. Per l'oggetto: porta l'indicatore dove si vede bene, poi toccalo.")
+        PrimaryButton(if (clip.isPhoto) "Ocultar" else "Analizar y ocultar", Modifier.fillMaxWidth(), enabled = enabled && !busy) { vm.redactClip() }
+        if (!clip.isPhoto) Hint("Tarda más o menos lo que dura el clip. Para el objeto: lleva el indicador donde se vea bien y tócalo.")
     }
 }
 
 /** Scelta del modello di scontorno: veloce (sul telefono) o preciso (Google). */
 @Composable
 private fun PersonQuality(vm: EditorViewModel, enabled: Boolean) {
-    Segmented(listOf(false, true), vm.personPrecise, { if (it) "Preciso (Google)" else "Veloce" }, enabled) { vm.personPrecise = it }
-    Hint(if (vm.personPrecise) "Bordo più fedele anche su capelli e oggetti in mano; più lento (circa 2–4 volte il tempo della clip). La prima volta Google scarica il modello: serve internet."
-        else "Sul telefono, senza internet, circa il tempo della clip.")
+    Segmented(listOf(false, true), vm.personPrecise, { if (it) "Preciso (Google)" else "Rápido" }, enabled) { vm.personPrecise = it }
+    Hint(if (vm.personPrecise) "Borde más fiel incluso en cabello y objetos en la mano; más lento (unas 2–4 veces la duración del clip). La primera vez Google descarga el modelo: hace falta internet."
+        else "En el teléfono, sin internet, más o menos lo que dura el clip.")
 }
 
 @Composable
 private fun PersonTab(vm: EditorViewModel, clip: Clip, enabled: Boolean) {
-    if (clip.isPhoto) { Hint("Lo scontorno della persona funziona sui video."); return }
+    if (clip.isPhoto) { Hint("El recorte de la persona funciona en los videos."); return }
     val fx = clip.person
     if (fx == null) {
-        PanelLabel("Persona e sfondo")
-        Hint("L'app riconosce la persona in ogni fotogramma e ti lascia sfocare lo sfondo, cambiarlo con un colore o metterlo in bianco e nero.")
+        PanelLabel("Persona y fondo")
+        Hint("La app reconoce a la persona en cada fotograma y te deja desenfocar el fondo, cambiarlo por un color o ponerlo en blanco y negro.")
         PersonQuality(vm, enabled)
-        PrimaryButton("Scontorna la persona", Modifier.fillMaxWidth(), enabled = enabled && vm.clipWork == null) { vm.cutPerson() }
+        PrimaryButton("Recortar la persona", Modifier.fillMaxWidth(), enabled = enabled && vm.clipWork == null) { vm.cutPerson() }
         return
     }
-    PanelLabel("Sfondo")
+    PanelLabel("Fondo")
     PillRow(PersonMode.entries.filter { it != PersonMode.REMOVE }, fx.mode, { it.label }, enabled) { vm.setPersonMode(it) }
     if (fx.mode == PersonMode.COLOR) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -2449,10 +2449,10 @@ private fun PersonTab(vm: EditorViewModel, clip: Clip, enabled: Boolean) {
             }
         }
     }
-    Hint((if (fx.precise) "Scontorno preciso (Google). " else "Scontorno veloce. ") + "Se accorci o allunghi molto la clip, rifai lo scontorno.")
+    Hint((if (fx.precise) "Recorte preciso (Google). " else "Recorte rápido. ") + "Si acortas o alargas mucho el clip, rehaz el recorte.")
     PersonQuality(vm, enabled)
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        SecondaryButton("Rifai lo scontorno", onClick = { if (enabled && vm.clipWork == null) vm.cutPerson(fx.mode) })
-        SecondaryButton("Togli", onClick = { if (enabled) vm.removePerson() })
+        SecondaryButton("Rehacer el recorte", onClick = { if (enabled && vm.clipWork == null) vm.cutPerson(fx.mode) })
+        SecondaryButton("Quitar", onClick = { if (enabled) vm.removePerson() })
     }
 }

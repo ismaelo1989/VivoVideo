@@ -125,13 +125,13 @@ class WowTest {
 
     @Test fun trailerStructureIntroHeroEnding() {
         val vids = (0 until 40).map { Clip(id = "v$it", uri = "content://v/$it", sourceDurationUs = 20_000_000, trimEndUs = 20_000_000, width = 1920, height = 1080, fps = 120f) }
-        val p = AutoEdit.build("Trailer", vids, music(), AutoOptions(style = AutoStyle.BLOCKBUSTER, targetUs = 60_000_000, title = "Estate", subtitle = "Agosto 2026"))
+        val p = AutoEdit.build("Trailer", vids, music(), AutoOptions(style = AutoStyle.BLOCKBUSTER, targetUs = 60_000_000, title = "Verano", subtitle = "Agosto 2026"))
         // Intro: 8 lampi su mezzi battiti (0,25 s), poi il titolo sul colpo.
         val intro = p.clips.take(8)
         assertTrue(intro.drop(1).all { abs(it.outputUs - 250_000) < 5_000 })
         assertTrue(intro.dropLast(1).all { it.transitionOut?.type == TransitionType.EXPOSE })
         val introEnd = intro.sumOf { it.outputUs }
-        val title = p.texts.first { it.text == "Estate" }
+        val title = p.texts.first { it.text == "Verano" }
         assertEquals(introEnd, title.startUs)
         // Look colore del tema su tutte le scene, e bande cinema.
         assertTrue(p.clips.all { it.grade == AutoStyle.BLOCKBUSTER.grade })
@@ -151,7 +151,7 @@ class WowTest {
         val srcs = (0 until 30).map { if (it % 3 == 0) Clip(id = "p$it", uri = "file:///p$it.jpg", sourceDurationUs = Clip.PHOTO_MAX_US, trimEndUs = 3_000_000, isPhoto = true, width = 4000, height = 3000)
             else Clip(id = "v$it", uri = "content://v/$it", sourceDurationUs = 15_000_000, trimEndUs = 15_000_000, width = 1920, height = 1080, fps = if (it % 2 == 0) 120f else 30f) }
         AutoStyle.entries.forEach { st ->
-            val p = AutoEdit.build("T", srcs, music(), AutoOptions(style = st, targetUs = 45_000_000, title = "Titolo"))
+            val p = AutoEdit.build("T", srcs, music(), AutoOptions(style = st, targetUs = 45_000_000, title = "Título"))
             assertTrue("$st durata ${p.durationUs}", abs(p.durationUs - 45_000_000) <= 30_000)
             assertTrue("$st", p.clips.isNotEmpty() && p.texts.isNotEmpty())
             // Tutte le scene hanno la loro transizione, tranne gli stacchi netti dei temi da velocity edit.

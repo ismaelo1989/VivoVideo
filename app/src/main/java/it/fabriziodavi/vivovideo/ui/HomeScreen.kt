@@ -80,24 +80,24 @@ fun HomeScreen(vm: EditorViewModel) {
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding().padding(horizontal = 16.dp)) {
         Row(Modifier.fillMaxWidth().padding(top = 18.dp, bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("VivoVideo", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
-            IconBtn(VVIcons.Help, "Guida") { vm.showGuide = true }
+            IconBtn(VVIcons.Help, "Guía") { vm.showGuide = true }
         }
         // Due strade chiare per creare un video: lo monta l'app, oppure lo monti tu. Il modello è la terza, più piccola.
-        Text("Crea un video", style = MaterialTheme.typography.labelLarge, color = VV.Dim, modifier = Modifier.padding(bottom = 8.dp))
+        Text("Crear un video", style = MaterialTheme.typography.labelLarge, color = VV.Dim, modifier = Modifier.padding(bottom = 8.dp))
         CreateCard(
-            VVIcons.Effects, "Video automatico", "Scegli le foto o un album: musica, tagli a ritmo e transizioni li fa l'app.",
+            VVIcons.Effects, "Video automático", "Elige las fotos o un álbum: la música, los cortes al ritmo y las transiciones los hace la app.",
             primary = true, modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
         ) { vm.showAuto = true }
         Row(Modifier.fillMaxWidth().height(androidx.compose.foundation.layout.IntrinsicSize.Min).padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            CreateCard(VVIcons.Edit, "Monta tu", "Scegli video e foto e monta come vuoi.", primary = false,
+            CreateCard(VVIcons.Edit, "Monta tú", "Elige videos y fotos y monta como quieras.", primary = false,
                 modifier = Modifier.weight(1f).fillMaxHeight()) { askNew = true }
-            CreateCard(VVIcons.Copy, "Da un modello", "Un montaggio salvato, con foto nuove.", primary = false,
+            CreateCard(VVIcons.Copy, "Desde una plantilla", "Un montaje guardado, con fotos nuevas.", primary = false,
                 modifier = Modifier.weight(1f).fillMaxHeight()) { askTemplate = true }
         }
         Row(Modifier.fillMaxWidth().height(androidx.compose.foundation.layout.IntrinsicSize.Min).padding(bottom = 18.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            CreateCard(VVIcons.Movie, "Intervista doppia", "Due persone, le stesse domande: risposte alternate o a schermo diviso.",
+            CreateCard(VVIcons.Movie, "Entrevista doble", "Dos personas, las mismas preguntas: respuestas alternadas o a pantalla dividida.",
                 primary = false, modifier = Modifier.weight(1f).fillMaxHeight()) { vm.showInterview = true }
-            CreateCard(VVIcons.Copy, "Collage", "Foto e video in centinaia di modelli: immagine o video animato.",
+            CreateCard(VVIcons.Copy, "Collage", "Fotos y videos en cientos de modelos: imagen o video animado.",
                 primary = false, modifier = Modifier.weight(1f).fillMaxHeight()) {
                 collagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
             }
@@ -105,12 +105,12 @@ fun HomeScreen(vm: EditorViewModel) {
         if (vm.projects.isEmpty()) {
             Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
                 Text(
-                    "Qui compariranno i tuoi progetti.",
+                    "Aquí aparecerán tus proyectos.",
                     style = MaterialTheme.typography.bodyMedium, color = VV.Dim,
                 )
             }
         } else {
-            Text("I tuoi progetti", style = MaterialTheme.typography.labelLarge, color = VV.Dim, modifier = Modifier.padding(bottom = 8.dp))
+            Text("Tus proyectos", style = MaterialTheme.typography.labelLarge, color = VV.Dim, modifier = Modifier.padding(bottom = 8.dp))
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(160.dp),
                 modifier = Modifier.weight(1f),
@@ -123,12 +123,12 @@ fun HomeScreen(vm: EditorViewModel) {
         // Strumenti di servizio: in fondo, piccoli.
         Row(Modifier.fillMaxWidth().padding(top = 6.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             TextButton(onClick = { backupOpener.launch(arrayOf("application/octet-stream", "application/zip", "*/*")) }) {
-                Text("Apri una copia", style = MaterialTheme.typography.labelMedium, color = VV.Dim)
+                Text("Abrir una copia", style = MaterialTheme.typography.labelMedium, color = VV.Dim)
             }
-            TextButton(onClick = { vm.showTestPlan = true }) { Text("Collaudo e segnalazioni", style = MaterialTheme.typography.labelMedium, color = VV.Dim) }
+            TextButton(onClick = { vm.showTestPlan = true }) { Text("Pruebas y reportes", style = MaterialTheme.typography.labelMedium, color = VV.Dim) }
         }
         Text(
-            "Versione $version   ·   " + encoders.lines().firstOrNull().orEmpty(),
+            "Versión $version   ·   " + encoders.lines().firstOrNull().orEmpty(),
             style = MaterialTheme.typography.bodySmall, color = VV.Faint,
             maxLines = 1, overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(bottom = 10.dp, start = 12.dp),
@@ -146,11 +146,11 @@ fun HomeScreen(vm: EditorViewModel) {
         AlertDialog(
             onDismissRequest = { askTemplate = false },
             containerColor = VV.Raised,
-            title = { Text("Da un modello", style = MaterialTheme.typography.titleSmall) },
+            title = { Text("Desde una plantilla", style = MaterialTheme.typography.titleSmall) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     if (vm.templates.isEmpty()) Text(
-                        "Nessun modello. Apri un progetto riuscito → Progetto (in alto) → Salva come modello: poi qui basterà scegliere nuovi video.",
+                        "Ninguna plantilla. Abre un proyecto logrado → Proyecto (arriba) → Guardar como plantilla: luego aquí bastará con elegir videos nuevos.",
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     vm.templates.forEach { t ->
@@ -160,25 +160,25 @@ fun HomeScreen(vm: EditorViewModel) {
                                 templateMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
                             }.padding(vertical = 6.dp)) {
                                 Text(t.name, style = MaterialTheme.typography.titleSmall, color = VV.Text)
-                                Text("${t.slots} spazi · ${formatTime(t.durationUs)}", style = MaterialTheme.typography.bodySmall)
+                                Text("${t.slots} espacios · ${formatTime(t.durationUs)}", style = MaterialTheme.typography.bodySmall)
                             }
-                            TextButton(onClick = { vm.deleteTemplate(t.id) }) { Text("Elimina", color = VV.Danger) }
+                            TextButton(onClick = { vm.deleteTemplate(t.id) }) { Text("Eliminar", color = VV.Danger) }
                         }
                     }
-                    if (vm.templates.isNotEmpty()) Text("Scegli il modello, poi i video e le foto nell'ordine in cui vuoi vederli.", style = MaterialTheme.typography.bodySmall)
+                    if (vm.templates.isNotEmpty()) Text("Elige la plantilla, luego los videos y las fotos en el orden en que quieres verlos.", style = MaterialTheme.typography.bodySmall)
                 }
             },
-            confirmButton = { TextButton(onClick = { askTemplate = false }) { Text("Chiudi", color = VV.Dim) } },
+            confirmButton = { TextButton(onClick = { askTemplate = false }) { Text("Cerrar", color = VV.Dim) } },
         )
     }
     toDelete?.let { p ->
         AlertDialog(
             onDismissRequest = { toDelete = null },
             containerColor = VV.Raised,
-            title = { Text("Eliminare “${p.name}”?", style = MaterialTheme.typography.titleSmall) },
-            text = { Text("Si cancella solo il progetto: i video originali e quelli esportati restano in galleria.", style = MaterialTheme.typography.bodyMedium) },
-            confirmButton = { TextButton(onClick = { vm.deleteProject(p.id); toDelete = null }) { Text("Elimina", color = VV.Danger) } },
-            dismissButton = { TextButton(onClick = { toDelete = null }) { Text("Annulla", color = VV.Dim) } },
+            title = { Text("¿Eliminar “${p.name}”?", style = MaterialTheme.typography.titleSmall) },
+            text = { Text("Solo se borra el proyecto: los videos originales y los exportados se quedan en la galería.", style = MaterialTheme.typography.bodyMedium) },
+            confirmButton = { TextButton(onClick = { vm.deleteProject(p.id); toDelete = null }) { Text("Eliminar", color = VV.Danger) } },
+            dismissButton = { TextButton(onClick = { toDelete = null }) { Text("Deshacer", color = VV.Dim) } },
         )
     }
 }
@@ -235,7 +235,7 @@ private fun ProjectCard(p: Project, onOpen: () -> Unit, onDelete: () -> Unit) {
                 )
             }
             Box(Modifier.size(32.dp).clip(RoundedCornerShape(8.dp)).clickable(onClick = onDelete), contentAlignment = Alignment.Center) {
-                Icon(VVIcons.Delete, "Elimina progetto", tint = VV.Faint, modifier = Modifier.size(18.dp))
+                Icon(VVIcons.Delete, "Eliminar proyecto", tint = VV.Faint, modifier = Modifier.size(18.dp))
             }
         }
         Spacer(Modifier.width(1.dp))

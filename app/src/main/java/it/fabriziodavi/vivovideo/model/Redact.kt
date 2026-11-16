@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 /** Come si oscura: a quadretti (pixel), sfocato o con un riquadro nero. */
 @Serializable
-enum class RedactStyle(val label: String) { PIXEL("Pixel"), BLUR("Sfocato"), BLACK("Nero") }
+enum class RedactStyle(val label: String) { PIXEL("Pixel"), BLUR("Desenfocado"), BLACK("Negro") }
 
 /** Un riquadro da oscurare, in frazioni del fotogramma dritto (0..1, origine in alto a sinistra); [round] = ovale (volti). */
 @Serializable

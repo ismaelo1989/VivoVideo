@@ -31,7 +31,7 @@ object Stabilizer {
         val ex = MediaExtractor()
         ex.setDataSource(ctx, Uri.parse(clip.uri), null)
         val vt = (0 until ex.trackCount).firstOrNull { ex.getTrackFormat(it).getString(MediaFormat.KEY_MIME)?.startsWith("video/") == true }
-            ?: error("Nel video non c'è la traccia video.")
+            ?: error("El video no tiene pista de video.")
         val fmt = ex.getTrackFormat(vt)
         ex.selectTrack(vt)
         val rotation = if (fmt.containsKey(MediaFormat.KEY_ROTATION)) fmt.getInteger(MediaFormat.KEY_ROTATION) else runCatching {
@@ -114,7 +114,7 @@ object Stabilizer {
         } finally {
             runCatching { codec.stop() }; codec.release(); ex.release()
         }
-        check(times.size >= 2) { "Non sono riuscito a leggere i fotogrammi del video." }
+        check(times.size >= 2) { "No pude leer los fotogramas del video." }
         // Ricampiona a passo fisso dall'inizio del taglio.
         val n = ((clip.trimmedUs * RATE) / 1_000_000L).toInt().coerceAtLeast(2) + 1
         val dx = ArrayList<Float>(n); val dy = ArrayList<Float>(n); val dr = ArrayList<Float>(n)

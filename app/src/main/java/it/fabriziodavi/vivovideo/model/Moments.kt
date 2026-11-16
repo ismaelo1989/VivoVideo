@@ -147,15 +147,15 @@ object Moments {
         val all = scan.samples
         val words = mutableListOf<String>()
         val sharpIn = inside.map { it.sharp }.average(); val sharpAll = all.map { it.sharp }.average()
-        if (sharpIn >= sharpAll * 1.05) words += "più nitido"
+        if (sharpIn >= sharpAll * 1.05) words += "más nítido"
         if (all.any { it.shake > 0f }) {
             val shIn = inside.map { it.shake }.average(); val shAll = all.map { it.shake }.average()
-            if (shIn <= shAll * 0.85 || shIn < 0.006) words += "camera ferma"
+            if (shIn <= shAll * 0.85 || shIn < 0.006) words += "cámara quieta"
         }
         val faces = inside.count { it.faces > 0 }
-        if (faces * 2 >= inside.size) words += if (inside.filter { it.faces > 0 }.map { it.smile }.average() > 0.5) "volti sorridenti" else "volti in vista"
+        if (faces * 2 >= inside.size) words += if (inside.filter { it.faces > 0 }.map { it.smile }.average() > 0.5) "rostros sonrientes" else "rostros visibles"
         val lightIn = inside.map { abs(it.luma - 0.47f) }.average(); val lightAll = all.map { abs(it.luma - 0.47f) }.average()
-        if (lightIn < lightAll * 0.85) words += "luce migliore"
+        if (lightIn < lightAll * 0.85) words += "mejor luz"
         return words.joinToString(", ")
     }
 
@@ -213,7 +213,7 @@ object Moments {
 }
 
 /** Cosa fare dello sfondo dietro alla persona. */
-enum class PersonMode(val label: String) { BLUR("Sfoca lo sfondo"), COLOR("Sfondo a colore"), MONO("Sfondo in bianco e nero"), REMOVE("Solo la persona"), STICKER("Contorno sticker"), KEEP("Sfondo invariato") }
+enum class PersonMode(val label: String) { BLUR("Desenfocar el fondo"), COLOR("Fondo de color"), MONO("Fondo en blanco y negro"), REMOVE("Solo la persona"), STICKER("Contorno de calcomanía"), KEEP("Fondo sin cambios") }
 
 /** Scontorno della persona: [maskFile] = maschere già calcolate (dal tempo [fromUs] del file, [rateHz] al secondo). */
 @Serializable

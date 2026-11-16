@@ -639,7 +639,7 @@ object DesignRenderer {
     }
 
     private val weekdays = listOf("L", "M", "M", "G", "V", "S", "D")
-    private val monthNames = listOf("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre")
+    private val monthNames = listOf("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
 
     /** Calendario del mese con il giorno cerchiato a mano (nel video il cerchio si disegna). */
     private fun drawCalendar(c: Canvas, d: Design, e: DCalendar, r: RectF, s: Float, spec: CollageSpec, meta: DesignMeta, u: Float) {

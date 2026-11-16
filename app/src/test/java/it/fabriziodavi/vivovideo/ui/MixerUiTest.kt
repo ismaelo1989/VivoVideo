@@ -35,17 +35,17 @@ class MixerUiTest {
         vm.openProject(Project(
             name = "mix",
             clips = listOf(Clip(id = "a", uri = "content://demo/1", sourceDurationUs = 4_000_000, width = 1920, height = 1080)),
-            music = listOf(MusicTrack(uri = "content://m/1", name = "Brano", sourceDurationUs = 4_000_000)),
+            music = listOf(MusicTrack(uri = "content://m/1", name = "Canción", sourceDurationUs = 4_000_000)),
         ), startPreview = false)
         compose.setContent { VivoTheme { MixerScreen(vm) } }
-        compose.onNodeWithText("Audio delle clip").assertIsDisplayed()
-        compose.onNodeWithText("Musica").assertIsDisplayed()
+        compose.onNodeWithText("Audio de los clips").assertIsDisplayed()
+        compose.onNodeWithText("Música").assertIsDisplayed()
         compose.onNodeWithContentDescription("Muto: Musica").performClick()
         assertTrue(vm.project!!.mix.bus(Bus.MUSIC).mute)
         compose.onNodeWithContentDescription("Solo: Audio delle clip").performClick()
         assertTrue(vm.project!!.mix.bus(Bus.CLIPS).solo)
-        compose.onNodeWithText("Uscita").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("Azzera il mixer").performScrollTo().performClick()
+        compose.onNodeWithText("Salida").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Reiniciar el mezclador").performScrollTo().performClick()
         assertTrue(vm.project!!.mix.neutral)
         // Compressore del primo canale.
         compose.onAllNodesWithText("Medio")[0].performScrollTo().performClick()

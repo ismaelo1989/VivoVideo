@@ -90,7 +90,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 
-private enum class CollageTab(val label: String) { MODELS("Modelli"), STYLE("Stile"), MOTION("Movimento"), PHOTOS("Foto e formato") }
+private enum class CollageTab(val label: String) { MODELS("Plantillas"), STYLE("Estilo"), MOTION("Movimiento"), PHOTOS("Fotos y formato") }
 
 /** Le famiglie in ordine: prima quelle grafiche (nuove), poi quelle a celle. */
 private fun familyOrder(t: CollageTemplate): Int = t.design?.family?.ordinal ?: (100 + t.family.ordinal)
@@ -121,11 +121,11 @@ fun CollageScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro", enabled = busy == null) { vm.closeCollage() }
+            IconBtn(VVIcons.Back, "Atrás", enabled = busy == null) { vm.closeCollage() }
             Text("Collage", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-            if (template.design != null) Text(if (moving) "✓ Fatto" else "✥ Sposta", style = MaterialTheme.typography.labelLarge, color = if (moving) VV.Tally else VV.Text,
+            if (template.design != null) Text(if (moving) "✓ Listo" else "✥ Mover", style = MaterialTheme.typography.labelLarge, color = if (moving) VV.Tally else VV.Text,
                 modifier = Modifier.clip(RoundedCornerShape(10.dp)).clickable(enabled = busy == null) { moving = !moving; moved = -1; playing = false; selected = -1 }.padding(10.dp))
-            Text(if (playing) "Ferma" else "▶ Movimento", style = MaterialTheme.typography.labelLarge, color = VV.Tally,
+            Text(if (playing) "Detener" else "▶ Movimiento", style = MaterialTheme.typography.labelLarge, color = VV.Tally,
                 modifier = Modifier.clip(RoundedCornerShape(10.dp)).clickable(enabled = busy == null) { playing = !playing; selected = -1; moving = false; moved = -1 }.padding(10.dp))
         }
 
@@ -148,15 +148,15 @@ fun CollageScreen(vm: EditorViewModel) {
         }
         if (moving && !playing) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
-                if (moved < 0) Hint("Tocca una scritta, una foto o un adesivo, poi trascinalo col dito dove vuoi. Vale per l'immagine e la stampa.")
+                if (moved < 0) Hint("Toca un texto, una foto o una calcomanía y arrástralo con el dedo adonde quieras. Vale para la imagen y la impresión.")
                 else {
                     val m = spec.moves["e$moved"]
-                    LabeledSlider("Grandezza", null, (((m?.scale ?: 1f) * 100).toInt()), range = 30..250, format = { "$it%" }) { v ->
+                    LabeledSlider("Tamaño", null, (((m?.scale ?: 1f) * 100).toInt()), range = 30..250, format = { "$it%" }) { v ->
                         vm.moveCollageElement(moved, scale = v / 100f)
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        SecondaryButton("Rimetti a posto") { vm.resetCollageMoves(moved) }
-                        if (spec.moves.isNotEmpty()) SecondaryButton("Tutto com'era") { vm.resetCollageMoves(); moved = -1 }
+                        SecondaryButton("Acomodar de nuevo") { vm.resetCollageMoves(moved) }
+                        if (spec.moves.isNotEmpty()) SecondaryButton("Todo como estaba") { vm.resetCollageMoves(); moved = -1 }
                     }
                 }
             }
@@ -164,13 +164,13 @@ fun CollageScreen(vm: EditorViewModel) {
         if (selected >= 0 && !playing) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.weight(1f)) { Hint("Tocca un'altra foto per scambiarle. Trascina sulla foto per spostarla nella cella.") }
-                    SecondaryButton("Cambia foto", Modifier.padding(start = 8.dp)) {
+                    Box(Modifier.weight(1f)) { Hint("Toca otra foto para intercambiarlas. Arrastra sobre la foto para moverla dentro de la celda.") }
+                    SecondaryButton("Cambiar foto", Modifier.padding(start = 8.dp)) {
                         replacer.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
                     }
                 }
                 val item = spec.items.getOrNull(CollagePlan.itemFor(selected, spec.items.size))
-                LabeledSlider("Ingrandisci", null, (((item?.zoom ?: 1f) - 1f) * 100).toInt(), range = 0..150, format = { "${100 + it}%" }) { v ->
+                LabeledSlider("Ampliar", null, (((item?.zoom ?: 1f) - 1f) * 100).toInt(), range = 0..150, format = { "${100 + it}%" }) { v ->
                     vm.frameCollageCell(selected, zoom = 1f + v / 100f)
                 }
             }
@@ -178,7 +178,7 @@ fun CollageScreen(vm: EditorViewModel) {
 
         // Schede.
         Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
-            Segmented(CollageTab.entries, tab, { if (it == CollageTab.STYLE && template.design != null) "Scritte" else it.label }, enabled = busy == null) { tab = it }
+            Segmented(CollageTab.entries, tab, { if (it == CollageTab.STYLE && template.design != null) "Textos" else it.label }, enabled = busy == null) { tab = it }
         }
         Box(Modifier.fillMaxWidth().height(250.dp).padding(horizontal = 12.dp)) {
             when (tab) {
@@ -199,12 +199,12 @@ fun CollageScreen(vm: EditorViewModel) {
             }
         } else {
             Row(Modifier.fillMaxWidth().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SecondaryButton("Immagine", Modifier.weight(0.8f)) { vm.saveCollageImage() }
-                SecondaryButton("Stampa", Modifier.weight(0.7f)) { playing = false; printing = true }
+                SecondaryButton("Imagen", Modifier.weight(0.8f)) { vm.saveCollageImage() }
+                SecondaryButton("Imprimir", Modifier.weight(0.7f)) { playing = false; printing = true }
                 PrimaryButton(when (vm.collageTarget) {
-                    is EditorViewModel.CollageTarget.Edit -> "Aggiorna nel video"
-                    EditorViewModel.CollageTarget.Add -> "Aggiungi al video"
-                    EditorViewModel.CollageTarget.NewProject -> "Crea il video"
+                    is EditorViewModel.CollageTarget.Edit -> "Actualizar en el video"
+                    EditorViewModel.CollageTarget.Add -> "Agregar al video"
+                    EditorViewModel.CollageTarget.NewProject -> "Crear el video"
                 }, Modifier.weight(1.2f)) { playing = false; vm.finishCollageVideo() }
             }
         }
@@ -224,14 +224,14 @@ fun CollageScreen(vm: EditorViewModel) {
                             type = "image/jpeg"; putExtra(android.content.Intent.EXTRA_STREAM, res.uri)
                             addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
-                        runCatching { ctx.startActivity(android.content.Intent.createChooser(send, "Condividi il collage")) }
-                    }) { Text("Condividi", color = VV.Tally) }
+                        runCatching { ctx.startActivity(android.content.Intent.createChooser(send, "Compartir el collage")) }
+                    }) { Text("Compartir", color = VV.Tally) }
                     TextButton(onClick = {
                         val view = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
                             setDataAndType(res.uri, "image/jpeg"); addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
                         runCatching { ctx.startActivity(view) }
-                    }) { Text("Apri", color = VV.Tally) }
+                    }) { Text("Abrir", color = VV.Tally) }
                 }
             },
             dismissButton = { TextButton(onClick = { vm.collageResult = null }) { Text("OK", color = VV.Dim) } },
@@ -257,22 +257,22 @@ internal fun PrintDialog(spec: CollageSpec, onDismiss: () -> Unit, onPrint: (Pri
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = VV.Raised,
-        title = { Text("Pronto da stampare", style = MaterialTheme.typography.titleSmall) },
+        title = { Text("Listo para imprimir", style = MaterialTheme.typography.titleSmall) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 PanelLabel("Formato")
                 PillRow(formats, fmt, { it.label }) { fmt = it }
-                PanelLabel("Dove lo stampi")
-                Segmented(listOf(true, false), shop, { if (it) "Negozio" else "A casa" }) { shop = it }
+                PanelLabel("Dónde lo imprimes")
+                Segmented(listOf(true, false), shop, { if (it) "Tienda" else "En casa" }) { shop = it }
                 val (w, h, dpi) = fmt.pixels(shop)
-                Hint(if (shop) "Negozio o sito di stampa: $w×$h pixel a $dpi dpi, con 3 mm di margine di taglio per lato: al negozio scegli «al vivo» o «senza bordo»."
-                    else "Stampante di casa: $w×$h pixel a $dpi dpi, con un bordo bianco di 4 mm: la stampante di casa non arriva al bordo del foglio.")
+                Hint(if (shop) "Tienda o sitio de impresión: $w×$h píxeles a $dpi dpi, con 3 mm de margen de corte por lado: en la tienda elige «sin márgenes» o «a sangre»."
+                    else "Impresora de casa: $w×$h píxeles a $dpi dpi, con un borde blanco de 4 mm: la impresora de casa no llega al borde de la hoja.")
                 if (spec.aspect.orient == DOrient.PORTRAIT && spec.aspect != CollageAspect.PHOTO && spec.aspect != CollageAspect.PAPER)
-                    Hint("Il modello si adatta al foglio: per vedere prima com'è, scegli il formato 10×15 o A4 in «Foto e formato».")
+                    Hint("El modelo se adapta a la hoja: para ver antes cómo queda, elige el formato 10×15 o A4 en «Fotos y formato».")
             }
         },
-        confirmButton = { TextButton(onClick = { onPrint(fmt, shop) }) { Text("Salva per la stampa", color = VV.Tally) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Annulla", color = VV.Dim) } },
+        confirmButton = { TextButton(onClick = { onPrint(fmt, shop) }) { Text("Guardar para imprimir", color = VV.Tally) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Deshacer", color = VV.Dim) } },
     )
 }
 
@@ -291,21 +291,21 @@ private fun DesignPanel(vm: EditorViewModel, spec: CollageSpec, d: Design) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (d.hint.isNotEmpty()) Hint(d.hint)
         if (wantsPlace && locMissing) {
-            SecondaryButton("Usa il luogo delle foto (GPS)", Modifier.fillMaxWidth()) { locLauncher.launch(android.Manifest.permission.ACCESS_MEDIA_LOCATION) }
+            SecondaryButton("Usar el lugar de las fotos (GPS)", Modifier.fillMaxWidth()) { locLauncher.launch(android.Manifest.permission.ACCESS_MEDIA_LOCATION) }
         }
-        PanelLabel("Colore")
+        PanelLabel("Color")
         ColorDots(d.accents, spec.accent ?: d.accents.first()) { vm.setCollageAccent(it) }
         if (d.accents2.isNotEmpty()) {
-            PanelLabel("Secondo colore")
+            PanelLabel("Segundo color")
             ColorDots(d.accents2, spec.accent2 ?: d.accents2.first()) { vm.setCollageAccent(it, second = true) }
         }
-        if (d.hasBehind) ToggleRow("La persona davanti (titolo e cornice)", spec.behind) { vm.setCollageBehind(it) }
-        ToggleRow("Grana della pellicola", spec.style.grain || d.grain, enabled = !d.grain) { on -> vm.updateCollage { it.copy(style = it.style.copy(grain = on)) } }
-        PanelLabel("Scritte · vuota = torna quella proposta")
+        if (d.hasBehind) ToggleRow("La persona delante (título y marco)", spec.behind) { vm.setCollageBehind(it) }
+        ToggleRow("Grano de película", spec.style.grain || d.grain, enabled = !d.grain) { on -> vm.updateCollage { it.copy(style = it.style.copy(grain = on)) } }
+        PanelLabel("Textos · vacío = vuelve al propuesto")
         d.words.forEach { w ->
             var text by remember(spec.templateId, w.id) { mutableStateOf(spec.texts[w.id] ?: DesignTexts.word(w, spec, meta)) }
             OutlinedTextField(value = text, onValueChange = { v -> text = v.take(9); vm.setCollageText(w.id, text) }, singleLine = true, colors = colors,
-                modifier = Modifier.fillMaxWidth(), label = { Text("${w.label} (una foto per lettera)", color = VV.Dim) })
+                modifier = Modifier.fillMaxWidth(), label = { Text("${w.label} (una foto por letra)", color = VV.Dim) })
         }
         d.extraTexts.forEach { (id, label, def) ->
             val proposed = DesignTexts.fill(def, meta)
@@ -334,7 +334,7 @@ private fun ColorDots(options: List<Long>, current: Long, onPick: (Long) -> Unit
         options.forEach { c ->
             val on = c == current
             Box(Modifier.size(36.dp).clip(CircleShape).background(Color(c.toInt())).border(if (on) 3.dp else 1.dp, if (on) VV.Tally else VV.Line, CircleShape)
-                .clickable { onPick(c) }.semantics { contentDescription = "Colore" })
+                .clickable { onPick(c) }.semantics { contentDescription = "Color" })
         }
     }
 }
@@ -396,7 +396,7 @@ private fun CollagePreview(
     ) {
         Box(
             Modifier.aspectRatio(ratio, matchHeightConstraintsFirst = ratio < 1f).clip(RoundedCornerShape(6.dp)).background(VV.Raised)
-                .semantics { contentDescription = "Anteprima del collage" }
+                .semantics { contentDescription = "Vista previa del collage" }
                 .pointerInput(Unit) {
                     detectTapGestures { o ->
                         val s = curSpec; val t = curTemplate
@@ -487,7 +487,7 @@ private fun StylePanel(vm: EditorViewModel, spec: CollageSpec) {
         focusedBorderColor = VV.Tally, unfocusedBorderColor = VV.Line, cursorColor = VV.Tally, focusedTextColor = VV.Text, unfocusedTextColor = VV.Text,
     )
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        PanelLabel("Sfondo")
+        PanelLabel("Fondo")
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             CollageBg.entries.forEach { bg ->
                 val on = bg == st.bg
@@ -505,19 +505,19 @@ private fun StylePanel(vm: EditorViewModel, spec: CollageSpec) {
                 }
             }
         }
-        LabeledSlider("Spazio fra le foto", null, (st.gap * 1000).toInt(), range = 0..40, format = { if (it == 0) "nessuno" else "$it" }) { v ->
+        LabeledSlider("Espacio entre las fotos", null, (st.gap * 1000).toInt(), range = 0..40, format = { if (it == 0) "nessuno" else "$it" }) { v ->
             vm.updateCollage { it.copy(style = it.style.copy(gap = v / 1000f)) }
         }
-        LabeledSlider("Angoli arrotondati", null, (st.radius * 1000).toInt(), range = 0..60, format = { if (it == 0) "squadrati" else "$it" }) { v ->
+        LabeledSlider("Esquinas redondeadas", null, (st.radius * 1000).toInt(), range = 0..60, format = { if (it == 0) "squadrati" else "$it" }) { v ->
             vm.updateCollage { it.copy(style = it.style.copy(radius = v / 1000f)) }
         }
-        ToggleRow("Ombra sotto le foto", st.shadow) { on -> vm.updateCollage { it.copy(style = it.style.copy(shadow = on)) } }
-        ToggleRow("Grana della pellicola", st.grain) { on -> vm.updateCollage { it.copy(style = it.style.copy(grain = on)) } }
-        PanelLabel("Scritta (facoltativa)")
+        ToggleRow("Sombra bajo las fotos", st.shadow) { on -> vm.updateCollage { it.copy(style = it.style.copy(shadow = on)) } }
+        ToggleRow("Grano de película", st.grain) { on -> vm.updateCollage { it.copy(style = it.style.copy(grain = on)) } }
+        PanelLabel("Texto (opcional)")
         var text by remember(spec.templateId) { mutableStateOf(spec.caption) }
         OutlinedTextField(
             value = text, onValueChange = { v -> text = v.take(60); vm.updateCollage { it.copy(caption = text) } }, singleLine = true, colors = colors,
-            modifier = Modifier.fillMaxWidth(), placeholder = { Text("Es. Estate 2026", color = VV.Faint) },
+            modifier = Modifier.fillMaxWidth(), placeholder = { Text("Ej. Verano 2026", color = VV.Faint) },
         )
     }
 }
@@ -525,7 +525,7 @@ private fun StylePanel(vm: EditorViewModel, spec: CollageSpec) {
 @Composable
 private fun MotionPanel(vm: EditorViewModel, spec: CollageSpec) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Hint("Il movimento si vede nel video; l'immagine salvata è il collage finito.")
+        Hint("El movimiento se ve en el video; la imagen guardada es el collage terminado.")
         CollageMotion.entries.forEach { m ->
             val on = m == spec.motion
             Column(
@@ -537,8 +537,8 @@ private fun MotionPanel(vm: EditorViewModel, spec: CollageSpec) {
                 Text(m.hint, style = MaterialTheme.typography.bodySmall)
             }
         }
-        ToggleRow("Zoom lento dentro le foto", spec.kenBurns) { on -> vm.updateCollage { it.copy(kenBurns = on) } }
-        PanelLabel("Durata nel video")
+        ToggleRow("Zoom lento dentro de las fotos", spec.kenBurns) { on -> vm.updateCollage { it.copy(kenBurns = on) } }
+        PanelLabel("Duración en el video")
         PillRow(CollageSpec.DURATIONS, spec.durationUs, { "${it / 1_000_000} s" }) { d -> vm.updateCollage { it.copy(durationUs = d) } }
     }
 }
@@ -548,7 +548,7 @@ private fun PhotosPanel(vm: EditorViewModel, spec: CollageSpec, thumbs: Map<Stri
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         PanelLabel("Formato")
         PillRow(CollageAspect.entries, spec.aspect, { it.label }) { vm.setCollageAspect(it) }
-        PanelLabel("Foto e video (${spec.items.size} di ${CollageSpec.MAX_ITEMS}) · tocca × per togliere")
+        PanelLabel("Fotos y videos (${spec.items.size} de ${CollageSpec.MAX_ITEMS}) · toca × para quitar")
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             spec.items.forEachIndexed { i, it ->
                 Box(Modifier.size(72.dp).clip(RoundedCornerShape(8.dp)).background(VV.Raised)) {
@@ -564,7 +564,7 @@ private fun PhotosPanel(vm: EditorViewModel, spec: CollageSpec, thumbs: Map<Stri
                 Modifier.size(72.dp).clip(RoundedCornerShape(8.dp)).background(VV.Raised).clickable(onClick = onAdd), contentAlignment = Alignment.Center,
             ) { Text("+", style = MaterialTheme.typography.titleLarge, color = VV.Tally) }
         }
-        Hint("I video nelle celle si muovono davvero nel video finito; qui e nell'immagine si vede un fotogramma.")
+        Hint("Los videos en las celdas se mueven de verdad en el video final; aquí y en la imagen se ve un fotograma.")
         Spacer(Modifier.height(4.dp))
     }
 }

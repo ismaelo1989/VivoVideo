@@ -51,7 +51,7 @@ fun SubtitlesScreen(vm: EditorViewModel) {
     val busy = vm.busy
     BackHandler { if (busy != null) vm.cancelSubtitles() else vm.showSubtitles = false }
     var model by remember { mutableStateOf(Whisper.defaultModel(ctx)) }
-    var lang by remember { mutableStateOf("it") }
+    var lang by remember { mutableStateOf("es") }
     var style by remember { mutableStateOf(SubStyle.POP) }
     var pos by remember { mutableStateOf(SubPosition.BOTTOM) }
     var accent by remember { mutableStateOf(Subtitles.KINETIC_HIGHLIGHT) }
@@ -59,15 +59,15 @@ fun SubtitlesScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro", enabled = busy == null) { vm.showSubtitles = false }
-            Text("Sottotitoli automatici", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás", enabled = busy == null) { vm.showSubtitles = false }
+            Text("Subtítulos automáticos", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Hint("L'app ascolta il parlato del video (audio delle clip, voce fuori campo, audio staccato; la musica no) e scrive i sottotitoli con i tempi di ogni parola. Tutto avviene sul telefono: serve internet solo per scaricare il modello la prima volta.")
-            PanelLabel("Riconoscimento")
+            Hint("La app escucha el habla del video (audio de los clips, voz en off, audio separado; la música no) y escribe los subtítulos con los tiempos de cada palabra. Todo ocurre en el teléfono: internet solo hace falta para descargar el modelo la primera vez.")
+            PanelLabel("Reconocimiento")
             Whisper.Model.entries.filter { it != Whisper.Model.TINY }.forEach { m ->
                 val on = m == model
                 val ready = Whisper.isDownloaded(ctx, m)
@@ -76,13 +76,13 @@ fun SubtitlesScreen(vm: EditorViewModel) {
                         .border(if (on) 2.dp else 0.dp, if (on) VV.Tally else Color.Transparent, RoundedCornerShape(12.dp))
                         .clickable(enabled = busy == null) { model = m }.padding(12.dp),
                 ) {
-                    Text(m.label + if (ready) "  ·  pronto" else "  ·  ${m.sizeMb} MB da scaricare", style = MaterialTheme.typography.titleSmall, color = if (on) VV.Tally else VV.Text)
+                    Text(m.label + if (ready) "  ·  listo" else "  ·  ${m.sizeMb} MB por descargar", style = MaterialTheme.typography.titleSmall, color = if (on) VV.Tally else VV.Text)
                     Text(m.hint, style = MaterialTheme.typography.bodySmall)
                 }
             }
-            PanelLabel("Lingua del parlato")
-            Segmented(listOf("it", "en", "auto"), lang, { when (it) { "it" -> "Italiano"; "en" -> "Inglese"; else -> "Automatica" } }, busy == null) { lang = it }
-            PanelLabel("Stile")
+            PanelLabel("Idioma del habla")
+            Segmented(listOf("es", "it", "en", "auto"), lang, { when (it) { "es" -> "Español"; "it" -> "Italiano"; "en" -> "Inglés"; else -> "Automática" } }, busy == null) { lang = it }
+            PanelLabel("Estilo")
             PillRow(SubStyle.entries, style, { it.label }, busy == null) { style = it }
             // Esempio dello stile scelto.
             Box(Modifier.fillMaxWidth().height(64.dp).clip(RoundedCornerShape(10.dp)).background(Color(0xFF2A2F38)), contentAlignment = Alignment.Center) {
@@ -101,7 +101,7 @@ fun SubtitlesScreen(vm: EditorViewModel) {
                     SubStyle.MINIMAL -> buildAnnotatedString { append("che bella giornata oggi") }
                     // Cinetici: una parola alla volta, quelle importanti nel colore di risalto.
                     SubStyle.POP, SubStyle.GLASS, SubStyle.CHROME, SubStyle.GLITCHY, SubStyle.WAVE -> buildAnnotatedString {
-                        withStyle(SpanStyle(color = Color(accent), fontSize = 26.sp)) { append("GIORNATA") }
+                        withStyle(SpanStyle(color = Color(accent), fontSize = 26.sp)) { append("JORNADA") }
                     }
                     else -> buildAnnotatedString { append("Che bella giornata oggi") }
                 }
@@ -114,10 +114,10 @@ fun SubtitlesScreen(vm: EditorViewModel) {
                     },
                 )
             }
-            style.kinetic?.let { Hint(it.hint + ". Le parole importanti (numeri, parole lunghe, esclamazioni) si colorano da sole.") }
-            if (style == SubStyle.FILL) Hint("La frase intera, bianca con il contorno: il colore la riempie lettera per lettera mentre la persona parla, come nei reel.")
+            style.kinetic?.let { Hint(it.hint + ". Las palabras importantes (números, palabras largas, exclamaciones) se colorean solas.") }
+            if (style == SubStyle.FILL) Hint("La frase completa, blanca con contorno: el color la rellena letra por letra mientras la persona habla, como en los reels.")
             if (style.kinetic != null || style == SubStyle.FILL || style == SubStyle.KARAOKE) {
-                PanelLabel(if (style == SubStyle.FILL || style == SubStyle.KARAOKE) "Colore della voce" else "Colore delle parole importanti")
+                PanelLabel(if (style == SubStyle.FILL || style == SubStyle.KARAOKE) "Color de la voz" else "Color de las palabras importantes")
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Subtitles.ACCENTS.forEach { (name, c) ->
                         Box(
@@ -129,18 +129,18 @@ fun SubtitlesScreen(vm: EditorViewModel) {
                     }
                 }
             }
-            PanelLabel("Posizione")
+            PanelLabel("Posición")
             Segmented(SubPosition.entries, pos, { it.label }, busy == null) { pos = it }
-            if (existing > 0) Hint("Ci sono già $existing sottotitoli automatici: verranno sostituiti dai nuovi (Annulla per tornare indietro).")
+            if (existing > 0) Hint("Ya hay $existing subtítulos automáticos: serán sustituidos por los nuevos (Deshacer para volver atrás).")
         }
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (busy != null) {
                 Text(busy, style = MaterialTheme.typography.bodyMedium)
                 LinearProgressIndicator(Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)), color = VV.Tally, trackColor = VV.Raised2)
-                SecondaryButton("Annulla", Modifier.fillMaxWidth(), onClick = { vm.cancelSubtitles() })
+                SecondaryButton("Deshacer", Modifier.fillMaxWidth(), onClick = { vm.cancelSubtitles() })
             } else {
-                PrimaryButton("Crea i sottotitoli", Modifier.fillMaxWidth()) { vm.autoSubtitles(model, lang, style, pos, accent) }
-                if (existing > 0) SecondaryButton("Togli i sottotitoli automatici", Modifier.fillMaxWidth(), onClick = { vm.removeSubtitles(); vm.showSubtitles = false })
+                PrimaryButton("Crear los subtítulos", Modifier.fillMaxWidth()) { vm.autoSubtitles(model, lang, style, pos, accent) }
+                if (existing > 0) SecondaryButton("Quitar los subtítulos automáticos", Modifier.fillMaxWidth(), onClick = { vm.removeSubtitles(); vm.showSubtitles = false })
             }
         }
     }

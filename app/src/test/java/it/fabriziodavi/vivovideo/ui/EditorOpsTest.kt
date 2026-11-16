@@ -180,10 +180,10 @@ class EditorOpsTest {
         vm.addText()
         val t0 = vm.selectedText!!
         assertEquals(1_000_000L, t0.startUs)
-        vm.updateText(typing = true) { it.copy(text = "Titolo") }
+        vm.updateText(typing = true) { it.copy(text = "Título") }
         vm.applyTextPreset(TextPreset.CINEMA)
         val t = vm.selectedText!!
-        assertEquals("Titolo", t.text)
+        assertEquals("Título", t.text)
         assertNotNull(t.endPose) // lo stile Cinema ha lo zoom lento
         // Lo stile scelto si riconosce (e si illumina) finché non lo si ritocca.
         assertEquals(TextPreset.CINEMA, TextPreset.matching(t))
@@ -310,8 +310,8 @@ class EditorOpsTest {
             s.uri to (if (s.isVideo) Clip(uri = s.uri, sourceDurationUs = 9_000_000, trimEndUs = 9_000_000, width = 1920, height = 1080)
             else Clip(uri = s.uri, sourceDurationUs = Clip.PHOTO_MAX_US, trimEndUs = Clip.PHOTO_DEFAULT_US, isPhoto = true, width = 4000, height = 3000))
         }
-        val o = AutoOptions(style = AutoStyle.CINEMA, targetUs = 30_000_000, title = "Estate")
-        val first = AutoEdit.build("Estate", AutoEdit.pick(srcs.map { it.item() }, o.style, o.targetUs).map { imported.getValue(srcs[it].uri) }, null, o)
+        val o = AutoOptions(style = AutoStyle.CINEMA, targetUs = 30_000_000, title = "Verano")
+        val first = AutoEdit.build("Verano", AutoEdit.pick(srcs.map { it.item() }, o.style, o.targetUs).map { imported.getValue(srcs[it].uri) }, null, o)
         vm.openProject(first.copy(auto = AutoRecipe(srcs, o, null, round = 1, imported = imported)), startPreview = false)
         val before = vm.project!!
         vm.anotherProposal(AutoStyle.ENERGICO)
@@ -322,7 +322,7 @@ class EditorOpsTest {
         assertEquals(before.id, p.id)                      // stesso progetto
         assertTrue(p.clips.map { it.uri } != before.clips.map { it.uri } || p.clips.map { it.outputUs } != before.clips.map { it.outputUs })
         assertTrue(p.clips.all { c -> c.fx.any { it.type == FxType.GRAIN } })   // regia Energico (grana fine su tutte le scene)
-        assertEquals("Estate", p.texts.first().text)
+        assertEquals("Verano", p.texts.first().text)
         // A mano si può sempre intervenire, e Annulla torna alla proposta di prima.
         vm.selectedClipId = p.clips[0].id
         vm.deleteSelected()

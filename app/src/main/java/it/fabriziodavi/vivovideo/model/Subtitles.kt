@@ -6,26 +6,26 @@ data class SpokenWord(val startUs: Long, val endUs: Long, val text: String)
 /** Stili dei sottotitoli automatici. */
 enum class SubStyle(val label: String, val maxWords: Int = 7, val kinetic: KineticStyle? = null) {
     // Cinetici 2027 per primi: una parola alla volta, grande, le parole importanti colorate e animate.
-    POP("Cinetico Pop", maxWords = 4, kinetic = KineticStyle.POP),
-    GLASS("Vetro liquido", maxWords = 4, kinetic = KineticStyle.GLASS),
+    POP("Cinético Pop", maxWords = 4, kinetic = KineticStyle.POP),
+    GLASS("Cristal líquido", maxWords = 4, kinetic = KineticStyle.GLASS),
     CHROME("Cromo", maxWords = 4, kinetic = KineticStyle.CHROME),
     GLITCHY("Glitch", maxWords = 4, kinetic = KineticStyle.GLITCH),
-    WAVE("Onda", maxWords = 4, kinetic = KineticStyle.WAVE),
+    WAVE("Ola", maxWords = 4, kinetic = KineticStyle.WAVE),
     // Instagram 2026-27: la frase intera, bianca, che si colora lettera per lettera mentre è detta.
-    FILL("Si colora mentre parli", maxWords = 4),
+    FILL("Se colorea mientras hablas", maxWords = 4),
     // Tendenze 2026: due o tre parole alla volta, bianco bold con contorno; oppure minuscolo e quieto.
     SOCIAL("Social", maxWords = 3), MINIMAL("Minimal"),
-    CLASSIC("Classico"), KARAOKE("Karaoke"), REVEAL("Parola per parola"), BOX("Riquadro");
+    CLASSIC("Clásico"), KARAOKE("Karaoke"), REVEAL("Palabra por palabra"), BOX("Recuadro");
 }
 
 /** Sottotitoli e testi cinetici (2027): come compaiono le parole. */
 @kotlinx.serialization.Serializable
 enum class KineticStyle(val label: String, val hint: String) {
-    POP("Pop", "Una parola alla volta, enorme, che salta fuori con un rimbalzo"),
-    GLASS("Vetro liquido", "Ogni parola su una lastra di vetro trasparente che sale"),
-    CHROME("Cromo", "Lettere di metallo lucido con un riflesso che passa"),
-    GLITCH("Glitch", "La parola arriva a scatti, con i colori sfasati"),
-    WAVE("Onda", "La frase si scrive mentre parli e la parola detta salta su"),
+    POP("Pop", "Una palabra a la vez, enorme, que salta con un rebote"),
+    GLASS("Cristal líquido", "Cada palabra sobre una placa de cristal transparente que sube"),
+    CHROME("Cromo", "Letras de metal brillante con un reflejo que pasa"),
+    GLITCH("Glitch", "La palabra llega entrecortada, con los colores desfasados"),
+    WAVE("Ola", "La frase se escribe mientras hablas y la palabra dicha salta"),
 }
 
 /** Parole "importanti" (da colorare): numeri, parole lunghe che non sono articoli o congiunzioni, esclamazioni, maiuscole. */
@@ -48,7 +48,7 @@ object Keywords {
 }
 
 /** Dove stanno i sottotitoli. */
-enum class SubPosition(val label: String, val y: Float) { BOTTOM("In basso", 0.34f), MIDDLE("Al centro", 0.12f), TOP("In alto", -0.36f) }
+enum class SubPosition(val label: String, val y: Float) { BOTTOM("Abajo", 0.34f), MIDDLE("Al centro", 0.12f), TOP("Arriba", -0.36f) }
 
 object Subtitles {
     /** Colore della parola detta (karaoke): giallo burro, più attuale del giallo pieno. */
@@ -192,9 +192,9 @@ object Subtitles {
     /** Sottotitoli pronti (testi della timeline, marcati come sottotitoli) dalle parole riconosciute. */
     /** Colori di risalto d'impatto (2027) per le parole dette e le parole importanti. */
     val ACCENTS: List<Pair<String, Int>> = listOf(
-        "Lime acido" to KINETIC_HIGHLIGHT, "Ciano elettrico" to 0xFF00E5FF.toInt(), "Magenta" to 0xFFFF2EC4.toInt(),
-        "Arancio fluo" to 0xFFFF7A1A.toInt(), "Viola elettrico" to 0xFFA66BFF.toInt(), "Rosso corallo" to 0xFFFF4D5E.toInt(),
-        "Verde menta" to 0xFF3DFFB0.toInt(), "Giallo burro" to HIGHLIGHT,
+        "Lima ácido" to KINETIC_HIGHLIGHT, "Cian eléctrico" to 0xFF00E5FF.toInt(), "Magenta" to 0xFFFF2EC4.toInt(),
+        "Naranja fluo" to 0xFFFF7A1A.toInt(), "Violeta eléctrico" to 0xFFA66BFF.toInt(), "Rojo coral" to 0xFFFF4D5E.toInt(),
+        "Verde menta" to 0xFF3DFFB0.toInt(), "Amarillo mantequilla" to HIGHLIGHT,
     )
 
     /**

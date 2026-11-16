@@ -18,17 +18,17 @@ import java.nio.ByteOrder
 object Whisper {
     /** Modelli: più grande = più preciso ma più lento. Si scaricano una volta sola. */
     enum class Model(val label: String, val file: String, val sizeMb: Int, val hint: String) {
-        FAST("Veloce", "ggml-base-q5_1.bin", 60, "Più rapido, qualche errore in più."),
-        ACCURATE("Preciso", "ggml-small-q5_1.bin", 190, "Più preciso con l'italiano, un po' più lento."),
+        FAST("Rápido", "ggml-base-q5_1.bin", 60, "Más rápido, con algunos errores más."),
+        ACCURATE("Preciso", "ggml-small-q5_1.bin", 190, "Más preciso con el italiano, un poco más lento."),
         /** Medium: sbaglia molte meno parole di Preciso, circa tre volte più lento. */
-        BEST("Molto preciso", "ggml-medium-q5_0.bin", 539, "Ottimo per l'italiano; più lento."),
+        BEST("Muy preciso", "ggml-medium-q5_0.bin", 539, "Excelente para el italiano; más lento."),
         /**
          * Large-v3-turbo (09/11/2026, collaudo: "salta delle parole o ne capisce una per un'altra"): l'ascolto del modello
          * più grande di whisper con un decodificatore leggero; per l'italiano sbaglia e salta meno parole di Medium.
          */
-        TURBO("Massima precisione", "ggml-large-v3-turbo-q5_0.bin", 574, "Il più preciso: sbaglia e salta meno parole, anche con voci difficili. Il più lento."),
+        TURBO("Máxima precisión", "ggml-large-v3-turbo-q5_0.bin", 574, "El más preciso: se equivoca y omite menos palabras, incluso con voces difíciles. El más lento."),
         /** Solo per le prove sull'emulatore. */
-        TINY("Minimo", "ggml-tiny-q5_1.bin", 32, "Solo per le prove.");
+        TINY("Mínimo", "ggml-tiny-q5_1.bin", 32, "Solo para pruebas.");
 
         val url: String get() = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/$file"
     }
@@ -61,7 +61,7 @@ object Whisper {
         c.connectTimeout = 20_000; c.readTimeout = 60_000
         c.setRequestProperty("User-Agent", "VivoVideo/0.3 (Android)")
         try {
-            if (c.responseCode !in 200..299) error("Scaricamento del modello non riuscito (${c.responseCode}).")
+            if (c.responseCode !in 200..299) error("No se pudo descargar el modelo (${c.responseCode}).")
             val total = c.contentLengthLong.takeIf { it > 0 } ?: (m.sizeMb * 1_000_000L)
             var done = 0L
             c.inputStream.use { input ->
@@ -77,13 +77,13 @@ object Whisper {
                 }
             }
         } finally { c.disconnect() }
-        if (tmp.length() < 1_000_000) { tmp.delete(); error("Il modello scaricato è incompleto.") }
+        if (tmp.length() < 1_000_000) { tmp.delete(); error("El modelo descargado está incompleto.") }
         tmp.renameTo(f)
         f
     }
 
     /** Suggerimento che fa scrivere anche le parole di riempimento ("ehm", "eh"…). */
-    const val FILLER_PROMPT = "Allora, ehm, eh, cioè... uhm, sì, ehm, mmm, ecco."
+    const val FILLER_PROMPT = "Pues, ehm, eh, o sea... mmm, sí, ehm, este, bueno."
 
     /** Ricerca a fascio per le parole dei sottotitoli: 5 ipotesi per volta, come whisper sul computer. */
     const val SUBTITLE_BEAM = 5
@@ -107,9 +107,9 @@ object Whisper {
      * (per i sottotitoli meglio nessuno: quello degli ehm fa sbagliare parole); [beam] > 1 = più preciso e più lento.
      */
     suspend fun transcribe(model: File, pcm: FloatArray, lang: String, prompt: String = "", beam: Int = SUBTITLE_BEAM): List<SpokenWord> = withContext(Dispatchers.Default) {
-        if (!loaded) error("Il riconoscimento vocale non è disponibile su questo telefono.")
+        if (!loaded) error("El reconocimiento de voz no está disponible en este teléfono.")
         val ctx = nativeInit(model.absolutePath)
-        if (ctx == 0L) error("Modello non leggibile: prova a scaricarlo di nuovo.")
+        if (ctx == 0L) error("Modelo ilegible: intenta descargarlo de nuevo.")
         try {
             val threads = Runtime.getRuntime().availableProcessors().coerceIn(2, 6)
             val norm = normalized(pcm)

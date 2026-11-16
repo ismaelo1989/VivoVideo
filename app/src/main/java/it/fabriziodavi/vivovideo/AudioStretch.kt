@@ -69,7 +69,7 @@ fun renderTimelineAudio(
 }
 
 /** Il lavoro è stato annullato: si smette di leggere e mescolare. */
-class AudioRenderCancelled : java.util.concurrent.CancellationException("Elaborazione dell'audio annullata")
+class AudioRenderCancelled : java.util.concurrent.CancellationException("Procesamiento de audio cancelado")
 
 private fun renderTimelineAudioInto(
     context: Context,

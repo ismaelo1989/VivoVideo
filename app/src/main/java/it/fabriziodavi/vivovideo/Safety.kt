@@ -22,11 +22,11 @@ object Safety {
                 val sw = StringWriter()
                 e.printStackTrace(PrintWriter(sw))
                 val pending = listOfNotNull(
-                    "anteprima avanzata".takeIf { prefs(app).getBoolean("pending_preview", false) },
-                    "esportazione avanzata".takeIf { prefs(app).getBoolean("pending_export", false) },
+                    "vista previa avanzada".takeIf { prefs(app).getBoolean("pending_preview", false) },
+                    "exportación avanzada".takeIf { prefs(app).getBoolean("pending_export", false) },
                 )
-                val text = "Versione ${BuildConfig.VERSION_NAME} · thread ${thread.name}" +
-                    (if (pending.isNotEmpty()) " · in corso: ${pending.joinToString()}" else "") +
+                val text = "Versión ${BuildConfig.VERSION_NAME} · hilo ${thread.name}" +
+                    (if (pending.isNotEmpty()) " · en curso: ${pending.joinToString()}" else "") +
                     "\n" + sw.toString().take(6000)
                 crashFile(app).writeText(text)
                 // Storico per le segnalazioni (gli ultimi crash, non solo l'ultimo).
@@ -45,19 +45,19 @@ object Safety {
         val notes = mutableListOf<String>()
         if (p.getBoolean("pending_preview", false)) {
             p.edit().putBoolean("pending_preview", false).putBoolean("multi_preview_v2", false).commit()
-            notes += "L'anteprima con dissolvenze incrociate e video sovrapposti è stata disattivata (si riattiva da Esporta)."
+            notes += "La vista previa con fundidos cruzados y videos superpuestos se desactivó (se reactiva desde Exportar)."
         }
         if (p.getBoolean("pending_export", false)) {
             p.edit().putBoolean("pending_export", false).putBoolean("multi_export", false).commit()
-            notes += "L'esportazione con dissolvenze incrociate e video sovrapposti è stata disattivata (si riattiva da Esporta)."
+            notes += "La exportación con fundidos cruzados y videos superpuestos se desactivó (se reactiva desde Exportar)."
         }
         val f = crashFile(context)
         val report = if (f.exists()) f.readText().also { f.delete() } else null
         if (report == null && notes.isEmpty()) return null
         return buildString {
-            append("L'app si era chiusa per un errore.")
+            append("La app se cerró por un error.")
             notes.forEach { append("\n\n").append(it) }
-            if (report != null) append("\n\nDettaglio (mandamelo con uno screenshot):\n").append(report.lines().take(14).joinToString("\n"))
+            if (report != null) append("\n\nDetalle (mándamelo con una captura de pantalla):\n").append(report.lines().take(14).joinToString("\n"))
         }
     }
 

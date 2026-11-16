@@ -79,7 +79,7 @@ class CalmAutoTest {
         val photos = (0 until 30).map { Clip(id = "p$it", uri = "file:///p$it.jpg", sourceDurationUs = Clip.PHOTO_MAX_US, trimEndUs = 3_000_000, isPhoto = true, width = 4000, height = 3000) }
         val vids = (0 until 10).map { Clip(id = "v$it", uri = "content://v/$it", sourceDurationUs = 20_000_000, trimEndUs = 20_000_000, width = 1920, height = 1080, fps = 30f) }
         val beatTypes = setOf(FxType.HIT, FxType.ZOOMBEAT, FxType.GLOWBEAT, FxType.SHAKEBEAT, FxType.RGBBEAT, FxType.IMPACT)
-        val p = AutoEdit.build("Natura", photos + vids, songWithDrop(), AutoOptions(style = AutoStyle.NATURA, targetUs = 60_000_000, intro = false))
+        val p = AutoEdit.build("Naturaleza", photos + vids, songWithDrop(), AutoOptions(style = AutoStyle.NATURA, targetUs = 60_000_000, intro = false))
         assertTrue(p.clips.size > 5)
         p.clips.forEachIndexed { i, c ->
             assertTrue("effetto a ritmo in ${c.id}: ${c.fx}", c.fx.none { it.type in beatTypes })
@@ -89,7 +89,7 @@ class CalmAutoTest {
             if (i < p.clips.size - 2) c.transitionOut?.let { assertTrue("passaggio corto ${it.durationUs}", it.durationUs >= 1_000_000) }
         }
         // Un tema energico invece i colpi sul drop li tiene.
-        val e = AutoEdit.build("Estremo", photos + vids, songWithDrop(), AutoOptions(style = AutoStyle.ESTREMO, targetUs = 60_000_000, intro = false))
+        val e = AutoEdit.build("Extremo", photos + vids, songWithDrop(), AutoOptions(style = AutoStyle.ESTREMO, targetUs = 60_000_000, intro = false))
         assertTrue(e.clips.any { c -> c.fx.any { it.type in beatTypes } })
     }
 

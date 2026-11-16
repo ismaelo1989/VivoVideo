@@ -48,44 +48,44 @@ fun CreditsScreen(vm: EditorViewModel) {
 
     Column(Modifier.fillMaxSize().background(VV.Canvas).safeDrawingPadding()) {
         Row(Modifier.fillMaxWidth().height(52.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconBtn(VVIcons.Back, "Indietro") { vm.showCredits = false }
-            Text("Titoli di coda", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            IconBtn(VVIcons.Back, "Atrás") { vm.showCredits = false }
+            Text("Créditos finales", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
         }
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Hint("Un rullo di testo che sale piano alla fine del video, come al cinema. Dopo li trovi nella timeline come un testo: puoi spostarli o allungarli.")
-            PanelLabel("Titolo")
+            Hint("Un rollo de texto que sube despacio al final del video, como en el cine. Después lo encuentras en la línea de tiempo como un texto: puedes moverlo o alargarlo.")
+            PanelLabel("Título")
             OutlinedTextField(
                 value = vm.creditsTitle, onValueChange = { vm.creditsTitle = it }, modifier = Modifier.fillMaxWidth(), singleLine = true,
-                placeholder = { Text("Per esempio: Grazie per la visione", color = VV.Faint) }, colors = colors,
+                placeholder = { Text("Por ejemplo: Gracias por ver", color = VV.Faint) }, colors = colors,
             )
-            PanelLabel("Righe")
+            PanelLabel("Líneas")
             vm.creditsRows.forEachIndexed { i, r ->
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     OutlinedTextField(
                         value = r.role, onValueChange = { v -> vm.creditsRows = vm.creditsRows.toMutableList().also { it[i] = r.copy(role = v) } },
-                        modifier = Modifier.weight(1f), singleLine = true, placeholder = { Text("Ruolo", color = VV.Faint) }, colors = colors,
+                        modifier = Modifier.weight(1f), singleLine = true, placeholder = { Text("Cargo", color = VV.Faint) }, colors = colors,
                     )
                     OutlinedTextField(
                         value = r.names, onValueChange = { v -> vm.creditsRows = vm.creditsRows.toMutableList().also { it[i] = r.copy(names = v) } },
-                        modifier = Modifier.weight(1.3f), singleLine = true, placeholder = { Text("Nomi", color = VV.Faint) }, colors = colors,
+                        modifier = Modifier.weight(1.3f), singleLine = true, placeholder = { Text("Nombres", color = VV.Faint) }, colors = colors,
                     )
-                    IconBtn(VVIcons.Close, "Togli la riga") { vm.creditsRows = vm.creditsRows.filterIndexed { k, _ -> k != i } }
+                    IconBtn(VVIcons.Close, "Quitar la línea") { vm.creditsRows = vm.creditsRows.filterIndexed { k, _ -> k != i } }
                 }
             }
-            if (vm.creditsRows.size < 20) SecondaryButton("Aggiungi una riga", Modifier.fillMaxWidth(), onClick = { vm.creditsRows = vm.creditsRows + Credits.Row("", "") })
+            if (vm.creditsRows.size < 20) SecondaryButton("Agregar una línea", Modifier.fillMaxWidth(), onClick = { vm.creditsRows = vm.creditsRows + Credits.Row("", "") })
             if (music.isNotEmpty()) {
-                ToggleRow("Aggiungi i crediti dei brani (${music.size})", vm.creditsMusic) { vm.creditsMusic = it }
-                Hint("I brani della libreria online chiedono di citare l'autore: così è già fatto.")
+                ToggleRow("Agregar los créditos de las canciones (${music.size})", vm.creditsMusic) { vm.creditsMusic = it }
+                Hint("Las canciones de la biblioteca en línea piden citar al autor: así ya queda hecho.")
             }
-            PanelLabel("Dove")
-            Segmented(listOf(true, false), vm.creditsOnBlack, { if (it) "Su nero, dopo il video" else "Sopra le ultime scene" }) { vm.creditsOnBlack = it }
-            LabeledSlider("Durata", null, seconds, range = 6..30, format = { "$it s" }) { vm.creditsSeconds = it }
-            if (vm.creditsSeconds == 0) Hint("Durata proposta in base alle righe: circa un secondo a riga.")
+            PanelLabel("Dónde")
+            Segmented(listOf(true, false), vm.creditsOnBlack, { if (it) "Sobre negro, después del video" else "Sobre las últimas escenas" }) { vm.creditsOnBlack = it }
+            LabeledSlider("Duración", null, seconds, range = 6..30, format = { "$it s" }) { vm.creditsSeconds = it }
+            if (vm.creditsSeconds == 0) Hint("Duración propuesta según las líneas: aproximadamente un segundo por línea.")
             if (text.isNotBlank()) {
-                PanelLabel("Anteprima del testo")
+                PanelLabel("Vista previa del texto")
                 Column(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(androidx.compose.ui.graphics.Color.Black).padding(vertical = 14.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,11 +96,11 @@ fun CreditsScreen(vm: EditorViewModel) {
             Spacer(Modifier.width(1.dp))
         }
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            PrimaryButton(if (p.creditsRoll != null) "Rifai i titoli di coda" else "Metti i titoli di coda", Modifier.fillMaxWidth(), enabled = text.isNotBlank()) {
+            PrimaryButton(if (p.creditsRoll != null) "Rehacer los créditos finales" else "Poner los créditos finales", Modifier.fillMaxWidth(), enabled = text.isNotBlank()) {
                 if (vm.creditsSeconds == 0) vm.creditsSeconds = suggested
                 vm.applyCredits()
             }
-            if (p.creditsRoll != null) SecondaryButton("Togli i titoli di coda", Modifier.fillMaxWidth(), onClick = { vm.removeCredits() })
+            if (p.creditsRoll != null) SecondaryButton("Quitar los créditos finales", Modifier.fillMaxWidth(), onClick = { vm.removeCredits() })
         }
     }
 }

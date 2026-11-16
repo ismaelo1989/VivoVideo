@@ -2,13 +2,13 @@ package it.fabriziodavi.vivovideo.model
 
 /** Gruppi di attributi di una clip che si possono copiare e incollare su altre clip. */
 enum class ClipAttr(val label: String) {
-    EFFECTS("Effetti"),
-    COLOR("Colore"),
-    TRANSITION("Transizione"),
-    FADES("Apri e chiudi"),
-    FRAMING("Inquadratura"),
+    EFFECTS("Efectos"),
+    COLOR("Color"),
+    TRANSITION("Transición"),
+    FADES("Abrir y cerrar"),
+    FRAMING("Encuadre"),
     MOTION("Keyframe"),
-    SPEED("Velocità"),
+    SPEED("Velocidad"),
     AUDIO("Volume");
 }
 

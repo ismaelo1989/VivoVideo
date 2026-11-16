@@ -8,8 +8,8 @@ import kotlin.math.pow
 
 /** I colori delle regolazioni HSL (centro della tinta in gradi). */
 enum class HslBand(val label: String, val hue: Float, val argb: Long) {
-    RED("Rosso", 0f, 0xFFE5484D), ORANGE("Arancio", 30f, 0xFFF08A24), YELLOW("Giallo", 60f, 0xFFF5D90A), GREEN("Verde", 120f, 0xFF46A758),
-    AQUA("Acqua", 180f, 0xFF12A594), BLUE("Blu", 230f, 0xFF3E63DD), PURPLE("Viola", 275f, 0xFF8E4EC6), MAGENTA("Magenta", 320f, 0xFFD6409F),
+    RED("Rojo", 0f, 0xFFE5484D), ORANGE("Naranja", 30f, 0xFFF08A24), YELLOW("Amarillo", 60f, 0xFFF5D90A), GREEN("Verde", 120f, 0xFF46A758),
+    AQUA("Agua", 180f, 0xFF12A594), BLUE("Azul", 230f, 0xFF3E63DD), PURPLE("Violeta", 275f, 0xFF8E4EC6), MAGENTA("Magenta", 320f, 0xFFD6409F),
 }
 
 /** Spinta di colore per una zona (ombre, toni medi, luci): tinta in gradi e forza 0…1. */

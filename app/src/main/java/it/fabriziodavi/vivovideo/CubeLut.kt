@@ -34,7 +34,7 @@ class CubeLut(val name: String, val size: Int, private val cube: Array<Array<Int
                 val parts = line.split(Regex("\\s+"))
                 when (parts[0].uppercase()) {
                     "TITLE" -> {}
-                    "LUT_1D_SIZE" -> error("Le LUT 1D non sono supportate: serve una LUT 3D")
+                    "LUT_1D_SIZE" -> error("Las LUT 1D no son compatibles: se necesita una LUT 3D")
                     "LUT_3D_SIZE" -> size = parts[1].toInt()
                     "DOMAIN_MIN" -> min = FloatArray(3) { parts[it + 1].toFloat() }
                     "DOMAIN_MAX" -> max = FloatArray(3) { parts[it + 1].toFloat() }
@@ -44,10 +44,10 @@ class CubeLut(val name: String, val size: Int, private val cube: Array<Array<Int
                     }
                 }
             }
-            require(min.all { it == 0f } && max.all { it == 1f }) { "LUT con DOMAIN diverso da 0–1 non supportata" }
-            require(size in 2..129) { "Dimensione LUT non valida ($size)" }
+            require(min.all { it == 0f } && max.all { it == 1f }) { "No se admite una LUT con DOMAIN distinto de 0–1" }
+            require(size in 2..129) { "Tamaño de LUT no válido ($size)" }
             require(values.size == size * size * size) {
-                "Il file ha ${values.size} valori, ne servono ${size * size * size}"
+                "El archivo tiene ${values.size} valores y se necesitan ${size * size * size}"
             }
             // Nel .cube il rosso varia più velocemente; Media3 vuole cube[R][G][B] in ARGB.
             val cube = Array(size) { Array(size) { IntArray(size) } }

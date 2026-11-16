@@ -73,7 +73,7 @@ object SubjectMasks {
                     resample(FloatArray(m.width * m.height) { buf.get(it) }, m.width, m.height, sw, sh)
                 } finally { selfie.close() }
             }
-        }.onFailure { Diary.log("Scontorno della foto non riuscito: ${it.javaClass.simpleName}: ${it.message}") }.getOrNull()
+        }.onFailure { Diary.log("No se logró recortar la foto: ${it.javaClass.simpleName}: ${it.message}") }.getOrNull()
         if (src !== bmp) src.recycle()
         if (conf == null || conf.none { it > 0.5f }) { synchronized(masks) { failed += uri }; return@withContext false }
         put(uri, fromConfidence(conf, sw, sh))

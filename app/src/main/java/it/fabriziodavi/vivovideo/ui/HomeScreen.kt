@@ -230,7 +230,7 @@ private fun ProjectCard(p: Project, onOpen: () -> Unit, onDelete: () -> Unit) {
             Column(Modifier.weight(1f)) {
                 Text(p.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    "${p.clips.size} clip, " + SimpleDateFormat("d MMM HH:mm", Locale.ITALY).format(Date(p.updatedAt)),
+                    "${p.clips.size} clip, " + SimpleDateFormat("d MMM HH:mm", Locale("es", "MX")).format(Date(p.updatedAt)),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

@@ -875,7 +875,7 @@ object AutoEdit {
         }
         // Data della videocamera su ogni scena (temi vintage), dalla data vera dello scatto.
         if (style.dateStamp && dates.isNotEmpty()) {
-            val fmt = java.text.SimpleDateFormat("d MMM yyyy", java.util.Locale.ITALY)
+            val fmt = java.text.SimpleDateFormat("d MMM yyyy", java.util.Locale("es", "MX"))
             val st = p.clipStartsUs()
             p.clips.forEachIndexed { i, c ->
                 val d = dates[c.uri] ?: return@forEachIndexed

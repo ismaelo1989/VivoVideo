@@ -74,7 +74,7 @@ private const val FIT_MUSIC = -1L
 
 /** "Agosto 2026", "Luglio – Agosto 2026", "2024 – 2026". */
 fun dateRangeLabel(firstMs: Long, lastMs: Long): String {
-    val loc = Locale.ITALIAN
+    val loc = Locale("es", "MX")
     fun f(p: String, ms: Long) = SimpleDateFormat(p, loc).format(Date(ms)).replaceFirstChar { c -> c.uppercase() }
     val y1 = f("yyyy", firstMs); val y2 = f("yyyy", lastMs)
     val m1 = f("MMMM", firstMs); val m2 = f("MMMM", lastMs)

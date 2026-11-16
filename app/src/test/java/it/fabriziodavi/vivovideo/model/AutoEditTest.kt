@@ -92,7 +92,7 @@ class AutoEditTest {
     @Test fun dateRanges() {
         fun d(y: Int, m: Int) = Calendar.getInstance().apply { set(y, m, 15, 12, 0) }.timeInMillis
         assertEquals("Agosto 2026", dateRangeLabel(d(2026, Calendar.AUGUST), d(2026, Calendar.AUGUST)))
-        assertEquals("Luglio – Agosto 2026", dateRangeLabel(d(2026, Calendar.JULY), d(2026, Calendar.AUGUST)))
+        assertEquals("Julio – Agosto 2026", dateRangeLabel(d(2026, Calendar.JULY), d(2026, Calendar.AUGUST)))
         assertEquals("2024 – 2026", dateRangeLabel(d(2024, Calendar.MAY), d(2026, Calendar.AUGUST)))
     }
 

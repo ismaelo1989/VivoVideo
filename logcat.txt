@@ -1,0 +1,400 @@
+11-16 22:24:57.273 W/TransformerInternal( 4792):   Caused by: java.lang.IllegalStateException: Invalid to call at Released state; only valid in executing state
+11-16 22:24:57.273 W/TransformerInternal( 4792):   
+11-16 22:24:57.273 W/TransformerInternal( 4792):       at android.media.MediaCodec.native_dequeueInputBuffer(Native Method)
+11-16 22:24:57.273 W/TransformerInternal( 4792):       at android.media.MediaCodec.dequeueInputBuffer(MediaCodec.java:3139)
+11-16 22:24:57.273 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.maybeDequeueInputBuffer(DefaultCodec.java:194)
+11-16 22:24:57.273 W/TransformerInternal( 4792):       ... 9 more
+11-16 22:24:57.282 D/DefaultCodec( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.doSomeWork(ExoPlayerImplInternal.java:1484)
+11-16 22:24:57.282 D/DefaultCodec( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:765)
+11-16 22:24:57.283 W/TransformerInternal( 4792): Export error after export ended
+11-16 22:24:57.283 W/TransformerInternal( 4792):   androidx.media3.transformer.ExportException: Codec exception: CodecInfo{type=VideoDecoder, configurationFormat={exo-pixel-width-height-ratio-float=1.0, sar-width=1, allow-frame-drop=0, mime=video/avc, bitrate=196685, color-standard=1, color-transfer=3, sar-height=1, is-autoselect=0, is-default=0, color-range=2, frame-rate=30.0, max-input-size=13361, rotation-degrees=0, height=360, track-id=2, is-forced-subtitle=0, level=4096, profile=1, codecs-string=avc1.42C029, csd-1=java.nio.HeapByteBuffer[pos=0 lim=10 cap=10], encoder-delay=0, width=640, encoder-padding=0, csd-0=java.nio.HeapByteBuffer[pos=0 lim=22 cap=22]}, name=c2.goldfish.h264.decoder}
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.createExportException(DefaultCodec.java:487)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.createExportException(DefaultCodec.java:465)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.maybeDequeueInputBuffer(DefaultCodec.java:206)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.transformer.ExoAssetLoaderBaseRenderer.feedDecoderFromInput(ExoAssetLoaderBaseRenderer.java:305)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.transformer.ExoAssetLoaderBaseRenderer.render(ExoAssetLoaderBaseRenderer.java:112)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.exoplayer.RendererHolder.render(RendererHolder.java:425)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.doSomeWork(ExoPlayerImplInternal.java:1484)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:765)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at android.os.Looper.loopOnce(Looper.java:205)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at android.os.Looper.loop(Looper.java:294)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-16 22:24:57.283 W/TransformerInternal( 4792):   Caused by: java.lang.IllegalStateException: Invalid to call at Released state; only valid in Executing states
+11-16 22:24:57.283 W/TransformerInternal( 4792):   
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at android.media.MediaCodec.getBuffer(Native Method)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at android.media.MediaCodec.getInputBuffer(MediaCodec.java:4245)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.maybeDequeueInputBuffer(DefaultCodec.java:203)
+11-16 22:24:57.283 W/TransformerInternal( 4792):       ... 9 more
+11-16 22:24:57.291 I/ExoPlayerImpl( 4792): Release e8d73f2 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:24:57.296 I/ExoPlayerImpl( 4792): Release 8acbb54 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:24:57.299 I/ExoPlayerImpl( 4792): Release 593e2d7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:24:57.335 I/TransformerInternal( 4792): Init 5b47aaa [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:24:57.337 I/ExoPlayerImpl( 4792): Init 4b4369b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:24:57.346 I/ExoPlayerImpl( 4792): Init 40aa38 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:24:57.347 I/ExoPlayerImpl( 4792): Init eb5ba11 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:24:57.566 W/odavi.vivovideo( 4792): Long monitor contention with owner ExoPlayer:Playback (15115) at androidx.media3.transformer.SampleConsumer androidx.media3.transformer.TransformerInternal$SequenceAssetLoaderListener.onOutputFormat(androidx.media3.common.Format)(TransformerInternal.java:709) waiters=2 in androidx.media3.transformer.SampleConsumer androidx.media3.transformer.TransformerInternal$SequenceAssetLoaderListener.onOutputFormat(androidx.media3.common.Format) for 176ms
+11-16 22:24:58.964 I/ExoPlayerImpl( 4792): Init 71a53c4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:24:58.970 I/ExoPlayerImpl( 4792): Init e1459e2 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:03.701 I/ExoPlayerImpl( 4792): Init 9a0b389 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:11.457 I/ExoPlayerImpl( 4792): Release 40aa38 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:11.473 I/ExoPlayerImpl( 4792): Init 9ebb9fa [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:11.523 I/ExoPlayerImpl( 4792): Release e1459e2 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:11.566 I/ExoPlayerImpl( 4792): Release 4b4369b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:11.584 I/ExoPlayerImpl( 4792): Init f783d9e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:12.970 I/ExoPlayerImpl( 4792): Init abdd880 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:21.523 I/ExoPlayerImpl( 4792): Release 9a0b389 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:23.329 I/ExoPlayerImpl( 4792): Release 71a53c4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:26.707 I/ExoPlayerImpl( 4792): Release 9ebb9fa [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:26.785 I/ExoPlayerImpl( 4792): Release f783d9e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:27.238 I/ExoPlayerImpl( 4792): Init ca2cb2f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:27.268 I/ExoPlayerImpl( 4792): Init aacf7ca [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:36.090 I/ExoPlayerImpl( 4792): Release abdd880 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:46.791 I/ExoPlayerImpl( 4792): Release aacf7ca [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:46.809 I/ExoPlayerImpl( 4792): Init ad25b0b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:46.972 I/ExoPlayerImpl( 4792): Release ca2cb2f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:47.131 I/ExoPlayerImpl( 4792): Init 1847e8a [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:58.380 I/ExoPlayerImpl( 4792): Release ad25b0b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:58.397 I/ExoPlayerImpl( 4792): Init 4d91c63 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:25:58.477 I/ExoPlayerImpl( 4792): Release 1847e8a [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:25:58.489 I/ExoPlayerImpl( 4792): Init a79e453 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:05.613 I/ExoPlayerImpl( 4792): Release 4d91c63 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:05.629 I/ExoPlayerImpl( 4792): Init 74f85d8 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:05.654 I/ExoPlayerImpl( 4792): Release a79e453 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:05.675 I/ExoPlayerImpl( 4792): Init 42c2169 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:13.178 I/ExoPlayerImpl( 4792): Release 74f85d8 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:13.227 I/ExoPlayerImpl( 4792): Init 2e91f7c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:13.251 I/ExoPlayerImpl( 4792): Release 42c2169 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:13.353 I/ExoPlayerImpl( 4792): Init 1218abd [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:22.654 I/ExoPlayerImpl( 4792): Release 2e91f7c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:22.746 I/ExoPlayerImpl( 4792): Init 1df2b9d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:22.765 I/ExoPlayerImpl( 4792): Release 1218abd [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:22.842 I/ExoPlayerImpl( 4792): Init 907360d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:30.187 I/ExoPlayerImpl( 4792): Release 1df2b9d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:30.223 I/ExoPlayerImpl( 4792): Init 4b8cf58 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:30.265 I/ExoPlayerImpl( 4792): Release 907360d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:30.326 I/ExoPlayerImpl( 4792): Init b83aa2b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:36.493 I/ExoPlayerImpl( 4792): Release 4b8cf58 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:36.523 I/ExoPlayerImpl( 4792): Init 1c727d0 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:36.571 I/ExoPlayerImpl( 4792): Release b83aa2b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:36.590 I/ExoPlayerImpl( 4792): Init e1e8ace [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:47.226 I/ExoPlayerImpl( 4792): Release 1c727d0 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:47.343 I/ExoPlayerImpl( 4792): Init 7506f06 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:47.397 I/ExoPlayerImpl( 4792): Release e1e8ace [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:47.536 I/ExoPlayerImpl( 4792): Init 252158c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:55.765 I/ExoPlayerImpl( 4792): Release 7506f06 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:55.776 I/ExoPlayerImpl( 4792): Init a77749f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:26:55.923 I/ExoPlayerImpl( 4792): Release 252158c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:26:55.982 I/ExoPlayerImpl( 4792): Init fbf061c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:05.060 I/ExoPlayerImpl( 4792): Release a77749f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:05.133 I/ExoPlayerImpl( 4792): Init a912602 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:05.166 I/ExoPlayerImpl( 4792): Release fbf061c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:05.229 I/ExoPlayerImpl( 4792): Init 57ace81 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:13.745 I/ExoPlayerImpl( 4792): Release a912602 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:13.846 I/ExoPlayerImpl( 4792): Init 868d96b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:13.874 I/ExoPlayerImpl( 4792): Release 57ace81 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:13.970 I/ExoPlayerImpl( 4792): Init f96f35b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:21.810 I/ExoPlayerImpl( 4792): Release 868d96b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:21.818 I/ExoPlayerImpl( 4792): Init c5f5a79 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:21.930 I/ExoPlayerImpl( 4792): Release f96f35b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:21.984 I/ExoPlayerImpl( 4792): Init f65d6b3 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:29.636 I/ExoPlayerImpl( 4792): Release c5f5a79 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:29.652 I/ExoPlayerImpl( 4792): Init e0da5f7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:29.802 I/ExoPlayerImpl( 4792): Release f65d6b3 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:29.931 I/ExoPlayerImpl( 4792): Init 1bdfae7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:36.800 I/ExoPlayerImpl( 4792): Release e0da5f7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:36.817 I/ExoPlayerImpl( 4792): Init a3e1f65 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:36.912 I/ExoPlayerImpl( 4792): Release 1bdfae7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:36.929 I/ExoPlayerImpl( 4792): Init a6af88c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:44.948 I/TransformerInternal( 4792): Release 5b47aaa [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:44.970 I/ExoPlayerImpl( 4792): Release a6af88c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:44.980 I/ExoPlayerImpl( 4792): Release a3e1f65 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:44.989 I/ExoPlayerImpl( 4792): Release eb5ba11 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:45.034 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795472865-VivoVideo_20261116_222745.mp4. Uid: 10192
+11-16 22:27:45.048 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795472865-VivoVideo_20261116_222745.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_222745.mp4
+11-16 22:27:45.090 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_222745.mp4. Uid: 10192
+11-16 22:27:45.105 I/TestRunner( 4792): finished: exportVideoLayer(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:27:45.106 I/TestRunner( 4792): started: collageVideoAndImage(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:27:51.795 I/TransformerInternal( 4792): Init f98bb08 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:51.796 I/ExoPlayerImpl( 4792): Init d3442a1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:51.798 I/ExoPlayerImpl( 4792): Init 5139cc6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:55.472 I/ExoPlayerImpl( 4792): Release d3442a1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:55.482 I/ExoPlayerImpl( 4792): Init 747f95e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:57.515 I/TransformerInternal( 4792): Release f98bb08 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:57.530 I/ExoPlayerImpl( 4792): Release 747f95e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:57.538 I/ExoPlayerImpl( 4792): Release 5139cc6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:27:57.568 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795472877-VivoVideo_20261116_222757.mp4. Uid: 10192
+11-16 22:27:57.574 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795472877-VivoVideo_20261116_222757.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_222757.mp4
+11-16 22:27:57.588 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_222757.mp4. Uid: 10192
+11-16 22:27:57.822 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Pictures/VivoVideo/.pending-1795472877-VivoVideo_Collage_20261116_222757.jpg. Uid: 10192
+11-16 22:27:57.879 D/MediaProvider( 1656): Moving /storage/emulated/0/Pictures/VivoVideo/.pending-1795472877-VivoVideo_Collage_20261116_222757.jpg to /storage/emulated/0/Pictures/VivoVideo/VivoVideo_Collage_20261116_222757.jpg
+11-16 22:27:57.889 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Pictures/VivoVideo/VivoVideo_Collage_20261116_222757.jpg. Uid: 10192
+11-16 22:27:57.893 I/TestRunner( 4792): finished: collageVideoAndImage(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:27:57.894 I/TestRunner( 4792): started: reverseClip(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:27:57.902 I/TransformerInternal( 4792): Init 53f3a3b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:27:57.906 I/ExoPlayerImpl( 4792): Init 44bf558 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:00.129 I/TransformerInternal( 4792): Release 53f3a3b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:00.135 I/ExoPlayerImpl( 4792): Release 44bf558 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:05.720 I/TransformerInternal( 4792): Init 456abef [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:05.722 I/ExoPlayerImpl( 4792): Init b2436fc [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:05.723 I/ExoPlayerImpl( 4792): Init a146185 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:09.442 I/ExoPlayerImpl( 4792): Release b2436fc [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:09.463 I/ExoPlayerImpl( 4792): Init abdca54 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:13.403 I/TransformerInternal( 4792): Release 456abef [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:13.410 I/ExoPlayerImpl( 4792): Release abdca54 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:13.419 I/ExoPlayerImpl( 4792): Release a146185 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:13.450 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795472893-VivoVideo_20261116_222813.mp4. Uid: 10192
+11-16 22:28:13.454 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795472893-VivoVideo_20261116_222813.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_222813.mp4
+11-16 22:28:13.467 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_222813.mp4. Uid: 10192
+11-16 22:28:13.489 I/TransformerInternal( 4792): Init 3a199a1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:13.490 I/ExoPlayerImpl( 4792): Init c23a7c6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:16.087 I/TransformerInternal( 4792): Release 3a199a1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:16.093 I/ExoPlayerImpl( 4792): Release c23a7c6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:17.917 I/TestRunner( 4792): finished: reverseClip(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:28:17.919 I/TestRunner( 4792): started: exportWowTransitionsAndTexts(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:28:22.855 I/TransformerInternal( 4792): Init b873ab9 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:22.858 I/ExoPlayerImpl( 4792): Init 8e8efe [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:22.859 I/ExoPlayerImpl( 4792): Init 2b8765f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:31.418 I/ExoPlayerImpl( 4792): Release 8e8efe [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:31.440 I/ExoPlayerImpl( 4792): Init bc086cb [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:40.418 I/ExoPlayerImpl( 4792): Release bc086cb [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:40.433 I/ExoPlayerImpl( 4792): Init 3738433 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:49.787 I/ExoPlayerImpl( 4792): Release 3738433 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:49.829 I/ExoPlayerImpl( 4792): Init bd51caa [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:28:59.025 I/ExoPlayerImpl( 4792): Release bd51caa [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:28:59.047 I/ExoPlayerImpl( 4792): Init 28bee14 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:29:08.971 I/ExoPlayerImpl( 4792): Release 28bee14 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:29:08.990 I/ExoPlayerImpl( 4792): Init 40f5eae [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:29:18.288 I/ExoPlayerImpl( 4792): Release 40f5eae [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:29:18.345 I/ExoPlayerImpl( 4792): Init fe0e9d1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:29:27.403 I/ExoPlayerImpl( 4792): Release fe0e9d1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:29:27.459 I/ExoPlayerImpl( 4792): Init 5dd0440 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:29:37.122 I/ExoPlayerImpl( 4792): Release 5dd0440 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:29:37.160 I/ExoPlayerImpl( 4792): Init ccaa62b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:29:46.137 I/ExoPlayerImpl( 4792): Release ccaa62b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:29:46.186 I/ExoPlayerImpl( 4792): Init 3985482 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:29:55.119 I/ExoPlayerImpl( 4792): Release 3985482 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:29:55.187 I/ExoPlayerImpl( 4792): Init 53c03f5 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:04.321 I/ExoPlayerImpl( 4792): Release 53c03f5 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:04.347 I/ExoPlayerImpl( 4792): Init 42547f4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:12.863 I/ExoPlayerImpl( 4792): Release 42547f4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:12.897 I/ExoPlayerImpl( 4792): Init 305fdaf [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:21.640 I/ExoPlayerImpl( 4792): Release 305fdaf [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:21.656 I/ExoPlayerImpl( 4792): Init f73f031 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:30.973 I/ExoPlayerImpl( 4792): Release f73f031 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:31.062 I/ExoPlayerImpl( 4792): Init 111f052 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:40.535 I/ExoPlayerImpl( 4792): Release 111f052 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:40.562 I/ExoPlayerImpl( 4792): Init f0d6305 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:49.578 I/ExoPlayerImpl( 4792): Release f0d6305 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:49.669 I/ExoPlayerImpl( 4792): Init 64c15d6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:30:59.249 I/ExoPlayerImpl( 4792): Release 64c15d6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:30:59.285 I/ExoPlayerImpl( 4792): Init 4a386e3 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:31:08.769 I/ExoPlayerImpl( 4792): Release 4a386e3 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:31:08.788 I/ExoPlayerImpl( 4792): Init 3e01cc5 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:31:16.676 I/ExoPlayerImpl( 4792): Release 3e01cc5 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:31:16.699 I/ExoPlayerImpl( 4792): Init 8768896 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:31:26.382 I/ExoPlayerImpl( 4792): Release 8768896 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:31:26.439 I/ExoPlayerImpl( 4792): Init 52b9c8d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:31:35.991 I/ExoPlayerImpl( 4792): Release 52b9c8d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:31:36.049 I/ExoPlayerImpl( 4792): Init 9f738ec [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:31:44.957 I/ExoPlayerImpl( 4792): Release 9f738ec [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:31:45.030 I/ExoPlayerImpl( 4792): Init 99bc8c6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:31:54.201 I/ExoPlayerImpl( 4792): Release 99bc8c6 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:31:54.220 I/ExoPlayerImpl( 4792): Init 7cbd613 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:03.605 I/ExoPlayerImpl( 4792): Release 7cbd613 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:03.713 I/ExoPlayerImpl( 4792): Init 76b6e0a [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:14.043 I/ExoPlayerImpl( 4792): Release 76b6e0a [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:14.073 I/ExoPlayerImpl( 4792): Init 3570c74 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:22.420 I/ExoPlayerImpl( 4792): Release 3570c74 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:22.500 I/ExoPlayerImpl( 4792): Init 7c4220e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:30.481 I/ExoPlayerImpl( 4792): Release 7c4220e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:30.522 I/ExoPlayerImpl( 4792): Init 9824158 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:39.088 I/ExoPlayerImpl( 4792): Release 9824158 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:39.219 I/ExoPlayerImpl( 4792): Init 166e75d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:48.716 I/ExoPlayerImpl( 4792): Release 166e75d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:48.784 I/ExoPlayerImpl( 4792): Init 313e7ef [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:32:57.693 I/ExoPlayerImpl( 4792): Release 313e7ef [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:32:57.760 I/ExoPlayerImpl( 4792): Init 20f1871 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:07.190 I/ExoPlayerImpl( 4792): Release 20f1871 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:07.242 I/ExoPlayerImpl( 4792): Init 5c67563 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:16.422 I/ExoPlayerImpl( 4792): Release 5c67563 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:16.473 I/ExoPlayerImpl( 4792): Init 3fb3745 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:26.221 I/TransformerInternal( 4792): Release b873ab9 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:26.230 I/ExoPlayerImpl( 4792): Release 3fb3745 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:26.237 I/ExoPlayerImpl( 4792): Release 2b8765f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:26.276 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795473206-VivoVideo_20261116_223326.mp4. Uid: 10192
+11-16 22:33:26.300 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795473206-VivoVideo_20261116_223326.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223326.mp4
+11-16 22:33:26.332 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223326.mp4. Uid: 10192
+11-16 22:33:26.337 I/TestRunner( 4792): finished: exportWowTransitionsAndTexts(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:33:26.338 I/TestRunner( 4792): started: previewPlaysWow(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:33:26.345 I/ExoPlayerImpl( 4792): Init ff1d81c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:39.937 I/ExoPlayerImpl( 4792): Release ff1d81c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:40.441 E/CompositionPlayer-0( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.lambda$release$9(ExoPlayerImpl.java:1161)
+11-16 22:33:40.441 E/CompositionPlayer-0( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl$$ExternalSyntheticLambda10.invoke(D8$$SyntheticClass:0)
+11-16 22:33:40.441 E/CompositionPlayer-0( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.release(ExoPlayerImpl.java:1157)
+11-16 22:33:40.441 E/CompositionPlayer-0( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.lambda$release$9(ExoPlayerImpl.java:1160)
+11-16 22:33:40.447 E/CompositionPlayer( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.lambda$release$9(ExoPlayerImpl.java:1160)
+11-16 22:33:40.447 E/CompositionPlayer( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl$$ExternalSyntheticLambda10.invoke(D8$$SyntheticClass:0)
+11-16 22:33:40.447 E/CompositionPlayer( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.release(ExoPlayerImpl.java:1157)
+11-16 22:33:40.447 E/CompositionPlayer( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.lambda$release$9(ExoPlayerImpl.java:1161)
+11-16 22:33:40.447 E/CompositionPlayer( 4792):       at androidx.media3.exoplayer.ExoPlayerImpl.lambda$release$9(ExoPlayerImpl.java:1160)
+11-16 22:33:40.969 I/TestRunner( 4792): finished: previewPlaysWow(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:33:40.973 I/TestRunner( 4792): started: previewPlaysPastTheEndOfAShortSong(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:33:41.000 I/ExoPlayerImpl( 4792): Init ff056e1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:41.015 I/ExoPlayerImpl( 4792): Init 79bd0f4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:42.385 W/MessageQueue( 4792): 	at androidx.media3.exoplayer.ExoPlayerImpl$VirtualDeviceIdChangeListener$$ExternalSyntheticLambda1.execute(D8$$SyntheticClass:0)
+11-16 22:33:42.571 W/MessageQueue( 4792): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.resetInternal(ExoPlayerImplInternal.java:2124)
+11-16 22:33:42.571 W/MessageQueue( 4792): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.releaseInternal(ExoPlayerImplInternal.java:2055)
+11-16 22:33:42.571 W/MessageQueue( 4792): 	at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:880)
+11-16 22:33:49.145 I/ExoPlayerImpl( 4792): Release ff056e1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:49.188 I/ExoPlayerImpl( 4792): Release 79bd0f4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:49.196 I/TestRunner( 4792): finished: previewPlaysPastTheEndOfAShortSong(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:33:49.197 I/TestRunner( 4792): started: bisectEffectsOnly(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:33:51.065 I/TransformerInternal( 4792): Init c13147b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:51.067 I/ExoPlayerImpl( 4792): Init 67f6298 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:51.070 I/ExoPlayerImpl( 4792): Init dd77af1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:33:55.783 I/ExoPlayerImpl( 4792): Release 67f6298 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:33:55.804 I/ExoPlayerImpl( 4792): Init 7ed5688 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:02.343 I/ExoPlayerImpl( 4792): Release 7ed5688 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:02.366 I/ExoPlayerImpl( 4792): Init 7294393 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:09.876 I/ExoPlayerImpl( 4792): Release 7294393 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:09.969 I/ExoPlayerImpl( 4792): Init 5709ff5 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:16.982 I/ExoPlayerImpl( 4792): Release 5709ff5 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:17.022 I/ExoPlayerImpl( 4792): Init 29b53f4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:24.815 I/ExoPlayerImpl( 4792): Release 29b53f4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:24.836 I/ExoPlayerImpl( 4792): Init 4305989 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:34.315 I/ExoPlayerImpl( 4792): Release 4305989 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:34.446 I/ExoPlayerImpl( 4792): Init eb8b3bb [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:42.369 I/ExoPlayerImpl( 4792): Release eb8b3bb [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:42.462 I/ExoPlayerImpl( 4792): Init 94014b4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:48.738 I/ExoPlayerImpl( 4792): Release 94014b4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:48.791 I/ExoPlayerImpl( 4792): Init e1dad6f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:34:55.823 I/ExoPlayerImpl( 4792): Release e1dad6f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:34:55.890 I/ExoPlayerImpl( 4792): Init bc7f598 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:01.913 I/TransformerInternal( 4792): Release c13147b [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:01.953 D/DefaultCodec( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.doSomeWork(ExoPlayerImplInternal.java:1484)
+11-16 22:35:01.953 D/DefaultCodec( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:765)
+11-16 22:35:01.954 W/TransformerInternal( 4792): Export error after export ended
+11-16 22:35:01.954 W/TransformerInternal( 4792):   androidx.media3.transformer.ExportException: Codec exception: CodecInfo{type=VideoDecoder, configurationFormat={exo-pixel-width-height-ratio-float=1.0, sar-width=1, allow-frame-drop=0, mime=video/avc, bitrate=196685, color-standard=1, color-transfer=3, sar-height=1, is-autoselect=0, is-default=0, color-range=2, frame-rate=30.0, max-input-size=13361, rotation-degrees=0, height=360, track-id=2, is-forced-subtitle=0, level=4096, profile=1, codecs-string=avc1.42C029, csd-1=java.nio.HeapByteBuffer[pos=0 lim=10 cap=10], encoder-delay=0, width=640, encoder-padding=0, csd-0=java.nio.HeapByteBuffer[pos=0 lim=22 cap=22]}, name=c2.goldfish.h264.decoder}
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.createExportException(DefaultCodec.java:487)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.createExportException(DefaultCodec.java:465)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.maybeDequeueInputBuffer(DefaultCodec.java:197)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.transformer.ExoAssetLoaderBaseRenderer.feedDecoderFromInput(ExoAssetLoaderBaseRenderer.java:305)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.transformer.ExoAssetLoaderBaseRenderer.render(ExoAssetLoaderBaseRenderer.java:112)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.exoplayer.RendererHolder.render(RendererHolder.java:425)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.doSomeWork(ExoPlayerImplInternal.java:1484)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:765)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at android.os.Looper.loopOnce(Looper.java:205)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at android.os.Looper.loop(Looper.java:294)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-16 22:35:01.954 W/TransformerInternal( 4792):   Caused by: java.lang.IllegalStateException: Invalid to call at Released state; only valid in executing state
+11-16 22:35:01.954 W/TransformerInternal( 4792):   
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at android.media.MediaCodec.native_dequeueInputBuffer(Native Method)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at android.media.MediaCodec.dequeueInputBuffer(MediaCodec.java:3139)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       at androidx.media3.transformer.DefaultCodec.maybeDequeueInputBuffer(DefaultCodec.java:194)
+11-16 22:35:01.954 W/TransformerInternal( 4792):       ... 9 more
+11-16 22:35:01.966 I/ExoPlayerImpl( 4792): Release bc7f598 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:01.969 I/ExoPlayerImpl( 4792): Release dd77af1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792): Playback error
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):   androidx.media3.exoplayer.ExoPlaybackException: Unexpected runtime error
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:1005)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at android.os.Handler.dispatchMessage(Handler.java:102)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at android.os.Looper.loopOnce(Looper.java:205)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at android.os.Looper.loop(Looper.java:294)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at android.os.HandlerThread.run(HandlerThread.java:67)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):   Caused by: java.lang.IllegalStateException
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at com.google.common.base.Preconditions.checkState(Preconditions.java:497)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.transformer.AudioGraphInput.getInputBuffer(AudioGraphInput.java:238)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.transformer.SequenceAssetLoader$SampleConsumerWrapper.getInputBuffer(SequenceAssetLoader.java:531)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.transformer.ExoAssetLoaderBaseRenderer.feedConsumerFromInput(ExoAssetLoaderBaseRenderer.java:329)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.transformer.ExoAssetLoaderBaseRenderer.render(ExoAssetLoaderBaseRenderer.java:116)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.exoplayer.RendererHolder.render(RendererHolder.java:425)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.doSomeWork(ExoPlayerImplInternal.java:1484)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       at androidx.media3.exoplayer.ExoPlayerImplInternal.handleMessage(ExoPlayerImplInternal.java:765)
+11-16 22:35:01.974 E/ExoPlayerImplInternal( 4792):       ... 4 more
+11-16 22:35:01.981 I/TransformerInternal( 4792): Init 3e7ea3f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:02.010 I/ExoPlayerImpl( 4792): Init ed81f0c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:02.011 I/ExoPlayerImpl( 4792): Init ac31055 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:06.587 I/ExoPlayerImpl( 4792): Release ed81f0c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:06.616 I/ExoPlayerImpl( 4792): Init 810abfc [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:12.604 I/ExoPlayerImpl( 4792): Release 810abfc [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:12.617 I/ExoPlayerImpl( 4792): Init e4e3d7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:20.475 I/ExoPlayerImpl( 4792): Release e4e3d7 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:20.560 I/ExoPlayerImpl( 4792): Init fb46f19 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:27.135 I/ExoPlayerImpl( 4792): Release fb46f19 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:27.174 I/ExoPlayerImpl( 4792): Init 15260a8 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:32.465 I/ExoPlayerImpl( 4792): Release 15260a8 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:32.479 I/ExoPlayerImpl( 4792): Init 9aa81a2 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:41.525 I/ExoPlayerImpl( 4792): Release 9aa81a2 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:41.647 I/ExoPlayerImpl( 4792): Init c61294c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:49.159 I/ExoPlayerImpl( 4792): Release c61294c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:49.221 I/ExoPlayerImpl( 4792): Init 1bd4e26 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:35:55.931 I/ExoPlayerImpl( 4792): Release 1bd4e26 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:35:55.979 I/ExoPlayerImpl( 4792): Init 71fd2b0 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:03.793 I/ExoPlayerImpl( 4792): Release 71fd2b0 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:03.854 I/ExoPlayerImpl( 4792): Init 50f256a [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:10.130 I/ExoPlayerImpl( 4792): Release 50f256a [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:10.188 I/ExoPlayerImpl( 4792): Init ccde0d4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:16.357 I/ExoPlayerImpl( 4792): Release ccde0d4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:16.410 I/ExoPlayerImpl( 4792): Init be46b6e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:22.523 I/ExoPlayerImpl( 4792): Release be46b6e [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:22.546 I/ExoPlayerImpl( 4792): Init aabd991 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:29.878 I/TransformerInternal( 4792): Release 3e7ea3f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:29.899 I/ExoPlayerImpl( 4792): Release aabd991 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:29.905 I/ExoPlayerImpl( 4792): Release ac31055 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:29.938 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795473389-VivoVideo_20261116_223629.mp4. Uid: 10192
+11-16 22:36:29.959 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795473389-VivoVideo_20261116_223629.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223629.mp4
+11-16 22:36:29.982 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223629.mp4. Uid: 10192
+11-16 22:36:29.985 I/TestRunner( 4792): finished: bisectEffectsOnly(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:36:29.987 I/TestRunner( 4792): started: previewPlaysEveryFeature(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:36:30.018 I/ExoPlayerImpl( 4792): Init 62f11fb [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:30.036 I/ExoPlayerImpl( 4792): Init f0f3256 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:44.778 I/ExoPlayerImpl( 4792): Release 62f11fb [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:44.833 I/ExoPlayerImpl( 4792): Release f0f3256 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:44.847 I/TestRunner( 4792): finished: previewPlaysEveryFeature(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:36:44.850 I/TestRunner( 4792): started: customFontText(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:36:45.634 I/TransformerInternal( 4792): Init 21a631d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:45.635 I/ExoPlayerImpl( 4792): Init 4dd3992 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:45.637 I/ExoPlayerImpl( 4792): Init 2a82f63 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:50.516 I/TransformerInternal( 4792): Release 21a631d [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:50.525 I/ExoPlayerImpl( 4792): Release 4dd3992 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:50.533 I/ExoPlayerImpl( 4792): Release 2a82f63 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:36:50.561 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795473410-VivoVideo_20261116_223650.mp4. Uid: 10192
+11-16 22:36:50.565 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795473410-VivoVideo_20261116_223650.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223650.mp4
+11-16 22:36:50.583 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223650.mp4. Uid: 10192
+11-16 22:36:50.589 I/TestRunner( 4792): finished: customFontText(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:36:50.590 I/TestRunner( 4792): started: exportInterviewSplit(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:36:51.466 I/TransformerInternal( 4792): Init 776627f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:51.467 I/ExoPlayerImpl( 4792): Init ca4d24c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:36:51.720 I/ExoPlayerImpl( 4792): Init f7bf886 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:01.024 I/ExoPlayerImpl( 4792): Release f7bf886 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:01.039 I/ExoPlayerImpl( 4792): Init 6eff3b1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:02.951 I/ExoPlayerImpl( 4792): Release 6eff3b1 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:03.178 I/ExoPlayerImpl( 4792): Init 242eda0 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:11.922 I/ExoPlayerImpl( 4792): Release 242eda0 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:12.560 I/TransformerInternal( 4792): Release 776627f [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:12.578 I/ExoPlayerImpl( 4792): Release ca4d24c [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:12.606 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795473432-VivoVideo_20261116_223712.mp4. Uid: 10192
+11-16 22:37:12.611 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795473432-VivoVideo_20261116_223712.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223712.mp4
+11-16 22:37:12.632 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223712.mp4. Uid: 10192
+11-16 22:37:12.640 I/TestRunner( 4792): finished: exportInterviewSplit(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:37:12.641 I/TestRunner( 4792): started: voiceRecorderRecordsAndCleans(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:37:14.376 I/TestRunner( 4792): finished: voiceRecorderRecordsAndCleans(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:37:14.379 I/TestRunner( 4792): started: stabilizeShakyVideo(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:37:14.969 I/TransformerInternal( 4792): Init db8a3b4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:23.900 I/TransformerInternal( 4792): Release db8a3b4 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:30.616 I/TransformerInternal( 4792): Init e6b523 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:30.617 I/ExoPlayerImpl( 4792): Init 97dfa20 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:30.618 I/ExoPlayerImpl( 4792): Init 1996fd9 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:32.384 I/ExoPlayerImpl( 4792): Release 97dfa20 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:32.402 I/ExoPlayerImpl( 4792): Init 47fe6c8 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34]
+11-16 22:37:36.547 I/TransformerInternal( 4792): Release e6b523 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:36.559 I/ExoPlayerImpl( 4792): Release 47fe6c8 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:36.566 I/ExoPlayerImpl( 4792): Release 1996fd9 [AndroidXMedia3/1.11.1] [emu64xa, sdk_gphone64_x86_64, Google, 34] [media3.common, media3.transformer, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor, media3.effect]
+11-16 22:37:36.597 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/.pending-1795473456-VivoVideo_20261116_223736.mp4. Uid: 10192
+11-16 22:37:36.605 D/MediaProvider( 1656): Moving /storage/emulated/0/Movies/VivoVideo/.pending-1795473456-VivoVideo_20261116_223736.mp4 to /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223736.mp4
+11-16 22:37:36.620 I/MediaProvider( 1656): Open with lower FS for /storage/emulated/0/Movies/VivoVideo/VivoVideo_20261116_223736.mp4. Uid: 10192
+11-16 22:37:36.625 I/TestRunner( 4792): finished: stabilizeShakyVideo(it.fabriziodavi.vivovideo.DeviceTest)
+11-16 22:37:36.626 I/TestRunner( 4792): run finished: 54 tests, 0 failed, 0 ignored
+11-16 22:37:36.705 I/AndroidRuntime( 4772): VM exiting with result code 0.

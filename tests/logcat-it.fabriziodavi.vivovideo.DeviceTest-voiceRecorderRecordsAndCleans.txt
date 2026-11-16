@@ -1,0 +1,10 @@
+11-16 22:37:12.671   857   857 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-16 22:37:12.681   395  4383 W ServiceManagerCppClient: Permission failure: android.permission.CALL_AUDIO_INTERCEPTION from uid=10192 pid=4792
+11-16 22:37:12.690   341  1071 E android.hardware.audio@7.1-impl.ranchu: updateSinkMetadata:364 failure: Result::NOT_SUPPORTED
+11-16 22:37:12.712   857   867 W ndroid.systemui: Reducing the number of considered missed Gc histogram windows from 121 to 100
+11-16 22:37:14.208   341  1071 E android.hardware.audio@7.1-impl.ranchu: updateSinkMetadata:364 failure: Result::NOT_SUPPORTED
+11-16 22:37:14.362  4792 17188 W Codec2Client: query -- param skipped: index = 1107298332.
+11-16 22:37:14.362  4792 17188 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:37:14.362  4792 17188 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:37:14.363   471  5661 E CodecServiceRegistrant: querySupportedValues -- transaction failed.
+11-16 22:37:14.364   471 17189 E CodecServiceRegistrant: querySupportedValues -- transaction failed.

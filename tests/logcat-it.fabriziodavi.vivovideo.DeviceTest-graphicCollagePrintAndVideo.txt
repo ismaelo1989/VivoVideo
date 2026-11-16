@@ -1,0 +1,142 @@
+11-16 22:03:26.401  4792 10263 W ColorUtils: expected specified color aspects (0:0:0:0)
+11-16 22:03:26.402  4792 10263 W ColorUtils: expected specified color aspects (0:0:0:0)
+11-16 22:03:26.408  4792 10263 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:03:26.408  4792 10263 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:03:26.409   465  3510 W ResourceManagerService: Ignoring request to add new resource entry with value <= 0
+11-16 22:03:26.416  4792 10266 W Codec2Client: query -- param skipped: index = 1107298332.
+11-16 22:03:26.417  4792 10266 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:03:26.417  4792 10266 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:03:26.417  4792 10266 W Codec2Client: query -- param skipped: index = 3254792206.
+11-16 22:03:26.417  4792 10266 W Codec2Client: query -- param skipped: index = 3254792194.
+11-16 22:03:27.486  4792 10266 W MediaCodec: no metrics handle found
+11-16 22:03:27.488  4792  4822 W OpenGLRenderer: Unknown dataspace 0
+11-16 22:03:27.502  4792 10269 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-16 22:03:27.514  4792 10269 E OpenGLRenderer: Unable to match the desired swap behavior.
+11-16 22:03:27.657  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:27.673   471 10264 E C2SoftAvcEnc: Unable to set air params = 0x1ad
+11-16 22:03:27.798  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:27.816  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:27.834  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:27.854  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:27.860   465 10277 W ColorUtils: expected specified color aspects (2:0:0:0)
+11-16 22:03:27.864   465 10277 W ColorUtils: expected specified color aspects (2:0:0:0)
+11-16 22:03:27.864   465 10277 W Codec2Client: query -- param skipped: index = 1107298332.
+11-16 22:03:27.864   465 10277 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+11-16 22:03:27.869   465 10277 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:03:27.869   465 10277 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:03:27.869   465 10277 W Codec2Client: query -- param skipped: index = 1610614798.
+11-16 22:03:27.870   465 10276 W ResourceManagerService: Ignoring request to add new resource entry with value <= 0
+11-16 22:03:27.989  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.013  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.039  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.060  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.083  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.106  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.126  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.144  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.163  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.183  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.230  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.252  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.267  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.287  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.302  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.353  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.368  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.384  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.402  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.502  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.522  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.539  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.601  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.647  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.677  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.703  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.743  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.841  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.878  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.910  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:28.974  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.046  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.073  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.098  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.379  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.411  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.438  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.469  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.541  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.600  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.763  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.789  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.834  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.868  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.898  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.930  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:29.962  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.006  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.052  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.093  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.152  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.185  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.212  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.237  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.277  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.306  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.326  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.348  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.378  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.391  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.408  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.441  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.494  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.528  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.550  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.573  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.612  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.676  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.697  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.719  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.751  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.789  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.809  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.836  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.868  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.888  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.910  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.930  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:30.971  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:31.008  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:31.030  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:31.052  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:31.075  4792 10269 W GraphicBufferSource: onFrameAvailable: EOS is sent, ignoring frame
+11-16 22:03:31.076  4792 10269 E FrameEvents: updateAcquireFence: Did not find frame.
+11-16 22:03:31.077  4792 10269 E BufferQueueProducer: [GraphicBufferSource](id:12b800000102,api:1,p:4792,c:4792) cancelBuffer: BufferQueue has been abandoned
+11-16 22:03:31.087  4792 10262 W MediaCodec: no metrics handle found
+11-16 22:03:31.089  4792  4822 E MPEG4Writer: Stop() called but track is not started or stopped
+11-16 22:03:31.089  4792  4822 E MPEG4Writer: Stop() called but track is not started or stopped
+11-16 22:03:31.115   465 10461 W ColorUtils: expected specified color aspects (2:0:0:0)
+11-16 22:03:31.119   465 10461 W ColorUtils: expected specified color aspects (2:0:0:0)
+11-16 22:03:31.119   465 10461 W Codec2Client: query -- param skipped: index = 1107298332.
+11-16 22:03:31.119   465 10461 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+11-16 22:03:31.126   465 10461 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:03:31.126   465 10461 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:03:31.126   465 10461 W Codec2Client: query -- param skipped: index = 1610614798.
+11-16 22:03:31.126   465 10460 W ResourceManagerService: Ignoring request to add new resource entry with value <= 0
+11-16 22:03:31.965  1656  5913 W MediaProvider: isAppCloneUserPair for user 0: false
+11-16 22:03:31.966  1656  5913 W MediaProvider: isAppCloneUserPair for user 0: false
+11-16 22:03:32.000  1656  2083 W MediaProvider: Failed to update quota for uri: content://media/external_primary/file/1000000050
+11-16 22:03:32.000  1656  2083 W MediaProvider: java.io.FileNotFoundException: No item at content://media/external_primary/file/1000000050
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider.queryForSingleItem(MediaProvider.java:8574)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider.queryForDataFile(MediaProvider.java:8514)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider.queryForDataFile(MediaProvider.java:8506)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider.updateQuotaTypeForUri(MediaProvider.java:844)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider.-$$Nest$mupdateQuotaTypeForUri(MediaProvider.java:0)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider$5.lambda$onUpdate$1(MediaProvider.java:956)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider$5.$r8$lambda$d1oamlpYRGmLAqSobOWu_Cv09p8(MediaProvider.java:0)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at com.android.providers.media.MediaProvider$5$$ExternalSyntheticLambda2.run(R8$$SyntheticClass:0)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at android.os.Handler.handleCallback(Handler.java:958)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at android.os.Looper.loopOnce(Looper.java:205)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at android.os.Looper.loop(Looper.java:294)
+11-16 22:03:32.000  1656  2083 W MediaProvider: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-16 22:03:32.052  1656  5913 W MediaProvider: isAppCloneUserPair for user 0: false

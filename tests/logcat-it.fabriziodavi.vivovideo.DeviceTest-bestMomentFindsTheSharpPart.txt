@@ -1,0 +1,27 @@
+11-16 22:11:47.014  4792 11859 E EGL_emulation: eglQueryContext 32c0  EGL_BAD_ATTRIBUTE
+11-16 22:11:47.014  4792 11859 E EGL_emulation: tid 11859: eglQueryContext(2146): error 0x3004 (EGL_BAD_ATTRIBUTE)
+11-16 22:11:47.056  4792 11867 W ColorUtils: expected specified color aspects (0:0:0:0)
+11-16 22:11:47.062  4792 11867 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:11:47.062  4792 11867 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:11:47.064   465  3339 W ResourceManagerService: Ignoring request to add new resource entry with value <= 0
+11-16 22:11:47.106 11506 11552 W native  : W0000 00:00:1794867107.106799   11552 model-utils.cc:16] No CRC32, most likely an old model; skip CRC32 check
+11-16 22:11:47.111 11506 11552 W native  : W0000 00:00:1794867107.111518   11552 words-map.cc:36] INVALID_ARGUMENT: Empty URI
+11-16 22:11:47.111 11506 11552 W native  : W0000 00:00:1794867107.111564   11552 words-map.cc:40] WordsMap was not properly initialized
+11-16 22:11:47.164 11506 11552 W Icing   : Package com.google.android.googlequicksearchbox targets Android P and isn't allowed to use AppDataSearch indexing API
+11-16 22:11:47.170 11506 11552 W Icing   : Package com.google.android.gm targets Android P and isn't allowed to use AppDataSearch indexing API
+11-16 22:11:47.348   471 11868 E C2SoftAvcEnc: Unable to set air params = 0x1ad
+11-16 22:11:49.962  4792 11859 E Surface : freeAllBuffers: 1 buffers were freed while being dequeued!
+11-16 22:11:49.964  4792 11859 W GraphicBufferSource: released unpopulated slots: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+11-16 22:11:49.965  4792 11859 E Surface : getSlotFromBufferLocked: unknown buffer: 0x0
+11-16 22:11:49.975  4792 11866 W MediaCodec: no metrics handle found
+11-16 22:11:49.998  4792 12073 W ColorUtils: expected specified color aspects (2:0:0:0)
+11-16 22:11:50.002  4792 12073 W ColorUtils: expected specified color aspects (2:0:0:0)
+11-16 22:11:50.002  4792 12073 W Codec2Client: query -- param skipped: index = 1107298332.
+11-16 22:11:50.002  4792 12073 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+11-16 22:11:50.002  4792 12073 W Codec2Client: query -- param skipped: index = 1342179345.
+11-16 22:11:50.002  4792 12073 W Codec2Client: query -- param skipped: index = 2415921170.
+11-16 22:11:50.002  4792 12073 W Codec2Client: query -- param skipped: index = 1610614798.
+11-16 22:11:50.002  4792 12073 W Codec2Client: query -- param skipped: index = 2684356609.
+11-16 22:11:50.003   465  3339 W ResourceManagerService: Ignoring request to add new resource entry with value <= 0
+11-16 22:11:50.618  4792 12075 W StreamingFormatChecker: ML Kit has detected that you seem to pass camera frames to the detector as a Bitmap object. This is inefficient. Please use YUV_420_888 format for camera2 API or NV21 format for (legacy) camera API and directly pass down the byte array to ML Kit.
+11-16 22:11:51.348  4792 12072 W MediaCodec: no metrics handle found

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.fabriziodavi.vivovideo.engine.ActionTransitionsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-16T21:51:36.208Z" hostname="runnervmccnms" time="0.146">
+  <properties/>
+  <testcase name="exportMovesBothClipsAboveAndBelow" classname="it.fabriziodavi.vivovideo.engine.ActionTransitionsTest" time="0.066"/>
+  <testcase name="startOnTheOldClipEndOnTheNewOne" classname="it.fabriziodavi.vivovideo.engine.ActionTransitionsTest" time="0.026"/>
+  <testcase name="eachTransitionHasItsShape" classname="it.fabriziodavi.vivovideo.engine.ActionTransitionsTest" time="0.02"/>
+  <testcase name="actionThemesUseThemWithTheirDuration" classname="it.fabriziodavi.vivovideo.engine.ActionTransitionsTest" time="0.018"/>
+  <testcase name="sixActionTransitionsAllTwoClipAndShort" classname="it.fabriziodavi.vivovideo.engine.ActionTransitionsTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

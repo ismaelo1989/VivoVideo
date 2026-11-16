@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.fabriziodavi.vivovideo.model.TimelapseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-16T21:51:55.930Z" hostname="runnervmccnms" time="0.003">
+  <properties/>
+  <testcase name="timelapseAndBack" classname="it.fabriziodavi.vivovideo.model.TimelapseTest" time="0.002"/>
+  <testcase name="planSamplesTheRightFrames" classname="it.fabriziodavi.vivovideo.model.TimelapseTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
